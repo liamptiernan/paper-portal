@@ -8,20 +8,24 @@ import { PaymentInfo } from "./PaymentInfo";
 import { AdPurchase } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
 
-function NextButton({ onNext }: { onNext: () => void }) {
-  return (
-    <Button type="submit" onClick={onNext}>
-      Next
-    </Button>
+function NextButton({
+  onNext,
+  activeStep,
+}: {
+  onNext: () => void;
+  activeStep: number;
+}) {
+  const isLastStep = activeStep === 3;
+  console.log(isLastStep);
+  return isLastStep ? (
+    <Button type="submit">Submit</Button>
+  ) : (
+    <Button onClick={onNext}>Next</Button>
   );
 }
 
 function BackButton({ onBack }: { onBack: () => void }) {
-  return (
-    <Button type="submit" onClick={onBack}>
-      Back
-    </Button>
-  );
+  return <Button onClick={onBack}>Back</Button>;
 }
 
 export function AdPurchaseForm() {
@@ -41,33 +45,38 @@ export function AdPurchaseForm() {
     setActiveStep((active) => active - 1);
   };
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (
+    values: AdPurchase,
+    _event: React.FormEvent<HTMLFormElement>
+  ) => {
     console.log("submitted");
-    console.log(data);
+    console.log(values);
   };
 
   return (
     <AdPurchaseFormProvider form={form}>
-      <Stepper active={activeStep}>
-        <Stepper.Step label="Welcome">
-          <LoginInfo />
-        </Stepper.Step>
-        <Stepper.Step label="Ad Info" description="Tell us about your ad">
-          <AdInfo />
-        </Stepper.Step>
-        <Stepper.Step label="Contact Info">
-          <Box>
-            <ContactInfo />
-          </Box>
-        </Stepper.Step>
-        <Stepper.Step label="Payment">
-          <Box>
-            <PaymentInfo />
-          </Box>
-        </Stepper.Step>
-        <BackButton onBack={onBack} />
-        <NextButton onNext={onNext} />
-      </Stepper>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stepper active={activeStep}>
+          <Stepper.Step label="Welcome">
+            <LoginInfo />
+          </Stepper.Step>
+          <Stepper.Step label="Ad Info" description="Tell us about your ad">
+            <AdInfo />
+          </Stepper.Step>
+          <Stepper.Step label="Contact Info">
+            <Box>
+              <ContactInfo />
+            </Box>
+          </Stepper.Step>
+          <Stepper.Step label="Payment">
+            <Box>
+              <PaymentInfo />
+            </Box>
+          </Stepper.Step>
+          <BackButton onBack={onBack} />
+          <NextButton onNext={onNext} activeStep={activeStep} />
+        </Stepper>
+      </form>
     </AdPurchaseFormProvider>
   );
 }
