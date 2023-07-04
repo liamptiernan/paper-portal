@@ -1,3 +1,8 @@
+export enum PersonalAdSelection {
+  Personal = 0,
+  Designed = 1
+}
+
 export enum States {
   'AL' = 'AL',
   'AK' = 'AK',
@@ -60,12 +65,12 @@ export enum States {
   'WY' = 'WY',
 }
 
-export interface AdSubmission {
+export interface AdPurchase {
   business_name: string,
   email: string,
   business_description: string,
   campaign_goal: string,
-  personalAd: boolean,
+  personal_ad: PersonalAdSelection,
   personal_ad_checksum?: string,
   brand_colors?: string[],
   brand_logo_checksum?: string,

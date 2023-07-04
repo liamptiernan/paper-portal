@@ -1,10 +1,10 @@
 import { MantineProvider, Text } from "@mantine/core";
-import { PortalForm } from "./features/portal-form/PortalForm";
+import { AdPurchaseForm } from "./features/portal-form/AdPurchaseForm";
 
 export default function App() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <PortalForm />
+      <AdPurchaseForm />
     </MantineProvider>
   );
 }
