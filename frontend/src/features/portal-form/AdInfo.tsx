@@ -162,7 +162,7 @@ function SpendSlider() {
 export function AdInfo() {
   const { getInputProps } = useAdPurchaseFormContext();
   return (
-    <Box>
+    <Stack spacing="lg">
       <TextInput
         label={"What does your business do?"}
         {...getInputProps("business_description")}
@@ -191,6 +191,6 @@ export function AdInfo() {
       <Gender />
       <Publications />
       <SpendSlider />
-    </Box>
+    </Stack>
   );
 }

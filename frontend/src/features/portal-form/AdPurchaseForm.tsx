@@ -1,5 +1,4 @@
-import { Box, Button, Stepper } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { Box, Button, Container, Stepper } from "@mantine/core";
 import { useState } from "react";
 import { ContactInfo } from "./ContactInfo";
 import { AdInfo } from "./AdInfo";
@@ -52,31 +51,34 @@ export function AdPurchaseForm() {
     console.log("submitted");
     console.log(values);
   };
-
+  // TODO: add form styling
+  // TODO: add form validation and routing
   return (
-    <AdPurchaseFormProvider form={form}>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stepper active={activeStep}>
-          <Stepper.Step label="Welcome">
-            <LoginInfo />
-          </Stepper.Step>
-          <Stepper.Step label="Ad Info" description="Tell us about your ad">
-            <AdInfo />
-          </Stepper.Step>
-          <Stepper.Step label="Contact Info">
-            <Box>
-              <ContactInfo />
-            </Box>
-          </Stepper.Step>
-          <Stepper.Step label="Payment">
-            <Box>
-              <PaymentInfo />
-            </Box>
-          </Stepper.Step>
-          <BackButton onBack={onBack} />
-          <NextButton onNext={onNext} activeStep={activeStep} />
-        </Stepper>
-      </form>
-    </AdPurchaseFormProvider>
+    <Container size="md">
+      <AdPurchaseFormProvider form={form}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stepper active={activeStep}>
+            <Stepper.Step label="Welcome">
+              <LoginInfo />
+            </Stepper.Step>
+            <Stepper.Step label="Ad Info" description="Tell us about your ad">
+              <AdInfo />
+            </Stepper.Step>
+            <Stepper.Step label="Contact Info">
+              <Box>
+                <ContactInfo />
+              </Box>
+            </Stepper.Step>
+            <Stepper.Step label="Payment">
+              <Box>
+                <PaymentInfo />
+              </Box>
+            </Stepper.Step>
+            <BackButton onBack={onBack} />
+            <NextButton onNext={onNext} activeStep={activeStep} />
+          </Stepper>
+        </form>
+      </AdPurchaseFormProvider>
+    </Container>
   );
 }
