@@ -24,6 +24,6 @@ Use react router dom for paging
 
 TODO:
 
-Get form centered with clean header
-
-**Payment Info**
+Data model
+each ad unit has a set of demo data and a price
+Pick the best one

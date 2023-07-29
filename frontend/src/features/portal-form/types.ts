@@ -1,6 +1,6 @@
 export enum PersonalAdSelection {
-  Personal = 0,
-  Designed = 1
+  Personal = "personal",
+  Designed = "designed"
 }
 
 export enum States {

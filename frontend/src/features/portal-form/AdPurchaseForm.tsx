@@ -1,11 +1,14 @@
-import { Box, Button, Container, Stepper } from "@mantine/core";
+import { Box, Button, Container, Paper, Stepper } from "@mantine/core";
 import { useState } from "react";
 import { ContactInfo } from "./ContactInfo";
-import { AdInfo } from "./AdInfo";
 import { LoginInfo } from "./LoginInfo";
 import { PaymentInfo } from "./PaymentInfo";
 import { AdPurchase } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
+import { CampaignSummary } from "./fields/CampaignGoals";
+import { AdDesignQuestions } from "./fields/AdDesignQuestions";
+import { DemographicQuestions } from "./fields/DemographicQuestions";
+import { SpendSlider } from "./fields/BudgetOptions";
 
 function NextButton({
   onNext,
@@ -14,8 +17,7 @@ function NextButton({
   onNext: () => void;
   activeStep: number;
 }) {
-  const isLastStep = activeStep === 3;
-  console.log(isLastStep);
+  const isLastStep = activeStep === 10;
   return isLastStep ? (
     <Button type="submit">Submit</Button>
   ) : (
@@ -47,38 +49,46 @@ export function AdPurchaseForm() {
   const handleSubmit = (
     values: AdPurchase,
     _event: React.FormEvent<HTMLFormElement>
-  ) => {
-    console.log("submitted");
-    console.log(values);
-  };
+  ) => {};
   // TODO: add form styling
   // TODO: add form validation and routing
   return (
     <Container size="md">
-      <AdPurchaseFormProvider form={form}>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stepper active={activeStep}>
-            <Stepper.Step label="Welcome">
-              <LoginInfo />
-            </Stepper.Step>
-            <Stepper.Step label="Ad Info" description="Tell us about your ad">
-              <AdInfo />
-            </Stepper.Step>
-            <Stepper.Step label="Contact Info">
-              <Box>
-                <ContactInfo />
-              </Box>
-            </Stepper.Step>
-            <Stepper.Step label="Payment">
-              <Box>
-                <PaymentInfo />
-              </Box>
-            </Stepper.Step>
-            <BackButton onBack={onBack} />
-            <NextButton onNext={onNext} activeStep={activeStep} />
-          </Stepper>
-        </form>
-      </AdPurchaseFormProvider>
+      <Paper shadow="sm" withBorder p="lg">
+        <AdPurchaseFormProvider form={form}>
+          <form onSubmit={form.onSubmit(handleSubmit)}>
+            <Stepper active={activeStep}>
+              <Stepper.Step label="Welcome">
+                <LoginInfo />
+              </Stepper.Step>
+              <Stepper.Step label="Business">
+                <CampaignSummary />
+              </Stepper.Step>
+              <Stepper.Step label="Design">
+                <AdDesignQuestions />
+              </Stepper.Step>
+              <Stepper.Step label="Demos">
+                <DemographicQuestions />
+              </Stepper.Step>
+              <Stepper.Step label="Budget">
+                <SpendSlider />
+              </Stepper.Step>
+              <Stepper.Step label="Contact Info">
+                <Box>
+                  <ContactInfo />
+                </Box>
+              </Stepper.Step>
+              <Stepper.Step label="Payment">
+                <Box>
+                  <PaymentInfo />
+                </Box>
+              </Stepper.Step>
+              <BackButton onBack={onBack} />
+              <NextButton onNext={onNext} activeStep={activeStep} />
+            </Stepper>
+          </form>
+        </AdPurchaseFormProvider>
+      </Paper>
     </Container>
   );
 }
