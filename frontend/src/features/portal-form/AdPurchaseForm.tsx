@@ -9,6 +9,15 @@ import { CampaignSummary } from "./fields/CampaignGoals";
 import { AdDesignQuestions } from "./fields/AdDesignQuestions";
 import { DemographicQuestions } from "./fields/DemographicQuestions";
 import { SpendSlider } from "./fields/BudgetOptions";
+import {
+  IconAd2,
+  IconAddressBook,
+  IconAdjustmentsHorizontal,
+  IconBuildingStore,
+  IconCashBanknote,
+  IconReportAnalytics,
+  IconSparkles,
+} from "@tabler/icons-react";
 
 function NextButton({
   onNext,
@@ -57,27 +66,30 @@ export function AdPurchaseForm() {
       <AdPurchaseFormProvider form={form}>
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stepper active={activeStep}>
-            <Stepper.Step label="Welcome">
+            <Stepper.Step label="Welcome" icon={<IconSparkles />}>
               <LoginInfo />
             </Stepper.Step>
-            <Stepper.Step label="Business">
+            <Stepper.Step label="Business" icon={<IconBuildingStore />}>
               <CampaignSummary />
             </Stepper.Step>
-            <Stepper.Step label="Design">
+            <Stepper.Step label="Design" icon={<IconAd2 />}>
               <AdDesignQuestions />
             </Stepper.Step>
-            <Stepper.Step label="Demographics">
+            <Stepper.Step
+              label="Demographics"
+              icon={<IconAdjustmentsHorizontal />}
+            >
               <DemographicQuestions />
             </Stepper.Step>
-            <Stepper.Step label="Budget">
+            <Stepper.Step label="Budget" icon={<IconReportAnalytics />}>
               <SpendSlider />
             </Stepper.Step>
-            <Stepper.Step label="Contact Info">
+            <Stepper.Step label="Contact" icon={<IconAddressBook />}>
               <Box>
                 <ContactInfo />
               </Box>
             </Stepper.Step>
-            <Stepper.Step label="Payment">
+            <Stepper.Step label="Payment" icon={<IconCashBanknote />}>
               <Box>
                 <PaymentInfo />
               </Box>
