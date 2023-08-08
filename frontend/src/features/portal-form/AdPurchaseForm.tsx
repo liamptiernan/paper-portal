@@ -66,7 +66,7 @@ export function AdPurchaseForm() {
             <Stepper.Step label="Design">
               <AdDesignQuestions />
             </Stepper.Step>
-            <Stepper.Step label="Demos">
+            <Stepper.Step label="Demographics">
               <DemographicQuestions />
             </Stepper.Step>
             <Stepper.Step label="Budget">

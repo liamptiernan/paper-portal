@@ -1,5 +1,6 @@
-import { Box, Select, TextInput } from "@mantine/core";
+import { Flex, Select, Space, Text, TextInput, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "./form-context";
+import { FormSection } from "../../components/FormSection";
 export function ContactInfo() {
   const { getInputProps } = useAdPurchaseFormContext();
   const options = [
@@ -7,22 +8,38 @@ export function ContactInfo() {
     { value: "pa", label: "PA" },
   ];
   return (
-    <Box>
-      <TextInput label="Your Name" {...getInputProps("contact_name")} />
+    <FormSection title={<Title fw={400}>Your contact info</Title>}>
+      <TextInput
+        label="Your Name"
+        size="md"
+        {...getInputProps("contact_name")}
+      />
       <TextInput
         type="tel"
-        label="Your Phone Number"
+        label="Phone Number"
+        size="md"
         {...getInputProps("contact_phone")}
       />
-      <TextInput label="Address Line 1" {...getInputProps("address_1")} />
-      <TextInput label="Address Line 2" {...getInputProps("address_2")} />
-      <TextInput label="City" {...getInputProps("address_city")} />
-      <Select
-        data={options}
-        label="State"
-        {...getInputProps("address_state")}
+      <TextInput
+        label="Address Line 1"
+        size="md"
+        {...getInputProps("address_1")}
       />
-      <TextInput label="Zip" {...getInputProps("address_zip")} />
-    </Box>
+      <TextInput
+        label="Address Line 2"
+        size="md"
+        {...getInputProps("address_2")}
+      />
+      <Flex gap={"md"}>
+        <TextInput label="City" size="md" {...getInputProps("address_city")} />
+        <Select
+          data={options}
+          label="State"
+          size="md"
+          {...getInputProps("address_state")}
+        />
+      </Flex>
+      <TextInput label="Zip" size="md" {...getInputProps("address_zip")} />
+    </FormSection>
   );
 }

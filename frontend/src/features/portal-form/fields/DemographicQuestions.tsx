@@ -1,14 +1,19 @@
 import {
   Checkbox,
   Collapse,
+  Flex,
   MultiSelect,
   Paper,
   RangeSlider,
   Select,
   Stack,
   Switch,
+  Text,
+  Title,
 } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
+import { FormSection } from "../../../components/FormSection";
+import { IconTool } from "@tabler/icons-react";
 
 function Regions() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -21,6 +26,7 @@ function Regions() {
     <MultiSelect
       label="What regions do you want to target?"
       data={options}
+      size="md"
       {...getInputProps("regions")}
     />
   );
@@ -31,6 +37,7 @@ function AdvancedToggle() {
   return (
     <Switch
       label="View advanced options"
+      size="md"
       // labelPosition="left"
       {...getInputProps("advanced_options", { type: "checkbox" })}
     />
@@ -48,6 +55,7 @@ function Section() {
     <Select
       label="What section of the paper do you want your ad to appear in?"
       data={options}
+      size="md"
       {...getInputProps("target_section")}
     />
   );
@@ -55,22 +63,39 @@ function Section() {
 
 function Age() {
   const { getInputProps } = useAdPurchaseFormContext();
+  const marks = [
+    { value: 1, label: 1 },
+    { value: 20, label: 20 },
+    { value: 40, label: 40 },
+    { value: 60, label: 60 },
+    { value: 80, label: 80 },
+    { value: 100, label: "100+" },
+  ];
   return (
-    <RangeSlider
-      label="Age range to target"
-      min={1}
-      max={100}
-      {...getInputProps("target_ages")}
-    />
+    <Stack mb="lg">
+      <Text>What's your target age range?</Text>
+      <RangeSlider
+        marks={marks}
+        min={1}
+        max={100}
+        {...getInputProps("target_ages")}
+      />
+    </Stack>
   );
 }
 
 function Gender() {
   const { getInputProps } = useAdPurchaseFormContext();
   return (
-    <Checkbox.Group label="Gender" {...getInputProps("target_genders")}>
-      <Checkbox label="Male" />
-      <Checkbox label="Female" />
+    <Checkbox.Group
+      label="Gender"
+      size="md"
+      {...getInputProps("target_genders")}
+    >
+      <Flex gap={"lg"}>
+        <Checkbox label="Male" value="male" />
+        <Checkbox label="Female" value="female" />
+      </Flex>
     </Checkbox.Group>
   );
 }
@@ -86,6 +111,7 @@ function Publications() {
     <MultiSelect
       label="What publications do you want your ad to appear in?"
       data={options}
+      size="md"
       {...getInputProps("target_publications")}
     />
   );
@@ -95,18 +121,17 @@ export function DemographicQuestions() {
   const { getInputProps } = useAdPurchaseFormContext();
   const display = getInputProps("advanced_options").value;
   return (
-    <Paper shadow="xs" withBorder p="sm">
+    <FormSection title={<Title fw={400}>Who's your target audience?</Title>}>
       <Regions />
       <AdvancedToggle />
-      <Collapse in={display}>
-        <Stack spacing={"sm"}>
+      <Collapse in={display} transitionDuration={300}>
+        <Stack spacing={"md"}>
           <Section />
-          <p>Age</p>
           <Age />
           <Gender />
           <Publications />
         </Stack>
       </Collapse>
-    </Paper>
+    </FormSection>
   );
 }
