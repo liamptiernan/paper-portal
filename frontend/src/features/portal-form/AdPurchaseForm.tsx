@@ -53,42 +53,40 @@ export function AdPurchaseForm() {
   // TODO: add form styling
   // TODO: add form validation and routing
   return (
-    <Container size="md">
-      <Paper shadow="sm" withBorder p="lg">
-        <AdPurchaseFormProvider form={form}>
-          <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Stepper active={activeStep}>
-              <Stepper.Step label="Welcome">
-                <LoginInfo />
-              </Stepper.Step>
-              <Stepper.Step label="Business">
-                <CampaignSummary />
-              </Stepper.Step>
-              <Stepper.Step label="Design">
-                <AdDesignQuestions />
-              </Stepper.Step>
-              <Stepper.Step label="Demos">
-                <DemographicQuestions />
-              </Stepper.Step>
-              <Stepper.Step label="Budget">
-                <SpendSlider />
-              </Stepper.Step>
-              <Stepper.Step label="Contact Info">
-                <Box>
-                  <ContactInfo />
-                </Box>
-              </Stepper.Step>
-              <Stepper.Step label="Payment">
-                <Box>
-                  <PaymentInfo />
-                </Box>
-              </Stepper.Step>
-              <BackButton onBack={onBack} />
-              <NextButton onNext={onNext} activeStep={activeStep} />
-            </Stepper>
-          </form>
-        </AdPurchaseFormProvider>
-      </Paper>
+    <Container size="xl">
+      <AdPurchaseFormProvider form={form}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stepper active={activeStep}>
+            <Stepper.Step label="Welcome">
+              <LoginInfo />
+            </Stepper.Step>
+            <Stepper.Step label="Business">
+              <CampaignSummary />
+            </Stepper.Step>
+            <Stepper.Step label="Design">
+              <AdDesignQuestions />
+            </Stepper.Step>
+            <Stepper.Step label="Demos">
+              <DemographicQuestions />
+            </Stepper.Step>
+            <Stepper.Step label="Budget">
+              <SpendSlider />
+            </Stepper.Step>
+            <Stepper.Step label="Contact Info">
+              <Box>
+                <ContactInfo />
+              </Box>
+            </Stepper.Step>
+            <Stepper.Step label="Payment">
+              <Box>
+                <PaymentInfo />
+              </Box>
+            </Stepper.Step>
+            <BackButton onBack={onBack} />
+            <NextButton onNext={onNext} activeStep={activeStep} />
+          </Stepper>
+        </form>
+      </AdPurchaseFormProvider>
     </Container>
   );
 }

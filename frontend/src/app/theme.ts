@@ -55,6 +55,6 @@ export const theme: MantineThemeOverride = {
   primaryShade: 4,
   fontFamily: '"Lato", sans-serif',
   headings: {
-    fontFamily: '"Arvo", serif',
+    fontFamily: '"Montserrat", sans-serif',
   },
 };

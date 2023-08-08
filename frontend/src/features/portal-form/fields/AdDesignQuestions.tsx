@@ -10,36 +10,44 @@ import {
   Textarea,
   TextInput,
   Text,
+  Title,
+  Space,
+  SegmentedControl,
+  Center,
+  ColorInput,
+  Chip,
+  Button,
+  Flex,
+  MultiSelect,
 } from "@mantine/core";
-import { IconUpload } from "@tabler/icons-react";
+import {
+  IconCirclePlus,
+  IconPaint,
+  IconPaintFilled,
+  IconPalette,
+  IconPlus,
+  IconUpload,
+} from "@tabler/icons-react";
 import { PersonalAdSelection } from "../types";
 import { useAdPurchaseFormContext } from "../form-context";
+import { FormSection } from "../../../components/FormSection";
+import { useState } from "react";
 
 function PersonalAdSelect() {
   const { getInputProps } = useAdPurchaseFormContext();
+  const options = [
+    { label: "Design an ad for me", value: PersonalAdSelection.Designed },
+    { label: "I have my own ad", value: PersonalAdSelection.Personal },
+  ];
   return (
-    <Radio.Group
-      label={
-        <Text mb="sm" fw={700}>
-          Should we design the ad, or do you already have an ad you'd like to
-          print?
-        </Text>
-      }
-      {...getInputProps("personal_ad")}
-    >
-      <Group>
-        <Radio
-          value={PersonalAdSelection.Designed}
-          label={"Design an ad for me"}
-          transitionDuration={200}
-        />
-        <Radio
-          value={PersonalAdSelection.Personal}
-          label={"I have my own ad"}
-          transitionDuration={200}
-        />
-      </Group>
-    </Radio.Group>
+    <Center>
+      <SegmentedControl
+        data={options}
+        size="md"
+        transitionDuration={200}
+        {...getInputProps("personal_ad")}
+      />
+    </Center>
   );
 }
 
@@ -56,10 +64,65 @@ function PersonalAdQuestions() {
     >
       <FileInput
         label="Upload Your Ad"
+        size="md"
         icon={<IconUpload size={rem(14)} />}
         {...getInputProps("personal_ad_checksum")}
       />
     </Collapse>
+  );
+}
+
+function MultiColorPicker() {
+  const [currentColors, setCurrentColors] = useState<string[]>([]);
+  const [currentColorPicker, setCurrentColorPicker] = useState<string>("");
+
+  const handleColorAdd = () => {
+    const newColors = [...currentColors];
+    newColors.push(currentColorPicker);
+    setCurrentColors(newColors);
+  };
+
+  const handleSelectChange = (newValues: string[]) => {
+    setCurrentColors(newValues);
+  };
+
+  return (
+    <Box>
+      <Text>Your brand colors</Text>
+      <Paper withBorder p="lg">
+        <Stack spacing={"md"}>
+          <Flex align={"center"} gap={"md"}>
+            <ColorInput
+              size="md"
+              withEyeDropper={false}
+              onChange={setCurrentColorPicker}
+            />
+            <Button
+              onClick={handleColorAdd}
+              variant="subtle"
+              leftIcon={<IconCirclePlus />}
+              radius={"xl"}
+              size="sm"
+              compact
+            >
+              Add Color
+            </Button>
+          </Flex>
+          <MultiSelect
+            clearable
+            data={currentColors}
+            onChange={handleSelectChange}
+            size="md"
+            value={currentColors}
+          />
+          {/* <Center>
+        {currentColors.map((color) => {
+          return <Chip color={color}>{color}</Chip>;
+        })}
+      </Center> */}
+        </Stack>
+      </Paper>
+    </Box>
   );
 }
 
@@ -74,33 +137,45 @@ function DesignedAdQuestions() {
       transitionDuration={200}
       transitionTimingFunction="linear"
     >
-      <Box>
-        <TextInput
-          label="Brand Colors"
-          {...getInputProps("brand_colors")}
-        ></TextInput>
+      <Stack spacing={"xl"}>
+        <MultiColorPicker />
         <FileInput
           label="Brand Logo"
           icon={<IconUpload size={rem(14)} />}
+          size="md"
           {...getInputProps("brand_logo_checksum")}
         />
         <Textarea
           label="Provide any particular text you'd like included in the ad here"
+          size="md"
           {...getInputProps("provided_copy")}
         ></Textarea>
-      </Box>
+      </Stack>
     </Collapse>
+  );
+}
+
+function SectionTitle() {
+  return (
+    <Title fw={400}>
+      <Text span inherit>
+        Now for your ad design.
+      </Text>
+      <Space h="md" />
+      <Text inherit fw={400} fz={"xl"}>
+        Should we design the ad, or do you already have an ad you'd like to
+        print?
+      </Text>
+    </Title>
   );
 }
 
 export function AdDesignQuestions() {
   return (
-    <Paper shadow="xs" withBorder p="sm">
-      <Stack spacing={"sm"}>
-        <PersonalAdSelect />
-        <PersonalAdQuestions />
-        <DesignedAdQuestions />
-      </Stack>
-    </Paper>
+    <FormSection title={<SectionTitle />}>
+      <PersonalAdSelect />
+      <PersonalAdQuestions />
+      <DesignedAdQuestions />
+    </FormSection>
   );
 }

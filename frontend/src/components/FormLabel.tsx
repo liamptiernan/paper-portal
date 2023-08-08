@@ -1,4 +1,4 @@
-import { Tooltip } from "@mantine/core";
+import { Text, Tooltip } from "@mantine/core";
 
 interface FormLableProps {
   labelText: string;
@@ -13,7 +13,7 @@ export function FormLabel({ labelText, toolTipText }: FormLableProps) {
           <div>{labelText}</div>
         </Tooltip>
       ) : (
-        labelText
+        <Text>labelText</Text>
       )}
     </>
   );

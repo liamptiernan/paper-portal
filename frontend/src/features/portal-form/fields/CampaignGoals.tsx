@@ -1,5 +1,6 @@
-import { MultiSelect, Paper, Stack, TextInput } from "@mantine/core";
+import { MultiSelect, TextInput, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
+import { FormSection } from "../../../components/FormSection";
 
 function BusinessSummary() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -8,6 +9,7 @@ function BusinessSummary() {
       label="What does your business do?"
       placeholder='e.g. "Plumbing, specializing in residential and refrigeration"'
       required
+      size="md"
       {...getInputProps("business_description")}
     />
   );
@@ -29,6 +31,7 @@ function CampaignGoal() {
       label={"What is the goal of your ad campaign?"}
       required
       placeholder="Select all that apply"
+      size="md"
       {...getInputProps("campaign_goal")}
     />
   );
@@ -46,9 +49,9 @@ function OtherCampaignGoal() {
         <>
           <TextInput
             label="You selected other. What are your other campaign goals?"
+            size="md"
             {...getInputProps("brand_colors")}
           />
-          <hr />
         </>
       ) : (
         <></>
@@ -59,12 +62,12 @@ function OtherCampaignGoal() {
 
 export function CampaignSummary() {
   return (
-    <Paper shadow="xs" withBorder p="sm">
-      <Stack spacing="sm">
-        <BusinessSummary />
-        <CampaignGoal />
-        <OtherCampaignGoal />
-      </Stack>
-    </Paper>
+    <FormSection
+      title={<Title fw={400}>Tell us about your business and goals.</Title>}
+    >
+      <BusinessSummary />
+      <CampaignGoal />
+      <OtherCampaignGoal />
+    </FormSection>
   );
 }
