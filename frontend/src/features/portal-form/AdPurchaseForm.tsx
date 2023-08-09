@@ -59,44 +59,43 @@ export function AdPurchaseForm() {
     values: AdPurchase,
     _event: React.FormEvent<HTMLFormElement>
   ) => {};
-  // TODO: add form styling
+
   // TODO: add form validation and routing
   return (
     <Container size="xl">
       <AdPurchaseFormProvider form={form}>
+        <Stepper active={activeStep}>
+          <Stepper.Step label="Welcome" icon={<IconSparkles />} />
+          <Stepper.Step label="Business" icon={<IconBuildingStore />}>
+            <CampaignSummary />
+          </Stepper.Step>
+          <Stepper.Step label="Design" icon={<IconAd2 />}>
+            <AdDesignQuestions />
+          </Stepper.Step>
+          <Stepper.Step
+            label="Demographics"
+            icon={<IconAdjustmentsHorizontal />}
+          >
+            <DemographicQuestions />
+          </Stepper.Step>
+          <Stepper.Step label="Budget" icon={<IconReportAnalytics />}>
+            <SpendSlider />
+          </Stepper.Step>
+          <Stepper.Step label="Contact" icon={<IconAddressBook />}>
+            <Box>
+              <ContactInfo />
+            </Box>
+          </Stepper.Step>
+          <Stepper.Step label="Payment" icon={<IconCashBanknote />}>
+            <Box>
+              <PaymentInfo />
+            </Box>
+          </Stepper.Step>
+          <BackButton onBack={onBack} />
+          <NextButton onNext={onNext} activeStep={activeStep} />
+        </Stepper>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stepper active={activeStep}>
-            <Stepper.Step label="Welcome" icon={<IconSparkles />}>
-              <LoginInfo />
-            </Stepper.Step>
-            <Stepper.Step label="Business" icon={<IconBuildingStore />}>
-              <CampaignSummary />
-            </Stepper.Step>
-            <Stepper.Step label="Design" icon={<IconAd2 />}>
-              <AdDesignQuestions />
-            </Stepper.Step>
-            <Stepper.Step
-              label="Demographics"
-              icon={<IconAdjustmentsHorizontal />}
-            >
-              <DemographicQuestions />
-            </Stepper.Step>
-            <Stepper.Step label="Budget" icon={<IconReportAnalytics />}>
-              <SpendSlider />
-            </Stepper.Step>
-            <Stepper.Step label="Contact" icon={<IconAddressBook />}>
-              <Box>
-                <ContactInfo />
-              </Box>
-            </Stepper.Step>
-            <Stepper.Step label="Payment" icon={<IconCashBanknote />}>
-              <Box>
-                <PaymentInfo />
-              </Box>
-            </Stepper.Step>
-            <BackButton onBack={onBack} />
-            <NextButton onNext={onNext} activeStep={activeStep} />
-          </Stepper>
+          <LoginInfo />
         </form>
       </AdPurchaseFormProvider>
     </Container>

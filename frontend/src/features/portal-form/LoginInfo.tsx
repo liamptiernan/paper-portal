@@ -9,11 +9,14 @@ function SectionTitle() {
       <Text
         span
         inherit
-        variant="gradient"
-        gradient={{ from: "brandBlue.1", to: "brandBlue.4", deg: 1 }}
+        color="brandBlue"
+        // variant="gradient"
+        // gradient={{ from: "brandBlue.1", to: "brandBlue.4", deg: 1 }}
       >
-        Welcome!{" "}
+        The best way to reach your community, is through local media.
       </Text>
+      <Space h="md" />
+      <Text inherit fw={400} fz={"xl"}></Text>
       <Space h="md" />
       <Text inherit fw={400} fz={"xl"}>
         We'll collect some info about your business and advertising goals, and
