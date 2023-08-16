@@ -18,6 +18,7 @@ import {
   IconReportAnalytics,
   IconSparkles,
 } from "@tabler/icons-react";
+import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
 
 function NextButton({
   onNext,
@@ -66,36 +67,20 @@ export function AdPurchaseForm() {
       <AdPurchaseFormProvider form={form}>
         <Stepper active={activeStep}>
           <Stepper.Step label="Welcome" icon={<IconSparkles />} />
-          <Stepper.Step label="Business" icon={<IconBuildingStore />}>
-            <CampaignSummary />
-          </Stepper.Step>
-          <Stepper.Step label="Design" icon={<IconAd2 />}>
-            <AdDesignQuestions />
-          </Stepper.Step>
+          <Stepper.Step label="Business" icon={<IconBuildingStore />} />
+          <Stepper.Step label="Design" icon={<IconAd2 />} />
           <Stepper.Step
             label="Demographics"
             icon={<IconAdjustmentsHorizontal />}
-          >
-            <DemographicQuestions />
-          </Stepper.Step>
-          <Stepper.Step label="Budget" icon={<IconReportAnalytics />}>
-            <SpendSlider />
-          </Stepper.Step>
-          <Stepper.Step label="Contact" icon={<IconAddressBook />}>
-            <Box>
-              <ContactInfo />
-            </Box>
-          </Stepper.Step>
-          <Stepper.Step label="Payment" icon={<IconCashBanknote />}>
-            <Box>
-              <PaymentInfo />
-            </Box>
-          </Stepper.Step>
+          />
+          <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
+          <Stepper.Step label="Contact" icon={<IconAddressBook />} />
+          <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
           <BackButton onBack={onBack} />
           <NextButton onNext={onNext} activeStep={activeStep} />
         </Stepper>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <LoginInfo />
+          <PurchaseViewerLayout activeStep={activeStep} />
         </form>
       </AdPurchaseFormProvider>
     </Container>

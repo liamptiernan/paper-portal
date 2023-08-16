@@ -60,9 +60,10 @@ function OtherCampaignGoal() {
   );
 }
 
-export function CampaignSummary() {
+export function CampaignSummary({ styles }: { styles: React.CSSProperties }) {
   return (
     <FormSection
+      styles={styles}
       title={<Title fw={400}>Tell us about your business and goals.</Title>}
     >
       <BusinessSummary />

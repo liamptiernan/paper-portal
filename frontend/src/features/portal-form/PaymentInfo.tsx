@@ -109,9 +109,9 @@ function BillingAddress() {
   );
 }
 
-export function PaymentInfo() {
+export function PaymentInfo({ styles }: { styles: React.CSSProperties }) {
   return (
-    <FormSection title={<Title fw={400}>Payment Info</Title>}>
+    <FormSection styles={styles} title={<Title fw={400}>Payment Info</Title>}>
       <CardInfo />
       <BillingAddress />
     </FormSection>

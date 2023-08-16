@@ -2,14 +2,16 @@ import { Container, Paper, Stack } from "@mantine/core";
 import { ReactElement } from "react";
 
 export function FormSection({
+  styles,
   title,
   children,
 }: {
+  styles: React.CSSProperties;
   title: ReactElement;
   children: ReactElement[];
 }) {
   return (
-    <Container size={"sm"}>
+    <Container size={"sm"} style={styles}>
       <Paper p="lg">
         <Stack spacing="xl">
           {title}
