@@ -170,9 +170,9 @@ function SectionTitle() {
   );
 }
 
-export function AdDesignQuestions({ styles }: { styles: React.CSSProperties }) {
+export function AdDesignQuestions() {
   return (
-    <FormSection styles={styles} title={<SectionTitle />}>
+    <FormSection title={<SectionTitle />}>
       <PersonalAdSelect />
       <PersonalAdQuestions />
       <DesignedAdQuestions />

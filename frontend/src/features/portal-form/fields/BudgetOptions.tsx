@@ -2,7 +2,7 @@ import { Paper, Slider, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 
-export function SpendSlider({ styles }: { styles: React.CSSProperties }) {
+export function SpendSlider() {
   const { getInputProps } = useAdPurchaseFormContext();
   const marks = [
     { value: 10, label: "$10" },
@@ -24,10 +24,7 @@ export function SpendSlider({ styles }: { styles: React.CSSProperties }) {
   };
 
   return (
-    <FormSection
-      styles={styles}
-      title={<Title fw={400}>What's your monthly budget?</Title>}
-    >
+    <FormSection title={<Title fw={400}>What's your monthly budget?</Title>}>
       <></>
       <Slider
         color="brandSaffron"

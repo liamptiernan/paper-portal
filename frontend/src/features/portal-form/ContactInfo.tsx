@@ -1,17 +1,14 @@
 import { Flex, Select, Space, Text, TextInput, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "./form-context";
 import { FormSection } from "../../components/FormSection";
-export function ContactInfo({ styles }: { styles: React.CSSProperties }) {
+export function ContactInfo() {
   const { getInputProps } = useAdPurchaseFormContext();
   const options = [
     { value: "ny", label: "NY" },
     { value: "pa", label: "PA" },
   ];
   return (
-    <FormSection
-      styles={styles}
-      title={<Title fw={400}>Your contact info</Title>}
-    >
+    <FormSection title={<Title fw={400}>Your contact info</Title>}>
       <TextInput
         label="Your Name"
         size="md"

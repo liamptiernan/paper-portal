@@ -117,18 +117,11 @@ function Publications() {
   );
 }
 
-export function DemographicQuestions({
-  styles,
-}: {
-  styles: React.CSSProperties;
-}) {
+export function DemographicQuestions() {
   const { getInputProps } = useAdPurchaseFormContext();
   const display = getInputProps("advanced_options").value;
   return (
-    <FormSection
-      styles={styles}
-      title={<Title fw={400}>Who's your target audience?</Title>}
-    >
+    <FormSection title={<Title fw={400}>Who's your target audience?</Title>}>
       <Regions />
       <AdvancedToggle />
       <Collapse in={display} transitionDuration={300}>

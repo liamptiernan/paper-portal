@@ -8,7 +8,7 @@ import {
   Transition,
 } from "@mantine/core";
 import { LoginInfo } from "./LoginInfo";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { CampaignSummary } from "./fields/CampaignGoals";
 import { AdDesignQuestions } from "./fields/AdDesignQuestions";
 import { DemographicQuestions } from "./fields/DemographicQuestions";
@@ -16,9 +16,33 @@ import { SpendSlider } from "./fields/BudgetOptions";
 import { ContactInfo } from "./ContactInfo";
 import { PaymentInfo } from "./PaymentInfo";
 
+// function FormComponentTransition({ children, isActive }: { children: ReactElement, isActive: boolean }) {
+//   return (
+//     <Transition
+//       mounted={isActive}
+//       transition="scale-y"
+//       duration={200}
+//       onExit={}
+//     >
+//       {(styles) => <div style={styles}>{children}</div>}
+//     </Transition>
+//   );
+// }
+
+function useTransitionManager() {
+  const [isExiting, setIsExiting] = useState(false);
+
+  const onEnter = () => {
+    if (isExiting) {
+    }
+  };
+
+  return;
+}
+
 function SummaryViewer({ styles }: { styles: React.CSSProperties }) {
   return (
-    <Paper withBorder p="md" style={{ flexBasis: "40%", ...styles }}>
+    <Paper withBorder p="md" h="200px" style={{ flexBasis: "40%", ...styles }}>
       <Title>Summary</Title>
       <Stack>
         <Flex justify={"space-between"}>
@@ -41,68 +65,16 @@ function SummaryViewer({ styles }: { styles: React.CSSProperties }) {
 }
 
 export function PurchaseViewerLayout({ activeStep }: { activeStep: number }) {
-  const sections = [
-    <LoginInfo />,
-    <CampaignSummary />,
-    <AdDesignQuestions />,
-    <DemographicQuestions />,
-    <SpendSlider />,
-    <ContactInfo />,
-    <PaymentInfo />,
-  ];
-
   return (
-    <Container size="xl">
+    <Container size="xl" mt="lg">
       <Flex justify={"space-between"}>
-        <Transition
-          mounted={activeStep === 0}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <LoginInfo styles={styles} />}
-        </Transition>
-        <Transition
-          mounted={activeStep === 1}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <CampaignSummary styles={styles} />}
-        </Transition>
-        <Transition
-          mounted={activeStep === 2}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <AdDesignQuestions styles={styles} />}
-        </Transition>
-        <Transition
-          mounted={activeStep === 3}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <DemographicQuestions styles={styles} />}
-        </Transition>
-        <Transition
-          mounted={activeStep === 4}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <SpendSlider styles={styles} />}
-        </Transition>
-        <Transition
-          mounted={activeStep === 5}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <ContactInfo styles={styles} />}
-        </Transition>
-        <Transition
-          mounted={activeStep === 6}
-          transition="scale-y"
-          duration={200}
-        >
-          {(styles) => <PaymentInfo styles={styles} />}
-        </Transition>
+        <LoginInfo />
+        <CampaignSummary />
+        <AdDesignQuestions />
+        <DemographicQuestions />
+        <SpendSlider />
+        <ContactInfo />
+        <PaymentInfo />
         <Transition
           mounted={activeStep > 2}
           transition="fade"

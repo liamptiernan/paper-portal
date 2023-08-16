@@ -26,10 +26,10 @@ function SectionTitle() {
   );
 }
 
-export function LoginInfo({ styles }: { styles: React.CSSProperties }) {
+export function LoginInfo() {
   const { getInputProps } = useAdPurchaseFormContext();
   return (
-    <FormSection styles={styles} title={<SectionTitle />}>
+    <FormSection title={<SectionTitle />}>
       <TextInput
         label="Business Name"
         icon={<IconBuildingSkyscraper size={rem(15)} />}
