@@ -66,10 +66,10 @@ export enum States {
 }
 
 export interface AdPurchase {
-  business_name: string,
-  email: string,
-  business_description: string,
-  campaign_goal: string,
+  business_name?: string,
+  email?: string,
+  business_description?: string,
+  campaign_goal?: string,
   personal_ad: PersonalAdSelection,
   personal_ad_checksum?: string,
   brand_colors?: string[],
@@ -77,16 +77,16 @@ export interface AdPurchase {
   provided_copy?: string,
   regions: string[],
   advanced_options: boolean,
-  target_section: string,
+  target_section?: string,
   target_ages: number[],
   target_genders: string[],
   target_publications: string[],
-  target_monthly_spend: number,
-  contact_name: string,
-  contact_phone: string,
-  address_1: string,
-  address_2: string,
-  address_city: string,
-  address_state: States,
-  address_zip: number
+  target_monthly_spend?: number,
+  contact_name?: string,
+  contact_phone?: string,
+  address_1?: string,
+  address_2?: string,
+  address_city?: string,
+  address_state?: States,
+  address_zip?: number
 }

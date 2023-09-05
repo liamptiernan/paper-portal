@@ -1,4 +1,5 @@
 import {
+  Button,
   Container,
   Divider,
   Flex,
@@ -16,12 +17,87 @@ import { SpendSlider } from "./fields/BudgetOptions";
 import { ContactInfo } from "./ContactInfo";
 import { PaymentInfo } from "./PaymentInfo";
 import { useAdPurchaseFormContext } from "./form-context";
+import {
+  IconArrowBigLeft,
+  IconArrowBigRight,
+  IconArrowBigRightLines,
+  IconArrowBigRightLinesFilled,
+} from "@tabler/icons-react";
 
-function SummaryViewer({ styles }: { styles: React.CSSProperties }) {
+function PrevBorderButton({ onClick }: { onClick: () => void }) {
+  return (
+    <div
+      style={{
+        height: "calc(100vh - 200px",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Button
+        style={{
+          height: "calc(100vh - 500px)",
+          borderRadius: "400px",
+          transition: "300ms",
+        }}
+        size="xl"
+        radius="xl"
+        variant="subtle"
+        color="brandBlue.3"
+        leftIcon={<IconArrowBigLeft />}
+        onClick={onClick}
+      >
+        Back
+      </Button>
+    </div>
+  );
+}
+
+function NextBorderButton({ onClick }: { onClick: () => void }) {
+  return (
+    <div
+      style={{
+        height: "calc(100vh - 200px",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Button
+        style={{
+          height: "calc(100vh - 500px)",
+          borderRadius: "400px",
+          transition: "300ms",
+        }}
+        size="xl"
+        variant="subtle"
+        color="brandBlue.3"
+        rightIcon={<IconArrowBigRightLinesFilled />}
+        onClick={onClick}
+      >
+        Next
+      </Button>
+    </div>
+  );
+}
+
+function SummaryViewer({
+  styles,
+  onBack,
+  onNext,
+}: {
+  styles: React.CSSProperties;
+  onBack: () => void;
+  onNext: () => void;
+}) {
   const { getInputProps } = useAdPurchaseFormContext();
   const monthlyCost = getInputProps("target_monthly_spend").value;
   return (
-    <Paper withBorder p="md" h="100%" style={{ flexBasis: "30%", ...styles }}>
+    <Paper
+      withBorder
+      p="md"
+      mt="lg"
+      h="100%"
+      style={{ flexBasis: "30%", ...styles }}
+    >
       <Stack>
         <Title fw={400}>Ad Summary</Title>
         <Divider />
@@ -45,12 +121,24 @@ function SummaryViewer({ styles }: { styles: React.CSSProperties }) {
           </Text>
         </Flex>
         <Divider />
+        <Button onClick={onNext}>Next</Button>
+        <Button variant="light" onClick={onBack}>
+          Back
+        </Button>
       </Stack>
     </Paper>
   );
 }
 
-export function PurchaseViewerLayout({ activeStep }: { activeStep: number }) {
+export function PurchaseViewerLayout({
+  activeStep,
+  onNext,
+  onBack,
+}: {
+  activeStep: number;
+  onNext: () => void;
+  onBack: () => void;
+}) {
   const steps = [
     <LoginInfo />,
     <CampaignSummary />,
@@ -63,15 +151,19 @@ export function PurchaseViewerLayout({ activeStep }: { activeStep: number }) {
 
   return (
     <Container size="xl" mt="lg">
-      <Flex justify={"space-between"}>
+      <Flex gap={"sm"}>
+        {activeStep <= 2 ? <PrevBorderButton onClick={onBack} /> : null}
         {steps[activeStep]}
+        {activeStep <= 2 ? <NextBorderButton onClick={onNext} /> : null}
         <Transition
           mounted={activeStep > 2}
           transition="fade"
           duration={400}
           timingFunction="ease"
         >
-          {(styles) => <SummaryViewer styles={styles} />}
+          {(styles) => (
+            <SummaryViewer styles={styles} onBack={onBack} onNext={onNext} />
+          )}
         </Transition>
       </Flex>
     </Container>

@@ -1,14 +1,7 @@
-import { Box, Button, Container, Paper, Stepper } from "@mantine/core";
+import { Container, Stepper } from "@mantine/core";
 import { useState } from "react";
-import { ContactInfo } from "./ContactInfo";
-import { LoginInfo } from "./LoginInfo";
-import { PaymentInfo } from "./PaymentInfo";
-import { AdPurchase } from "./types";
+import { AdPurchase, PersonalAdSelection } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
-import { CampaignSummary } from "./fields/CampaignGoals";
-import { AdDesignQuestions } from "./fields/AdDesignQuestions";
-import { DemographicQuestions } from "./fields/DemographicQuestions";
-import { SpendSlider } from "./fields/BudgetOptions";
 import {
   IconAd2,
   IconAddressBook,
@@ -20,31 +13,25 @@ import {
 } from "@tabler/icons-react";
 import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
 
-function NextButton({
-  onNext,
-  activeStep,
-}: {
-  onNext: () => void;
-  activeStep: number;
-}) {
-  const isLastStep = activeStep === 10;
-  return isLastStep ? (
-    <Button type="submit">Submit</Button>
-  ) : (
-    <Button onClick={onNext}>Next</Button>
-  );
-}
-
-function BackButton({ onBack }: { onBack: () => void }) {
-  return <Button onClick={onBack}>Back</Button>;
-}
-
 export function AdPurchaseForm() {
   const [activeStep, setActiveStep] = useState(0);
 
   const form = useAdPurchaseForm({
+    initialValues: {
+      personal_ad: PersonalAdSelection.Designed,
+      regions: [],
+      advanced_options: false,
+      target_ages: [],
+      target_genders: [],
+      target_publications: [],
+    },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      email: (value) => {
+        if (!value) {
+          return null;
+        }
+        /^\S+@\S+$/.test(value) ? null : "Invalid email";
+      },
     },
   });
 
@@ -76,11 +63,13 @@ export function AdPurchaseForm() {
           <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
           <Stepper.Step label="Contact" icon={<IconAddressBook />} />
           <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
-          <BackButton onBack={onBack} />
-          <NextButton onNext={onNext} activeStep={activeStep} />
         </Stepper>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <PurchaseViewerLayout activeStep={activeStep} />
+          <PurchaseViewerLayout
+            activeStep={activeStep}
+            onNext={onNext}
+            onBack={onBack}
+          />
         </form>
       </AdPurchaseFormProvider>
     </Container>

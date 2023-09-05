@@ -24,6 +24,6 @@ Use react router dom for paging
 
 TODO:
 
-Data model
-each ad unit has a set of demo data and a price
-Pick the best one
+setup ad summary calc
+add map for range
+add submit state
