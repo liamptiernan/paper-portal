@@ -3,10 +3,12 @@ import {
   Container,
   Divider,
   Flex,
+  Group,
   Paper,
   Stack,
   Text,
   Title,
+  Tooltip,
   Transition,
 } from "@mantine/core";
 import { LoginInfo } from "./LoginInfo";
@@ -22,7 +24,11 @@ import {
   IconArrowBigRight,
   IconArrowBigRightLines,
   IconArrowBigRightLinesFilled,
+  IconInfoCircle,
+  IconInfoSquareRounded,
+  IconInfoSquareRoundedFilled,
 } from "@tabler/icons-react";
+import { adInfo } from "./fixtures/adInfo";
 
 function PrevBorderButton({ onClick }: { onClick: () => void }) {
   return (
@@ -79,6 +85,27 @@ function NextBorderButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+function calcReach(radius: number) {
+  return (radius ^ 2) * 3.14 * 1000;
+}
+
+function calcImpactScore(radius: number, monthlyCost: number) {
+  const publications = Math.ceil(radius * 0.03);
+  const budget = monthlyCost / publications;
+  const correctedBudget = budget >= 10 ? budget : 10;
+
+  let closest: number | undefined;
+  let score: number | undefined;
+  for (const ad of adInfo) {
+    const dist = Math.abs(ad.cost - correctedBudget);
+    if (closest === undefined || dist < closest) {
+      closest = dist;
+      score = ad.impact;
+    }
+  }
+  return score;
+}
+
 function SummaryViewer({
   styles,
   onBack,
@@ -89,7 +116,11 @@ function SummaryViewer({
   onNext: () => void;
 }) {
   const { getInputProps } = useAdPurchaseFormContext();
-  const monthlyCost = getInputProps("target_monthly_spend").value;
+  const monthlyCost: number = getInputProps("target_monthly_spend").value;
+  const radius: number = getInputProps("target_area_radius").value;
+
+  const estimatedReach = calcReach(radius);
+  const impactScore = calcImpactScore(radius, monthlyCost);
   return (
     <Paper
       withBorder
@@ -109,15 +140,33 @@ function SummaryViewer({
         </Flex>
         <Divider />
         <Flex justify={"space-between"}>
-          <Text size="lg">Estimated Reach</Text>
+          <Group style={{ gap: ".1rem" }}>
+            <Text size="lg">Estimated Reach</Text>
+            <Tooltip
+              multiline
+              width={250}
+              label="An estimate of the amount of people who will receive your ad in your search area"
+            >
+              <IconInfoCircle color="gray" />
+            </Tooltip>
+          </Group>
           <Text fw={600} size="lg" color="brandBlue">
-            80,000
+            {estimatedReach.toLocaleString()}
           </Text>
         </Flex>
         <Flex justify={"space-between"}>
-          <Text size="lg">Impact Score</Text>
+          <Group style={{ gap: ".1rem" }}>
+            <Text size="lg">Impact Score</Text>
+            <Tooltip
+              multiline
+              width={250}
+              label="An estimated score, of how impactful your ad will be. 10 being a full leading page, 1 being a classified"
+            >
+              <IconInfoCircle color="gray" />
+            </Tooltip>
+          </Group>
           <Text size="lg" fw={600} color="brandBlue">
-            9.5 / 10
+            {impactScore} / 10
           </Text>
         </Flex>
         <Divider />

@@ -1,17 +1,34 @@
 import { MantineProvider } from "@mantine/core";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import App from "./App.tsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { theme } from "./app/theme.ts";
 
+const mapRender = (status: Status) => {
+  switch (status) {
+    case Status.LOADING:
+      return <>"LOADING"</>;
+    case Status.FAILURE:
+      return <>"FAIL"</>;
+    case Status.SUCCESS:
+      return <>"SUCCESS"</>;
+  }
+};
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <Wrapper
+        apiKey="AIzaSyBEGicUH8Jh4d3GbVhC4BgMLQc4z6yyj7M"
+        render={mapRender}
+      >
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Wrapper>
     </MantineProvider>
   </React.StrictMode>
 );

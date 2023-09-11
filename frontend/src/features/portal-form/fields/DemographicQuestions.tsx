@@ -3,7 +3,6 @@ import {
   Collapse,
   Flex,
   MultiSelect,
-  Paper,
   RangeSlider,
   Select,
   Stack,
@@ -13,7 +12,7 @@ import {
 } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
-import { IconTool } from "@tabler/icons-react";
+import MapInput from "./MapInput";
 
 function Regions() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -122,7 +121,7 @@ export function DemographicQuestions() {
   const display = getInputProps("advanced_options").value;
   return (
     <FormSection title={<Title fw={400}>Who's your target audience?</Title>}>
-      <Regions />
+      <MapInput />
       <AdvancedToggle />
       <Collapse in={display} transitionDuration={300}>
         <Stack spacing={"md"}>

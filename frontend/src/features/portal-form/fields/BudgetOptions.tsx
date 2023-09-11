@@ -1,4 +1,4 @@
-import { Paper, Slider, Title } from "@mantine/core";
+import { Slider, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 
@@ -8,8 +8,10 @@ export function SpendSlider() {
     { value: 10, label: "$10" },
     { value: 250, label: "$250" },
     { value: 500, label: "$500" },
-    { value: 750, label: "$1000" },
+    { value: 750, label: "$750" },
+    { value: 1000, label: "$1000" },
     { value: 1500, label: "$1500" },
+    { value: 2500, label: "$2500" },
   ];
 
   const label = (value: number) => {
@@ -29,10 +31,9 @@ export function SpendSlider() {
       <Slider
         color="brandSaffron"
         precision={2}
-        scale={scaleCalc}
         step={10}
         min={10}
-        max={1000}
+        max={2500}
         marks={marks}
         label={label}
         labelAlwaysOn

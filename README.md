@@ -24,6 +24,5 @@ Use react router dom for paging
 
 TODO:
 
-setup ad summary calc
-add map for range
 add submit state
+mobile

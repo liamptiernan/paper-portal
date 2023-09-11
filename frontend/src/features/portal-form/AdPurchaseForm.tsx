@@ -1,5 +1,5 @@
 import { Container, Stepper } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdPurchase, PersonalAdSelection } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
 import {
@@ -16,14 +16,21 @@ import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
 export function AdPurchaseForm() {
   const [activeStep, setActiveStep] = useState(0);
 
+  useEffect(() => {
+    document.title = "Community - Ad Designer";
+  }, []);
+
   const form = useAdPurchaseForm({
     initialValues: {
       personal_ad: PersonalAdSelection.Designed,
       regions: [],
       advanced_options: false,
-      target_ages: [],
+      target_ages: [1, 100],
       target_genders: [],
       target_publications: [],
+      target_area_radius: 50,
+      target_area_center: "12202",
+      target_monthly_spend: 250,
     },
     validate: {
       email: (value) => {

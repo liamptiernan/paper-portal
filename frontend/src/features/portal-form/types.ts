@@ -76,6 +76,8 @@ export interface AdPurchase {
   brand_logo_checksum?: string,
   provided_copy?: string,
   regions: string[],
+  target_area_center: string,
+  target_area_radius: number,
   advanced_options: boolean,
   target_section?: string,
   target_ages: number[],
