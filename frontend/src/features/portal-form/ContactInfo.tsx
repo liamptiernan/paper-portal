@@ -1,4 +1,4 @@
-import { Flex, Select, Space, Text, TextInput, Title } from "@mantine/core";
+import { Flex, Select, TextInput, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "./form-context";
 import { FormSection } from "../../components/FormSection";
 export function ContactInfo() {

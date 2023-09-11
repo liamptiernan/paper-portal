@@ -2,32 +2,21 @@ import {
   Box,
   Collapse,
   FileInput,
-  Group,
   Paper,
-  Radio,
   rem,
   Stack,
   Textarea,
-  TextInput,
   Text,
   Title,
   Space,
   SegmentedControl,
   Center,
   ColorInput,
-  Chip,
   Button,
   Flex,
   MultiSelect,
 } from "@mantine/core";
-import {
-  IconCirclePlus,
-  IconPaint,
-  IconPaintFilled,
-  IconPalette,
-  IconPlus,
-  IconUpload,
-} from "@tabler/icons-react";
+import { IconCirclePlus, IconUpload } from "@tabler/icons-react";
 import { PersonalAdSelection } from "../types";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";

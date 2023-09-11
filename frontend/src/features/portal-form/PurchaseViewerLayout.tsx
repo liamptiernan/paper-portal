@@ -21,12 +21,8 @@ import { PaymentInfo } from "./PaymentInfo";
 import { useAdPurchaseFormContext } from "./form-context";
 import {
   IconArrowBigLeft,
-  IconArrowBigRight,
-  IconArrowBigRightLines,
   IconArrowBigRightLinesFilled,
   IconInfoCircle,
-  IconInfoSquareRounded,
-  IconInfoSquareRoundedFilled,
 } from "@tabler/icons-react";
 import { adInfo } from "./fixtures/adInfo";
 
