@@ -16,10 +16,6 @@ yarn dev
 yarn lint
 ```
 
-## TODO:
-
-Use react router dom for paging
-
 ## Form Planning
 
 TODO:

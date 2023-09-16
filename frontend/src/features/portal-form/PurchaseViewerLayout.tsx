@@ -26,7 +26,13 @@ import {
 } from "@tabler/icons-react";
 import { adInfo } from "./fixtures/adInfo";
 
-function PrevBorderButton({ onClick }: { onClick: () => void }) {
+function PrevBorderButton({
+  onClick,
+  disabled,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+}) {
   return (
     <div
       style={{
@@ -41,6 +47,10 @@ function PrevBorderButton({ onClick }: { onClick: () => void }) {
           borderRadius: "400px",
           transition: "300ms",
         }}
+        sx={{
+          "&[data-disabled]": { opacity: "0" },
+        }}
+        disabled={disabled}
         size="xl"
         radius="xl"
         variant="subtle"
@@ -102,14 +112,29 @@ function calcImpactScore(radius: number, monthlyCost: number) {
   return score;
 }
 
+function NextButton({
+  onNext,
+  isSubmit,
+}: {
+  onNext: () => void;
+  isSubmit: boolean;
+}) {
+  if (isSubmit) {
+    return <Button type="submit">Submit</Button>;
+  }
+  return <Button onClick={onNext}>Next</Button>;
+}
+
 function SummaryViewer({
   styles,
   onBack,
   onNext,
+  isSubmit,
 }: {
   styles: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
+  isSubmit: boolean;
 }) {
   const { getInputProps } = useAdPurchaseFormContext();
   const monthlyCost: number = getInputProps("target_monthly_spend").value;
@@ -156,7 +181,7 @@ function SummaryViewer({
             <Tooltip
               multiline
               width={250}
-              label="An estimated score, of how impactful your ad will be. 10 being a full leading page, 1 being a classified"
+              label="An estimated of how impactful your ad will be. 10 being a full leading page, 1 being a classified"
             >
               <IconInfoCircle color="gray" />
             </Tooltip>
@@ -166,7 +191,7 @@ function SummaryViewer({
           </Text>
         </Flex>
         <Divider />
-        <Button onClick={onNext}>Next</Button>
+        <NextButton onNext={onNext} isSubmit={isSubmit} />
         <Button variant="light" onClick={onBack}>
           Back
         </Button>
@@ -193,11 +218,13 @@ export function PurchaseViewerLayout({
     <ContactInfo />,
     <PaymentInfo />,
   ];
-
+  const isSubmit = steps.length === activeStep + 1;
   return (
     <Container size="xl" mt="lg">
       <Flex gap={"sm"}>
-        {activeStep <= 2 ? <PrevBorderButton onClick={onBack} /> : null}
+        {activeStep <= 2 ? (
+          <PrevBorderButton onClick={onBack} disabled={activeStep < 1} />
+        ) : null}
         {steps[activeStep]}
         {activeStep <= 2 ? <NextBorderButton onClick={onNext} /> : null}
         <Transition
@@ -207,7 +234,12 @@ export function PurchaseViewerLayout({
           timingFunction="ease"
         >
           {(styles) => (
-            <SummaryViewer styles={styles} onBack={onBack} onNext={onNext} />
+            <SummaryViewer
+              styles={styles}
+              onBack={onBack}
+              onNext={onNext}
+              isSubmit={isSubmit}
+            />
           )}
         </Transition>
       </Flex>
