@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Container,
   Divider,
@@ -25,6 +26,7 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { adInfo } from "./fixtures/adInfo";
+import { useBorderButtonStyles, useGeneralStyles } from "./styles";
 
 function PrevBorderButton({
   onClick,
@@ -33,14 +35,9 @@ function PrevBorderButton({
   onClick: () => void;
   disabled: boolean;
 }) {
+  const { classes } = useBorderButtonStyles();
   return (
-    <div
-      style={{
-        height: "calc(100vh - 200px",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
+    <div className={classes.backButton}>
       <Button
         style={{
           height: "calc(100vh - 500px)",
@@ -65,20 +62,11 @@ function PrevBorderButton({
 }
 
 function NextBorderButton({ onClick }: { onClick: () => void }) {
+  const { classes } = useBorderButtonStyles();
   return (
-    <div
-      style={{
-        height: "calc(100vh - 200px",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
+    <div className={classes.nextButtonContainer}>
       <Button
-        style={{
-          height: "calc(100vh - 500px)",
-          borderRadius: "400px",
-          transition: "300ms",
-        }}
+        className={classes.nextButton}
         size="xl"
         variant="subtle"
         color="brandBlue.3"
@@ -220,8 +208,11 @@ export function PurchaseViewerLayout({
   ];
   const isSubmit = steps.length === activeStep + 1;
   return (
-    <Container size="xl" mt="lg">
-      <Flex gap={"sm"}>
+    <Box mt="lg">
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={{ base: "none", md: "sm" }}
+      >
         {activeStep <= 2 ? (
           <PrevBorderButton onClick={onBack} disabled={activeStep < 1} />
         ) : null}
@@ -243,6 +234,6 @@ export function PurchaseViewerLayout({
           )}
         </Transition>
       </Flex>
-    </Container>
+    </Box>
   );
 }

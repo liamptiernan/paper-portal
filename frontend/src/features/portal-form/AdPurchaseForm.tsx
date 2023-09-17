@@ -1,4 +1,12 @@
-import { Container, Space, Stepper, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Container,
+  Flex,
+  Space,
+  Stepper,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AdPurchase, PersonalAdSelection } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
@@ -12,6 +20,7 @@ import {
   IconSparkles,
 } from "@tabler/icons-react";
 import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
+import { useGeneralStyles } from "./styles";
 
 function SubmitView() {
   return (
@@ -47,6 +56,8 @@ export function AdPurchaseForm() {
   useEffect(() => {
     document.title = "Community - Ad Designer";
   }, []);
+
+  const { classes: controllerClasses } = useGeneralStyles();
 
   const form = useAdPurchaseForm({
     initialValues: {
@@ -89,31 +100,37 @@ export function AdPurchaseForm() {
 
   // TODO: add form validation and routing
   return (
-    <Container size="xl">
+    <Box>
       {!hasSubmitted && (
         <AdPurchaseFormProvider form={form}>
-          <Stepper active={activeStep}>
-            <Stepper.Step label="Welcome" icon={<IconSparkles />} />
-            <Stepper.Step label="Business" icon={<IconBuildingStore />} />
-            <Stepper.Step label="Design" icon={<IconAd2 />} />
-            <Stepper.Step
-              label="Demographics"
-              icon={<IconAdjustmentsHorizontal />}
-            />
-            <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
-            <Stepper.Step label="Contact" icon={<IconAddressBook />} />
-            <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
-          </Stepper>
-          <form onSubmit={form.onSubmit(handleSubmit)}>
-            <PurchaseViewerLayout
-              activeStep={activeStep}
-              onNext={onNext}
-              onBack={onBack}
-            />
-          </form>
+          <Flex direction={{ base: "row", md: "column" }}>
+            <Stepper
+              classNames={{ stepLabel: controllerClasses.hideMobile }}
+              active={activeStep}
+              breakpoint={"md"}
+            >
+              <Stepper.Step label="Welcome" icon={<IconSparkles />} />
+              <Stepper.Step label="Business" icon={<IconBuildingStore />} />
+              <Stepper.Step label="Design" icon={<IconAd2 />} />
+              <Stepper.Step
+                label="Demographics"
+                icon={<IconAdjustmentsHorizontal />}
+              />
+              <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
+              <Stepper.Step label="Contact" icon={<IconAddressBook />} />
+              <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
+            </Stepper>
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+              <PurchaseViewerLayout
+                activeStep={activeStep}
+                onNext={onNext}
+                onBack={onBack}
+              />
+            </form>
+          </Flex>
         </AdPurchaseFormProvider>
       )}
       {hasSubmitted && <SubmitView />}
-    </Container>
+    </Box>
   );
 }
