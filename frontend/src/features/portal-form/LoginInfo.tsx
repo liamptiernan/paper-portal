@@ -6,13 +6,7 @@ import { FormSection } from "../../components/FormSection";
 function SectionTitle() {
   return (
     <Title>
-      <Text
-        span
-        inherit
-        color="brandBlue"
-        // variant="gradient"
-        // gradient={{ from: "brandBlue.1", to: "brandBlue.4", deg: 1 }}
-      >
+      <Text span inherit color="brandBlue">
         The best way to reach your community, is through local media.
       </Text>
       <Space h="md" />

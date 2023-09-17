@@ -1,4 +1,4 @@
-import { Container, Stepper } from "@mantine/core";
+import { Container, Space, Stepper, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AdPurchase, PersonalAdSelection } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
@@ -15,11 +15,28 @@ import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
 
 function SubmitView() {
   return (
-    <div>
-      Thank you for your order! We'll prepare everything needed to reach your
-      audience, and send you a confirmation email with details on when and where
-      your ad will be published.
-    </div>
+    <Container size={"sm"}>
+      <Title>
+        <Text span inherit color="brandBlue">
+          Thanks for your order!
+        </Text>
+        <Space h="md" />
+        <Text inherit fw={400} fz={"xl"}></Text>
+        <Space h="md" />
+        <Text inherit fw={400} fz={"xl"}>
+          We're preparing everything needed to reach your audience.
+        </Text>
+        <Space h="md" />
+        <Text inherit fw={400} fz={"xl"}>
+          We'll send you a confirmation email to let you know when and where to
+          expect your ad.
+        </Text>
+        <Space h="md" />
+        <Text inherit fw={400} fz={"xl"}>
+          Order Number: #203GA1
+        </Text>
+      </Title>
+    </Container>
   );
 }
 
