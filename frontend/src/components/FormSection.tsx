@@ -1,5 +1,6 @@
 import { Container, Paper, Stack } from "@mantine/core";
 import { ReactElement } from "react";
+import { useFormSectionStyles } from "../features/portal-form/styles";
 
 export function FormSection({
   title,
@@ -8,9 +9,11 @@ export function FormSection({
   title: ReactElement;
   children: ReactElement[];
 }) {
+  const { classes } = useFormSectionStyles();
+
   return (
     <Container size={"sm"}>
-      <Paper p="lg">
+      <Paper className={classes.sectionPaper}>
         <Stack spacing="xl">
           {title}
           <Stack

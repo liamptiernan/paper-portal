@@ -26,7 +26,11 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { adInfo } from "./fixtures/adInfo";
-import { useBorderButtonStyles, useGeneralStyles } from "./styles";
+import {
+  useBorderButtonStyles,
+  useGeneralStyles,
+  usePurchaseViewerStyles,
+} from "./styles";
 
 function PrevBorderButton({
   onClick,
@@ -197,6 +201,8 @@ export function PurchaseViewerLayout({
   onNext: () => void;
   onBack: () => void;
 }) {
+  const { classes } = usePurchaseViewerStyles();
+
   const steps = [
     <LoginInfo />,
     <CampaignSummary />,
@@ -208,7 +214,7 @@ export function PurchaseViewerLayout({
   ];
   const isSubmit = steps.length === activeStep + 1;
   return (
-    <Box mt="lg">
+    <Box className={classes.viewerContainer}>
       <Flex
         direction={{ base: "column", md: "row" }}
         gap={{ base: "none", md: "sm" }}

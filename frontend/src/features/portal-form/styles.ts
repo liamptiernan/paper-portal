@@ -8,6 +8,38 @@ export const useGeneralStyles = createStyles((theme) => ({
     }
 }))
 
+export const useNavBarStyles = createStyles((theme) => ({
+    navContainer: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        borderBottom: "1px solid #ccc",
+        marginBottom: "2rem",
+        [theme.fn.smallerThan('md')]: {
+            marginBottom: ".5rem",
+
+        }
+    }
+}))
+
+export const usePurchaseViewerStyles = createStyles((theme) => ({
+    viewerContainer: {
+        marginTop: "1.25rem",
+        [theme.fn.smallerThan('md')]: {
+            marginTop: 0
+        }
+    }
+}))
+
+export const useFormSectionStyles = createStyles((theme) => ({
+    sectionPaper: {
+        padding: "1.25rem",
+        [theme.fn.smallerThan('md')]: {
+            padding: ".25rem"
+        }
+    }
+}))
+
 export const useBorderButtonStyles = createStyles((theme) => ({
     backButton: {
         height: "calc(100vh - 200px)",
