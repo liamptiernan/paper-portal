@@ -105,6 +105,8 @@ export function AdPurchaseForm() {
         <AdPurchaseFormProvider form={form}>
           <Flex direction={{ base: "row", md: "column" }}>
             <Stepper
+              // add border right
+              // margin auto
               classNames={{ stepLabel: controllerClasses.hideMobile }}
               active={activeStep}
               breakpoint={"md"}

@@ -5,5 +5,16 @@ export const useTextStyles = createStyles((theme) => ({
         [theme.fn.smallerThan('md')]: {
             fontSize:  "1.5rem",
         },
+    },
+    mobileTitleLarge: {
+        [theme.fn.smallerThan('md')]: {
+            fontSize:  "1.75rem",
+        },
+    },
+    mobileAlignRight: {
+        [theme.fn.smallerThan('md')]: {
+            textAlign:  "right",
+        },
     }
+
 }))
