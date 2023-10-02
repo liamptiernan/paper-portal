@@ -14,7 +14,7 @@ export function FormSection({
   return (
     <Container size={"sm"}>
       <Paper className={classes.sectionPaper}>
-        <Stack spacing="xl">
+        <Stack spacing="xl" className={classes.sectionStack}>
           {title}
           <Stack
             spacing="xl"

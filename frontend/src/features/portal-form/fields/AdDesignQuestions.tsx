@@ -15,6 +15,7 @@ import {
   Button,
   Flex,
   MultiSelect,
+  MediaQuery,
 } from "@mantine/core";
 import { IconCirclePlus, IconUpload } from "@tabler/icons-react";
 import { PersonalAdSelection } from "../types";
@@ -26,16 +27,26 @@ function PersonalAdSelect() {
   const { getInputProps } = useAdPurchaseFormContext();
   const options = [
     { label: "Design an ad for me", value: PersonalAdSelection.Designed },
-    { label: "I have my own ad", value: PersonalAdSelection.Personal },
+    { label: "I have my own", value: PersonalAdSelection.Personal },
   ];
   return (
     <Center>
-      <SegmentedControl
-        data={options}
-        size="md"
-        transitionDuration={200}
-        {...getInputProps("personal_ad")}
-      />
+      <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+        <SegmentedControl
+          data={options}
+          size="md"
+          transitionDuration={200}
+          {...getInputProps("personal_ad")}
+        />
+      </MediaQuery>
+      <MediaQuery largerThan={"md"} styles={{ display: "none" }}>
+        <SegmentedControl
+          data={options}
+          size="xs"
+          transitionDuration={200}
+          {...getInputProps("personal_ad")}
+        />
+      </MediaQuery>
     </Center>
   );
 }

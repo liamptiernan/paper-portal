@@ -1,6 +1,7 @@
 import { Container, Flex, Slider, Stack, Text, TextInput } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import { useAdPurchaseFormContext } from "../form-context";
+import { useMapStyles } from "../styles";
 
 function AreaCenter() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -40,6 +41,8 @@ export default function MapInput() {
   const { getInputProps } = useAdPurchaseFormContext();
   const areaCenter: string = getInputProps("target_area_center").value;
   const userRadius: number = getInputProps("target_area_radius").value;
+
+  const { classes } = useMapStyles();
 
   const ref = useRef<HTMLDivElement>(null);
   const [mapObj, setMapObj] = useState<google.maps.Map>();
@@ -115,7 +118,12 @@ export default function MapInput() {
 
   return (
     <Flex direction={"column"}>
-      <Container size={"xl"} h={"350px"} w={"500px"} ref={ref} id="map" />
+      <Container
+        className={classes.mapContainer}
+        size={"xl"}
+        ref={ref}
+        id="map"
+      />
       <AreaCenter />
       <AreaSlider />
     </Flex>
