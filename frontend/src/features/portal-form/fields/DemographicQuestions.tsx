@@ -14,23 +14,6 @@ import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 import MapInput from "./MapInput";
 
-function Regions() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const options = [
-    { value: "greenville", label: "Greenville" },
-    { value: "coxsackie", label: "Coxsackie" },
-    { value: "albany", label: "Albany" },
-  ];
-  return (
-    <MultiSelect
-      label="What regions do you want to target?"
-      data={options}
-      size="md"
-      {...getInputProps("regions")}
-    />
-  );
-}
-
 function AdvancedToggle() {
   const { getInputProps } = useAdPurchaseFormContext();
   return (

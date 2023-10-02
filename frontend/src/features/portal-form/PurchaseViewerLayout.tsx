@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Container,
   Divider,
   Flex,
   Group,
@@ -26,11 +25,7 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { adInfo } from "./fixtures/adInfo";
-import {
-  useBorderButtonStyles,
-  useGeneralStyles,
-  usePurchaseViewerStyles,
-} from "./styles";
+import { useBorderButtonStyles, usePurchaseViewerStyles } from "./styles";
 
 function PrevBorderButton({
   onClick,

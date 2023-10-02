@@ -25,13 +25,6 @@ export function SpendSlider() {
     return `$${value}`;
   };
 
-  const scaleCalc = (v: number) => {
-    if (v <= 500) {
-      return v;
-    }
-    return (v - 500) * 2 + 500;
-  };
-
   return (
     <FormSection title={<Title fw={400}>What's your monthly budget?</Title>}>
       <></>

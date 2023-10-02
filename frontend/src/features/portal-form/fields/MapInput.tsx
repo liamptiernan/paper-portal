@@ -47,7 +47,6 @@ export default function MapInput() {
   const ref = useRef<HTMLDivElement>(null);
   const [mapObj, setMapObj] = useState<google.maps.Map>();
   const [areaCircle, setAreaCircle] = useState<google.maps.Circle>();
-  const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
     const fetchLatLng = async () => {
       try {
@@ -55,7 +54,6 @@ export default function MapInput() {
         if (!zipRegex.test(areaCenter)) {
           return;
         }
-        setIsFetching(true);
         const request = {
           address: areaCenter,
         };
@@ -69,8 +67,6 @@ export default function MapInput() {
         areaCircle?.setCenter(geocodeRes.results[0].geometry.location);
       } catch (err: any) {
         console.log(err);
-      } finally {
-        setIsFetching(false);
       }
     };
 
