@@ -1,6 +1,6 @@
 import { Container } from "@mantine/core";
 import { AdPurchaseForm } from "./features/portal-form/AdPurchaseForm";
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { MainNavBar } from "./components/NavBar";
 import { useNavBarStyles } from "./features/portal-form/styles";
 
@@ -12,7 +12,7 @@ function AppLayout() {
         <MainNavBar />
       </Container>
       <Container size="xl">
-        <Outlet />
+        <AdPurchaseForm />
       </Container>
     </>
   );
@@ -21,9 +21,7 @@ function AppLayout() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<AppLayout />}>
-        <Route path="purchase" element={<AdPurchaseForm />}></Route>
-      </Route>
+      <Route path="/" element={<AppLayout />}></Route>
     </Routes>
   );
 }

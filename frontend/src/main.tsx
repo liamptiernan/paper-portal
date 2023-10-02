@@ -10,11 +10,11 @@ import { theme } from "./app/theme.ts";
 const mapRender = (status: Status) => {
   switch (status) {
     case Status.LOADING:
-      return <>"LOADING"</>;
+      return <></>;
     case Status.FAILURE:
-      return <>"FAIL"</>;
+      return <></>;
     case Status.SUCCESS:
-      return <>"SUCCESS"</>;
+      return <></>;
   }
 };
 
