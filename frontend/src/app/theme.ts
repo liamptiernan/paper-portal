@@ -1,0 +1,60 @@
+import { MantineThemeOverride } from '@mantine/core';
+
+export const theme: MantineThemeOverride = {
+  colors: {
+    brandSaffron: [
+      "#FCF9F2",
+      "#F4E9CC",
+      "#F1DCA7",
+      "#F1D282",
+      "#F5CB5C",
+      "#EABD45",
+      "#DDAF34",
+      "#CA9F2C",
+      "#AF8B2E",
+      "#977B30",
+    ],
+    brandBlue: [
+      "#EBF4F9",
+      "#99CCE7",
+      "#51AEDF",
+      "#1C95D6",
+      "#0E79B2",
+      "#10587E",
+      "#104059",
+      "#0F2E3F",
+      "#0D222D",
+      "#0B1920",
+    ],
+    brandRed: [
+      "#FEFBFB",
+      "#F8D3D4",
+      "#F6ABAE",
+      "#F88387",
+      "#FF5A5F",
+      "#F54147",
+      "#E92E34",
+      "#D92228",
+      "#BB272B",
+      "#A22A2D",
+    ],
+    brandDark: [
+      "#B7B3AE",
+      "#8F8981",
+      "#6E6962",
+      "#54504B",
+      "#403D39",
+      "#2C2A27",
+      "#1E1D1B",
+      "#151413",
+      "#0F0E0D",
+      "#0A0A09",
+    ]
+  },
+  primaryColor: "brandBlue",
+  primaryShade: 4,
+  fontFamily: '"Lato", sans-serif',
+  headings: {
+    fontFamily: '"Montserrat", sans-serif',
+  },
+};
