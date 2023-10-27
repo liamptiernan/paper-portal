@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "paper-portal"
+version = "0.1.0"
+description = ""
+authors = ["Liam Tiernan"]
+readme = "README.md"
+packages = [{include = "paper_portal"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.104.0"}
+python-dotenv = "^1.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+black = "^23.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
