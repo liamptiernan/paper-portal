@@ -20,8 +20,10 @@ yarn lint
 
 TODO:
 
-add submit state
-mobile
--make stepper sticky
--Ad Design width
--summary view all stuff
+Next steps:
+Deploy demo
+Get Feedback
+
+create product roadmap
+design frontend structure
+Design backend structure

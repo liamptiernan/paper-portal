@@ -18,3 +18,9 @@ export const useTextStyles = createStyles((theme) => ({
     }
 
 }))
+
+export const useNavBarStyles = createStyles((theme) => ({
+    navContainer: {
+        backgroundColor: theme.colors.gray[2]
+    }
+}))
