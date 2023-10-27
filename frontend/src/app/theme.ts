@@ -53,8 +53,8 @@ export const theme: MantineThemeOverride = {
   },
   primaryColor: "brandBlue",
   primaryShade: 4,
-  fontFamily: '"Lato", sans-serif',
+  fontFamily: '"Poppins", sans-serif',
   headings: {
-    fontFamily: '"Montserrat", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
   },
 };
