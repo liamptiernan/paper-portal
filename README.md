@@ -20,10 +20,6 @@ yarn lint
 
 TODO:
 
-Next steps:
-Deploy demo
-Get Feedback
-
-create product roadmap
-design frontend structure
-Design backend structure
+Create database in postgres
+setup sqlalchemy base
+setup alembic
