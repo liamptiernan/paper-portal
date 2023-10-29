@@ -40,10 +40,9 @@ python backend/app/main.py
 yarn lint
 ```
 
-## Form Planning
+## Planning
 
 TODO:
 
-Create database in postgres
-setup sqlalchemy base
-setup alembic
+setup auth, users table
+setup precommit hooks

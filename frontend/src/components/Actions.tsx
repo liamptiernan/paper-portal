@@ -1,13 +1,17 @@
-import { Button } from "@mantine/core";
+import { Button, ButtonProps } from "@mantine/core";
 
-export function PrimaryButton({ children }: { children: string }) {
-  return <Button radius={"md"}>{children}</Button>;
+export function PrimaryButton(props: ButtonProps) {
+  return (
+    <Button radius={"md"} {...props}>
+      {props.children}
+    </Button>
+  );
 }
 
-export function ActionButton({ children }: { children: string }) {
+export function ActionButton(props: ButtonProps & JSX.IntrinsicAttributes) {
   return (
-    <Button variant="outline" radius={"lg"}>
-      {children}
+    <Button variant="outline" radius={"lg"} {...props}>
+      {props.children}
     </Button>
   );
 }
