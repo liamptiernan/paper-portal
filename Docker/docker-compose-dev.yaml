@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:13.7-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - paper-postgres:/var/lib/paper/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DESIGN: pappu687
+    ports:
+      - 8081:8080
+
+volumes:
+  paper-postgres:

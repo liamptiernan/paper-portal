@@ -1,6 +1,7 @@
-import { Box, Container, Flex, Stack, Table, Text, Title } from "@mantine/core";
+import { Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { PrimaryButton } from "../../components/Actions";
 import { PublicationsTable } from "./PublicationsTable";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 export function PublisherDashboard() {
   return (
@@ -20,3 +21,6 @@ export function PublisherDashboard() {
     </Container>
   );
 }
+
+export const AuthPublisherDashboard =
+  withAuthenticationRequired(PublisherDashboard);
