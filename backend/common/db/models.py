@@ -1,4 +1,5 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.common.core.enums import Roles
 from backend.common.db.init import Base
@@ -13,6 +14,12 @@ class Publication(Base):
     format: Mapped[str] = mapped_column(nullable=True)
 
 
+class Organization(Base):
+    __tablename__ = "organization"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+
+
 class User(Base):
     __tablename__ = "user"
 
@@ -20,3 +27,5 @@ class User(Base):
     full_name: Mapped[str]
     email: Mapped[str]
     role: Mapped[Roles] = mapped_column(nullable=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
+    org: Mapped[Organization] = relationship(foreign_keys=[org_id])

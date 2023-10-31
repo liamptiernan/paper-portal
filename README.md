@@ -36,7 +36,7 @@ docker-compose -f Docker/docker-compose-dev.yaml up
 ### Create Database
 
 ```bash
-PGPASSWORD=password psql -h localhost -U postgres -c 'create database odyssey encoding 'utf8' template template1;'
+PGPASSWORD=password psql -h localhost -U postgres -c 'create database paperportal encoding 'utf8' template template1;'
 ```
 
 ## Running The App

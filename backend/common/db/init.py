@@ -1,5 +1,6 @@
 from typing import Any, AsyncGenerator
 
+from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -15,4 +16,5 @@ async def get_session() -> AsyncGenerator[AsyncSession, Any]:
         yield session
 
 
-Base = declarative_base()
+metadata = MetaData()
+Base = declarative_base(metadata=metadata)

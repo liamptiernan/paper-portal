@@ -11,9 +11,9 @@ class NewAppModel(BaseModel):
 
 class OwnedModel(AppModel):
     user_id: int
-    client_id: int
+    org_id: int
 
 
 class NewOwnedModel(NewAppModel):
     user_id: int | None = None
-    client_id: int | None = None
+    org_id: int | None = None
