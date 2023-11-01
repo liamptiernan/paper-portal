@@ -17,3 +17,11 @@ class OwnedModel(AppModel):
 class NewOwnedModel(NewAppModel):
     user_id: int | None = None
     org_id: int | None = None
+
+
+class OrgModel(AppModel):
+    org_id: int
+
+
+class NewOrgModel(NewAppModel):
+    org_id: int | None = None

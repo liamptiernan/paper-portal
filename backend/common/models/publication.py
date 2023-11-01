@@ -1,13 +1,12 @@
-from pydantic import BaseModel
-from backend.common.models.base import AppModel
+from backend.common.models.base import OrgModel, NewOrgModel
 
 
-class NewPublication(BaseModel):
+class NewPublication(NewOrgModel):
     name: str
     estimated_reach: int | None = None
     format: str | None = None
 
 
-class Publication(NewPublication, AppModel):
+class Publication(NewPublication, OrgModel):
     class Config:
         orm_mode = True
