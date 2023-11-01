@@ -2,6 +2,7 @@ import { Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { PrimaryButton } from "../../components/Actions";
 import { PublicationsTable } from "./PublicationsTable";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { PublicationFormModal } from "./PublicationForm";
 
 export function PublisherDashboard() {
   return (
@@ -18,6 +19,7 @@ export function PublisherDashboard() {
         <PrimaryButton>Create</PrimaryButton>
       </Flex>
       <PublicationsTable />
+      <PublicationFormModal />
     </Container>
   );
 }
