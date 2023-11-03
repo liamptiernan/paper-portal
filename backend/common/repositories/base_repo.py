@@ -22,7 +22,6 @@ class RepoAuthException(RepoException):
 
 
 class BaseRepo(Generic[TDBModel, TAppModel]):
-    # TODO: Add User to everything for permissions
     def __init__(self, db_model: type[TDBModel], app_model: type[TAppModel]) -> None:
         self.db_model = db_model
         self.app_model = app_model
@@ -32,6 +31,7 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         session: AsyncSession,
         db_model: TDBModel,
     ) -> TAppModel:
+        print(db_model)
         return self.app_model(**db_model.__dict__)
 
     async def app_to_db(

@@ -19,7 +19,20 @@ class User(Base):
     email: Mapped[str]
     role: Mapped[Roles] = mapped_column(nullable=True)
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
-    org: Mapped[Organization] = relationship(foreign_keys=[org_id])
+    org: Mapped[Organization] = relationship(foreign_keys=[org_id], lazy="joined")
+
+
+class PublicationRegion(Base):
+    __tablename__ = "publication_region"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    publication_id: Mapped[int] = mapped_column(
+        ForeignKey("publication.id"), nullable=False
+    )
+    publication: Mapped["Publication"] = relationship(
+        back_populates="regions", lazy="raise"
+    )
+    zip_code: Mapped[str]
+    reach: Mapped[int] = mapped_column(nullable=True)
 
 
 class Publication(Base):
@@ -29,6 +42,9 @@ class Publication(Base):
     name: Mapped[str]
     estimated_reach: Mapped[int] = mapped_column(nullable=True)
     format: Mapped[str] = mapped_column(nullable=True)
+    regions: Mapped[list[PublicationRegion]] = relationship(
+        back_populates="publication", lazy="joined"
+    )
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])
 
