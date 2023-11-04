@@ -5,4 +5,4 @@ export const [
   PublicationFormProvider,
   usePublicationFormContext,
   usePublicationForm,
-] = createFormContext<Publication>();
+] = createFormContext<Partial<Publication>>();

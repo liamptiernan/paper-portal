@@ -3,8 +3,11 @@ import { PrimaryButton } from "../../components/Actions";
 import { PublicationsTable } from "./PublicationsTable";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { PublicationFormModal } from "./PublicationForm";
+import { useAppDispatch } from "../../app/hooks";
+import { openPublicationForm } from "./publisherSlice";
 
 export function PublisherDashboard() {
+  const dispatch = useAppDispatch();
   return (
     <Container
       style={{ width: "calc(100vw - 165px)" }}
@@ -16,7 +19,9 @@ export function PublisherDashboard() {
           <Title>Publications</Title>
           <Text># Publications</Text>
         </Stack>
-        <PrimaryButton>Create</PrimaryButton>
+        <PrimaryButton onClick={() => dispatch(openPublicationForm())}>
+          Create
+        </PrimaryButton>
       </Flex>
       <PublicationsTable />
       <PublicationFormModal />
