@@ -22,6 +22,7 @@ import {
 import { ActionButton } from "../../components/Actions";
 import { IconInfoSquareRounded } from "@tabler/icons-react";
 import { useState } from "react";
+import { PublicationFormHeader } from "./PublicationFormHeader";
 
 interface PublicationFormProps {
   publication?: Publication;
@@ -187,26 +188,10 @@ function PublicationForm({ publication }: PublicationFormProps) {
 
 export function PublicationCreatePage() {
   // pass in some handle submit
-  return <PublicationForm />;
+  return (
+    <Stack>
+      <PublicationFormHeader />
+      <PublicationForm />
+    </Stack>
+  );
 }
-
-// export function PublicationFormModal() {
-//   const opened = useAppSelector(publicationFormOpen);
-//   const dispatch = useAppDispatch();
-
-//   return (
-//     <Drawer
-//       title={
-//         <Title order={3} mb={"md"}>
-//           Create a new publication
-//         </Title>
-//       }
-//       opened={opened}
-//       onClose={() => dispatch(closePublicationForm())}
-//       position={"right"}
-//       keepMounted={true}
-//     >
-//       {<PublicationForm />}
-//     </Drawer>
-//   );
-// }

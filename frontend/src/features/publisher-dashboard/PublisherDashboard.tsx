@@ -5,7 +5,6 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 // import { PublicationFormModal } from "./PublicationForm";
 import { useAppDispatch } from "../../app/hooks";
 import { openPublicationForm } from "./publisherSlice";
-import { Outlet } from "react-router-dom";
 
 export function PublisherDashboard() {
   const dispatch = useAppDispatch();
@@ -31,11 +30,3 @@ export function PublisherDashboard() {
 
 export const AuthPublisherDashboard =
   withAuthenticationRequired(PublisherDashboard);
-
-export function PublisherDashboardHeader() {
-  return (
-    <>
-      <Outlet></Outlet>
-    </>
-  );
-}
