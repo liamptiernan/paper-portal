@@ -2,9 +2,10 @@ import { Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { PrimaryButton } from "../../components/Actions";
 import { PublicationsTable } from "./PublicationsTable";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { PublicationFormModal } from "./PublicationForm";
+// import { PublicationFormModal } from "./PublicationForm";
 import { useAppDispatch } from "../../app/hooks";
 import { openPublicationForm } from "./publisherSlice";
+import { Outlet } from "react-router-dom";
 
 export function PublisherDashboard() {
   const dispatch = useAppDispatch();
@@ -24,10 +25,17 @@ export function PublisherDashboard() {
         </PrimaryButton>
       </Flex>
       <PublicationsTable />
-      <PublicationFormModal />
     </Container>
   );
 }
 
 export const AuthPublisherDashboard =
   withAuthenticationRequired(PublisherDashboard);
+
+export function PublisherDashboardHeader() {
+  return (
+    <>
+      <Outlet></Outlet>
+    </>
+  );
+}

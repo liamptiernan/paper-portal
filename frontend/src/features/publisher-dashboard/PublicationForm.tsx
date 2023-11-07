@@ -1,11 +1,12 @@
 import {
-  Drawer,
   Flex,
+  Group,
   Select,
   Stack,
   Text,
   TextInput,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import {
   PublicationFormProvider,
@@ -13,10 +14,14 @@ import {
   usePublicationFormContext,
 } from "./form-context";
 import { Publication } from "./types";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { closePublicationForm, publicationFormOpen } from "./publisherSlice";
-import { PublicationRegions } from "./PublicationRegions";
-import { PrimaryButton } from "../../components/Actions";
+import {
+  PublicationRegionRadius,
+  PublicationRegions,
+  RegionDataSelect,
+} from "./PublicationRegions";
+import { ActionButton } from "../../components/Actions";
+import { IconInfoSquareRounded } from "@tabler/icons-react";
+import { useState } from "react";
 
 interface PublicationFormProps {
   publication?: Publication;
@@ -40,14 +45,41 @@ function Formats() {
     { value: "digital", label: "Digital" },
     { value: "social", label: "Social Media" },
   ];
+  const [focused, setFocused] = useState(false);
+
+  const label = (
+    <Tooltip
+      label="If available in multiple formats, create a publication for each"
+      position="right"
+    >
+      <Group spacing={"none"}>
+        Format
+        <Text ml=".3rem" color="#ff8787">
+          *
+        </Text>
+        <IconInfoSquareRounded
+          size={"1.5rem"}
+          color="#aaa"
+          style={{ marginLeft: ".5rem" }}
+        />
+      </Group>
+    </Tooltip>
+  );
+  console.log(focused);
 
   return (
     <Select
-      label="Format"
-      description="If available in multiple formats, create a publication for each"
+      label={label}
+      description="How you distribute it"
+      onDropdownOpen={() => {
+        console.log("focus");
+        setFocused(true);
+      }}
+      onDropdownClose={() => setFocused(false)}
       size="md"
       data={options}
-      withAsterisk
+      required
+      withAsterisk={false}
       {...getInputProps("format")}
     />
   );
@@ -59,6 +91,7 @@ function DistributionUnits() {
     { value: "individuals", label: "Individuals" },
     { value: "households", label: "Households" },
     { value: "impressions", label: "Impressions" },
+    { value: "subscribers", label: "Subscribers" },
   ];
 
   return (
@@ -98,18 +131,33 @@ function PublicationForm({ publication }: PublicationFormProps) {
   return (
     <PublicationFormProvider form={form}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack
-          spacing={"xl"}
-          style={{ overflowY: "auto", height: "calc(100vh - 130px)" }}
-        >
+        <Stack spacing={"xl"}>
           <TextInput
-            label="Name"
-            description="Name of the publication"
+            label="Publication Name"
             size="md"
             withAsterisk
             {...form.getInputProps("name")}
           />
-          <Formats />
+          <TextInput
+            label="Description"
+            description="Short description of what your publication is, and who your audience is"
+            placeholder='e.g. "A trade magazine for electricians in the North East"'
+            size="md"
+            withAsterisk
+            {...form.getInputProps("description")}
+          />
+          <Group>
+            <Formats />
+            <TextInput
+              label="Location"
+              description="The approximate center of your distribution area"
+              placeholder="Address, Zip Code, or City/Town Name"
+              size="md"
+              withAsterisk
+              rightSectionWidth="5rem"
+              {...form.getInputProps("location")}
+            />
+          </Group>
           <Title order={4} my="sm">
             Demographic Data
           </Title>
@@ -123,42 +171,42 @@ function PublicationForm({ publication }: PublicationFormProps) {
             rightSection={<UnitsDisplay />}
             {...form.getInputProps("estimated_reach")}
           />
+          <RegionDataSelect />
+          <PublicationRegionRadius />
           <PublicationRegions />
         </Stack>
-        <Flex
-          pos="fixed"
-          bottom="0"
-          h="3rem"
-          justify={"right"}
-          align={"center"}
-          style={{ width: "calc(100% - 32px)" }}
-        >
-          <PrimaryButton w="8rem" type="submit" mr="md">
-            Save
-          </PrimaryButton>
+        <Flex pos="fixed" bottom="0" h="3rem" w="582px" justify={"center"}>
+          <ActionButton size="md" w="20rem" type="submit">
+            Save Changes
+          </ActionButton>
         </Flex>
       </form>
     </PublicationFormProvider>
   );
 }
 
-export function PublicationFormModal() {
-  const opened = useAppSelector(publicationFormOpen);
-  const dispatch = useAppDispatch();
-
-  return (
-    <Drawer
-      title={
-        <Title order={3} mb={"md"}>
-          Create a new publication
-        </Title>
-      }
-      opened={opened}
-      onClose={() => dispatch(closePublicationForm())}
-      position={"right"}
-      keepMounted={true}
-    >
-      {<PublicationForm />}
-    </Drawer>
-  );
+export function PublicationCreatePage() {
+  // pass in some handle submit
+  return <PublicationForm />;
 }
+
+// export function PublicationFormModal() {
+//   const opened = useAppSelector(publicationFormOpen);
+//   const dispatch = useAppDispatch();
+
+//   return (
+//     <Drawer
+//       title={
+//         <Title order={3} mb={"md"}>
+//           Create a new publication
+//         </Title>
+//       }
+//       opened={opened}
+//       onClose={() => dispatch(closePublicationForm())}
+//       position={"right"}
+//       keepMounted={true}
+//     >
+//       {<PublicationForm />}
+//     </Drawer>
+//   );
+// }
