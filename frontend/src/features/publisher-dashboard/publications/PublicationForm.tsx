@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Group,
+  NumberInput,
   Select,
   Stack,
   Text,
@@ -14,13 +15,13 @@ import {
   usePublicationForm,
   usePublicationFormContext,
 } from "./form-context";
-import { Publication } from "./types";
+import { Publication } from "../types";
 import {
   PublicationRegionRadius,
   PublicationRegions,
   RegionDataSelect,
 } from "./PublicationRegions";
-import { ActionButton } from "../../components/Actions";
+import { ActionButton } from "../../../components/Actions";
 import { IconInfoSquareRounded } from "@tabler/icons-react";
 import { PublicationFormHeader } from "./PublicationFormHeader";
 
@@ -94,7 +95,7 @@ function DistributionUnits() {
       description="Unit of measure for distribution numbers"
       size="md"
       data={options}
-      withAsterisk
+      required
       {...getInputProps("distribution_unit")}
     />
   );
@@ -105,7 +106,14 @@ function PublicationForm({ publication }: PublicationFormProps) {
   if (!initialValues) {
     initialValues = {
       name: "",
-      regions: [{ zip_code: "", reach: "" }],
+      description: "",
+      location: "",
+      format: "print",
+      distribution_unit: "individuals",
+      estimated_reach: undefined,
+      region_type: "regions",
+      distribution_radius: 1,
+      regions: [{ zip_code: undefined, reach: undefined }],
     };
   }
   const form = usePublicationForm({
@@ -117,6 +125,7 @@ function PublicationForm({ publication }: PublicationFormProps) {
     values: Partial<Publication>,
     _event: React.FormEvent<HTMLFormElement>
   ) => {
+    _event.preventDefault();
     console.log("submit");
     console.log(values);
     console.log(_event);
@@ -126,12 +135,12 @@ function PublicationForm({ publication }: PublicationFormProps) {
     <PublicationFormProvider form={form}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Box style={{ maxHeight: "calc(100vh - 200px)", overflow: "auto" }}>
-          <Stack spacing={"xl"} pb="lg">
-            <Box w="580px">
+          <Box pb="lg">
+            <Stack spacing={"xl"} w="580px">
               <TextInput
                 label="Publication Name"
                 size="md"
-                withAsterisk
+                required
                 {...form.getInputProps("name")}
               />
               <TextInput
@@ -139,7 +148,6 @@ function PublicationForm({ publication }: PublicationFormProps) {
                 description="Short description of what your publication is, and who your audience is"
                 placeholder='e.g. "A trade magazine for electricians in the North East"'
                 size="md"
-                withAsterisk
                 {...form.getInputProps("description")}
               />
               <Group>
@@ -149,23 +157,22 @@ function PublicationForm({ publication }: PublicationFormProps) {
                   description="The approximate center of your distribution area"
                   placeholder="Address, Zip Code, or City/Town Name"
                   size="md"
-                  withAsterisk
+                  required
                   rightSectionWidth="5rem"
                   {...form.getInputProps("location")}
                 />
               </Group>
-            </Box>
-            <Flex align="flex-start" gap={"5rem"}>
+            </Stack>
+            <Flex align="flex-start" gap={"5rem"} mt="md">
               <Stack spacing={"xl"}>
-                <Title order={4} my="sm">
-                  Demographic Data
-                </Title>
+                <Title order={4}>Demographic Data</Title>
                 <DistributionUnits />
-                <TextInput
+                <NumberInput
                   label="Total Distribution"
                   description="Total distribution of the publication"
                   size="md"
-                  withAsterisk
+                  required
+                  hideControls
                   rightSectionWidth="5rem"
                   rightSection={<UnitsDisplay />}
                   {...form.getInputProps("estimated_reach")}
@@ -175,7 +182,7 @@ function PublicationForm({ publication }: PublicationFormProps) {
               <PublicationRegionRadius />
               <PublicationRegions />
             </Flex>
-          </Stack>
+          </Box>
         </Box>
         <Box
           pos="fixed"

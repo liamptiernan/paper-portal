@@ -1,7 +1,6 @@
 import {
   ActionIcon,
   Group,
-  TextInput,
   Text,
   Title,
   Stack,
@@ -10,12 +9,13 @@ import {
   Drawer,
   List,
   Slider,
+  NumberInput,
 } from "@mantine/core";
-import { randomId, useDisclosure } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import { usePublicationFormContext } from "./form-context";
-import { PublicationRegion } from "./types";
+import { PublicationRegion } from "../types";
 import { IconHelpSquareRounded, IconTrash } from "@tabler/icons-react";
-import { ActionButton } from "../../components/Actions";
+import { ActionButton } from "../../../components/Actions";
 
 export function RegionDataSelect() {
   const { getInputProps } = usePublicationFormContext();
@@ -108,6 +108,7 @@ export function RegionDataSelect() {
         description={description}
         size="md"
         data={options}
+        required
         {...getInputProps("region_type")}
       ></Select>
       {helpDrawer}
@@ -128,7 +129,7 @@ export function PublicationRegionRadius() {
   ];
   return (
     display && (
-      <Stack spacing={"none"}>
+      <Stack spacing={"none"} style={{ minWidth: "400px" }}>
         <Text color="brandDark">Distribution Radius</Text>
         <Text size="sm" color="gray.6">
           How far is your publication distributed
@@ -154,21 +155,17 @@ export function PublicationRegions() {
   const display = getInputProps("region_type").value === "regions";
   const units = getInputProps("distribution_unit").value;
 
-  const fields = getInputProps("regions")
-    .value.map((item: Partial<PublicationRegion>, index: number) => (
-      <Group key={item.id || item.key} mt="xs">
-        <TextInput
-          placeholder="Zip"
+  const fields = getInputProps("regions").value.map(
+    (item: Partial<PublicationRegion>, index: number) => (
+      <Group key={item.id || index} mt="xs">
+        <NumberInput
           withAsterisk
+          hideControls
+          type="text"
           style={{ flex: 1 }}
-          {...getInputProps(`regions.${index}.name`)}
+          {...getInputProps(`regions.${index}.zip_code`)}
         />
-        <TextInput
-          placeholder={units}
-          {...getInputProps(`regions.${index}.reach`, {
-            type: "checkbox",
-          })}
-        />
+        <NumberInput {...getInputProps(`regions.${index}.reach`)} />
         <ActionIcon
           color="red"
           onClick={() => removeListItem("regions", index)}
@@ -176,8 +173,8 @@ export function PublicationRegions() {
           <IconTrash size="1rem" />
         </ActionIcon>
       </Group>
-    ))
-    .reverse();
+    )
+  );
 
   return (
     display && (
@@ -187,9 +184,8 @@ export function PublicationRegions() {
           <ActionButton
             onClick={() =>
               insertListItem("regions", {
-                name: "",
-                active: false,
-                key: randomId(),
+                zip_code: "",
+                reach: undefined,
               })
             }
           >
@@ -202,9 +198,11 @@ export function PublicationRegions() {
               <Text fw={500} size="sm" style={{ flex: 1 }}>
                 Zip Code
               </Text>
-              <Text fw={500} size="sm" pr={130}>
-                Distribution
-              </Text>
+              <Stack spacing={"none"}>
+                <Text fw={500} size="sm" pr={"40px"}>
+                  Distribution ({units})
+                </Text>
+              </Stack>
             </Group>
           ) : (
             <Text c="dimmed" ta="center">

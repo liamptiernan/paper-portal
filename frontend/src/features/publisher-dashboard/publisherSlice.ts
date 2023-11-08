@@ -17,15 +17,6 @@ export const publisherSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    togglePublicationForm: (state) => {
-      state.publicationFormOpen = !state.publicationFormOpen;
-    },
-    openPublicationForm: (state) => {
-      state.publicationFormOpen = true;
-    },
-    closePublicationForm: (state) => {
-      state.publicationFormOpen = false;
-    },
     // Use the PayloadAction type to declare the contents of `action.payload`
     setPublicationFormOpen: (state, action: PayloadAction<boolean>) => {
       state.publicationFormOpen = action.payload;
@@ -33,12 +24,7 @@ export const publisherSlice = createSlice({
   },
 });
 
-export const {
-  togglePublicationForm,
-  openPublicationForm,
-  closePublicationForm,
-  setPublicationFormOpen,
-} = publisherSlice.actions;
+export const { setPublicationFormOpen } = publisherSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const publicationFormOpen: (state: RootState) => boolean = (

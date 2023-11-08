@@ -1,5 +1,5 @@
 import { Flex, Table } from "@mantine/core";
-import { ActionButton } from "../../components/Actions";
+import { ActionButton } from "../../../components/Actions";
 
 export function PublicationsTable() {
   // if no rows, big create one button
