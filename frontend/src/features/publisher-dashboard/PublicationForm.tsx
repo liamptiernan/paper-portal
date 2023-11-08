@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Group,
   Select,
@@ -21,7 +22,6 @@ import {
 } from "./PublicationRegions";
 import { ActionButton } from "../../components/Actions";
 import { IconInfoSquareRounded } from "@tabler/icons-react";
-import { useState } from "react";
 import { PublicationFormHeader } from "./PublicationFormHeader";
 
 interface PublicationFormProps {
@@ -46,7 +46,6 @@ function Formats() {
     { value: "digital", label: "Digital" },
     { value: "social", label: "Social Media" },
   ];
-  const [focused, setFocused] = useState(false);
 
   const label = (
     <Tooltip
@@ -66,17 +65,11 @@ function Formats() {
       </Group>
     </Tooltip>
   );
-  console.log(focused);
 
   return (
     <Select
       label={label}
       description="How you distribute it"
-      onDropdownOpen={() => {
-        console.log("focus");
-        setFocused(true);
-      }}
-      onDropdownClose={() => setFocused(false)}
       size="md"
       data={options}
       required
@@ -112,7 +105,7 @@ function PublicationForm({ publication }: PublicationFormProps) {
   if (!initialValues) {
     initialValues = {
       name: "",
-      regions: [],
+      regions: [{ zip_code: "", reach: "" }],
     };
   }
   const form = usePublicationForm({
@@ -132,55 +125,78 @@ function PublicationForm({ publication }: PublicationFormProps) {
   return (
     <PublicationFormProvider form={form}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack spacing={"xl"}>
-          <TextInput
-            label="Publication Name"
-            size="md"
-            withAsterisk
-            {...form.getInputProps("name")}
-          />
-          <TextInput
-            label="Description"
-            description="Short description of what your publication is, and who your audience is"
-            placeholder='e.g. "A trade magazine for electricians in the North East"'
-            size="md"
-            withAsterisk
-            {...form.getInputProps("description")}
-          />
-          <Group>
-            <Formats />
-            <TextInput
-              label="Location"
-              description="The approximate center of your distribution area"
-              placeholder="Address, Zip Code, or City/Town Name"
-              size="md"
-              withAsterisk
-              rightSectionWidth="5rem"
-              {...form.getInputProps("location")}
-            />
-          </Group>
-          <Title order={4} my="sm">
-            Demographic Data
-          </Title>
-          <DistributionUnits />
-          <TextInput
-            label="Total Distribution"
-            description="Total distribution of the publication"
-            size="md"
-            withAsterisk
-            rightSectionWidth="5rem"
-            rightSection={<UnitsDisplay />}
-            {...form.getInputProps("estimated_reach")}
-          />
-          <RegionDataSelect />
-          <PublicationRegionRadius />
-          <PublicationRegions />
-        </Stack>
-        <Flex pos="fixed" bottom="0" h="3rem" w="582px" justify={"center"}>
-          <ActionButton size="md" w="20rem" type="submit">
-            Save Changes
-          </ActionButton>
-        </Flex>
+        <Box style={{ maxHeight: "calc(100vh - 200px)", overflow: "auto" }}>
+          <Stack spacing={"xl"} pb="lg">
+            <Box w="580px">
+              <TextInput
+                label="Publication Name"
+                size="md"
+                withAsterisk
+                {...form.getInputProps("name")}
+              />
+              <TextInput
+                label="Description"
+                description="Short description of what your publication is, and who your audience is"
+                placeholder='e.g. "A trade magazine for electricians in the North East"'
+                size="md"
+                withAsterisk
+                {...form.getInputProps("description")}
+              />
+              <Group>
+                <Formats />
+                <TextInput
+                  label="Location"
+                  description="The approximate center of your distribution area"
+                  placeholder="Address, Zip Code, or City/Town Name"
+                  size="md"
+                  withAsterisk
+                  rightSectionWidth="5rem"
+                  {...form.getInputProps("location")}
+                />
+              </Group>
+            </Box>
+            <Flex align="flex-start" gap={"5rem"}>
+              <Stack spacing={"xl"}>
+                <Title order={4} my="sm">
+                  Demographic Data
+                </Title>
+                <DistributionUnits />
+                <TextInput
+                  label="Total Distribution"
+                  description="Total distribution of the publication"
+                  size="md"
+                  withAsterisk
+                  rightSectionWidth="5rem"
+                  rightSection={<UnitsDisplay />}
+                  {...form.getInputProps("estimated_reach")}
+                />
+                <RegionDataSelect />
+              </Stack>
+              <PublicationRegionRadius />
+              <PublicationRegions />
+            </Flex>
+          </Stack>
+        </Box>
+        <Box
+          pos="fixed"
+          bottom="0"
+          h="3.5rem"
+          w="calc(100vw - 165px)"
+          sx={(theme) => ({
+            borderTop: "1px solid",
+            borderColor: theme.colors.gray[3],
+            backgroundColor: "#fff",
+          })}
+        >
+          <Flex gap={"md"} pt=".4rem" justify="space-between" pr="lg">
+            <ActionButton size="md" w="20rem" type="submit">
+              Save Changes
+            </ActionButton>
+            <ActionButton size="md" w="8rem" type="submit" color="brandRed.3">
+              Cancel
+            </ActionButton>
+          </Flex>
+        </Box>
       </form>
     </PublicationFormProvider>
   );
@@ -189,7 +205,7 @@ function PublicationForm({ publication }: PublicationFormProps) {
 export function PublicationCreatePage() {
   // pass in some handle submit
   return (
-    <Stack>
+    <Stack w="100%">
       <PublicationFormHeader />
       <PublicationForm />
     </Stack>
