@@ -14,8 +14,13 @@ class PublicationRegion(NewPublicationRegion, AppModel):
 
 class NewPublication(NewOrgModel):
     name: str
-    estimated_reach: int | None = None
-    format: str | None = None
+    description: str | None = None
+    format: str = "print"
+    location: str | None = None
+    distribution_unit: str = "individuals"
+    estimated_reach: int = 0
+    region_type: str = "regions"
+    distribution_radius: int = 0
     regions: list[PublicationRegion] = []
 
 

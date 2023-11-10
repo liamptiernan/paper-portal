@@ -2,24 +2,28 @@ import { Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { PrimaryButton } from "../../../components/Actions";
 import { PublicationsTable } from "./PublicationsTable";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { useCreatePublicationMutation } from "./publicationsApi";
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCreatePublicationMutation } from "./publicationsApi";
 
 export function PublicationsDashboard() {
-  const [createPublication] = useCreatePublicationMutation();
+  const [createPublication, { isLoading: createIsLoading }] =
+    useCreatePublicationMutation();
+  const navigate = useNavigate();
   const handleCreatePublication = useCallback(async () => {
     try {
-      await createPublication().unwrap;
       // TODO: implement isErrorWithMessage stuff to handle errors
       // Add toast
-      // rework this a bit
-      // move this mutation to the /create page
-      // when you land there, hit that endpoint immediately to get a new publication
-      // set vals as initial
+      const newPublication = { name: "New Publication" };
+      const createdPublication = await createPublication(
+        newPublication
+      ).unwrap();
+      navigate(`${createdPublication.id}/edit`);
     } catch (e) {
       console.error(e);
     }
-  }, [createPublication]);
+  }, [navigate, createPublication]);
+
   return (
     <Container
       style={{ width: "calc(100vw - 165px)" }}
@@ -29,9 +33,14 @@ export function PublicationsDashboard() {
       <Flex justify={"space-between"} align={"baseline"}>
         <Stack spacing={"None"}>
           <Title>Publications</Title>
-          <Text># Publications</Text>
+          <Text>2 Publications</Text>
         </Stack>
-        <PrimaryButton onClick={handleCreatePublication}>Create</PrimaryButton>
+        <PrimaryButton
+          onClick={handleCreatePublication}
+          loading={createIsLoading}
+        >
+          Create
+        </PrimaryButton>
       </Flex>
       <PublicationsTable />
     </Container>

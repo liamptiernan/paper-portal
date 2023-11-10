@@ -2,12 +2,12 @@ import sys
 from logging.config import fileConfig
 from pathlib import Path
 
-from sqlalchemy import create_engine, engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 
 from backend.common.db.init import Base
 from backend.common.core.settings import settings
+from backend.common.db.models import *  # noqa
 
 from alembic import context
 

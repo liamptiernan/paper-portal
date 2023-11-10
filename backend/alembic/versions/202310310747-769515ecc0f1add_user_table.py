@@ -28,7 +28,7 @@ def upgrade() -> None:
         sa.Column("email", sa.VARCHAR(), autoincrement=False, nullable=True),
         sa.Column(
             "role",
-            sa.Enum("SUPERUSER", native_enum=False),
+            sa.Enum("SUPERUSER", "PUBADMIN", name="roles"),
             autoincrement=False,
             nullable=True,
         ),

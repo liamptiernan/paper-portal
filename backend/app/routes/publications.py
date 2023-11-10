@@ -16,7 +16,7 @@ router = APIRouter(
 superuser = UserWithRole(Roles.SUPERUSER)
 
 
-@router.get("/", response_model=list[Publication])
+@router.get("/", response_model=list[Publication], response_model_exclude_defaults=True)
 async def get_all_publications(
     session: AsyncSession = Depends(get_session), user: User = Depends(superuser)
 ):

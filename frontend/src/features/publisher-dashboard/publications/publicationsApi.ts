@@ -17,15 +17,24 @@ export const publicationsApi = createApi({
             ]
           : ["Publication"],
     }),
-    createPublication: builder.mutation<Publication[], void>({
-      query: () => ({
+    getPublication: builder.query<Publication, string>({
+      query: (id) => `/publications/${id}`,
+      providesTags: (_r, _e, id) =>
+        id ? [{ type: "Publication" as const, id }] : [],
+    }),
+    createPublication: builder.mutation<Publication, Partial<Publication>>({
+      query: (body) => ({
         url: "/publications/",
-        method: "POST",
+        method: "PUT",
+        body: body,
       }),
       invalidatesTags: ["Publication"],
     }),
   }),
 });
 
-export const { useGetAllPublicationsQuery, useCreatePublicationMutation } =
-  publicationsApi;
+export const {
+  useGetAllPublicationsQuery,
+  useGetPublicationQuery,
+  useCreatePublicationMutation,
+} = publicationsApi;

@@ -40,8 +40,13 @@ class Publication(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
-    estimated_reach: Mapped[int] = mapped_column(nullable=True)
-    format: Mapped[str] = mapped_column(nullable=True)
+    description: Mapped[str] = mapped_column(nullable=True)
+    format: Mapped[str]
+    location: Mapped[str] = mapped_column(nullable=True)
+    distribution_unit: Mapped[str]
+    estimated_reach: Mapped[int]
+    region_type: Mapped[str]
+    distribution_radius: Mapped[int]
     regions: Mapped[list[PublicationRegion]] = relationship(
         back_populates="publication", lazy="joined"
     )

@@ -23,11 +23,6 @@ import {
 } from "./PublicationRegions";
 import { ActionButton } from "../../../components/Actions";
 import { IconInfoSquareRounded } from "@tabler/icons-react";
-import { PublicationFormHeader } from "./PublicationFormHeader";
-
-interface PublicationFormProps {
-  publication?: Publication;
-}
 
 function UnitsDisplay() {
   const { getInputProps } = usePublicationFormContext();
@@ -101,21 +96,11 @@ function DistributionUnits() {
   );
 }
 
-function PublicationForm({ publication }: PublicationFormProps) {
-  let initialValues: Partial<Publication> | undefined = publication;
-  if (!initialValues) {
-    initialValues = {
-      name: "",
-      description: "",
-      location: "",
-      format: "print",
-      distribution_unit: "individuals",
-      estimated_reach: undefined,
-      region_type: "regions",
-      distribution_radius: 1,
-      regions: [{ zip_code: undefined, reach: undefined }],
-    };
-  }
+interface PublicationFormProps {
+  initialValues: Publication;
+}
+
+export function PublicationForm({ initialValues }: PublicationFormProps) {
   const form = usePublicationForm({
     initialValues,
     validate: {},
@@ -206,15 +191,5 @@ function PublicationForm({ publication }: PublicationFormProps) {
         </Box>
       </form>
     </PublicationFormProvider>
-  );
-}
-
-export function PublicationCreatePage() {
-  // pass in some handle submit
-  return (
-    <Stack w="100%">
-      <PublicationFormHeader />
-      <PublicationForm />
-    </Stack>
   );
 }

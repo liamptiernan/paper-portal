@@ -24,7 +24,7 @@ export function PublicationFormHeader() {
         color="brandDark.4"
         fw={400}
         w="fit-content"
-        onClick={() => navigate("../../publications")}
+        onClick={() => navigate("../../../publications")}
         styles={(theme) => ({
           root: {
             "&:not([data-disabled])": theme.fn.hover({
