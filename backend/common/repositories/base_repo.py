@@ -5,12 +5,13 @@ from sqlalchemy import Select, select, Update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.common.db.init import Base
-from backend.common.models.base import AppModel, OwnedModel
+from backend.common.models.base import AppModel, OwnedModel, OrgModel
 from backend.common.models.user import User as AppUser
 
 TDBModel = TypeVar("TDBModel", bound=Base)
 TAppModel = TypeVar("TAppModel", bound=AppModel)
 TOwnerModel = TypeVar("TOwnerModel", bound=OwnedModel)
+TOrgModel = TypeVar("TOrgModel", bound=OrgModel)
 
 
 class RepoException(Exception):
@@ -22,7 +23,6 @@ class RepoAuthException(RepoException):
 
 
 class BaseRepo(Generic[TDBModel, TAppModel]):
-    # TODO: Add User to everything for permissions
     def __init__(self, db_model: type[TDBModel], app_model: type[TAppModel]) -> None:
         self.db_model = db_model
         self.app_model = app_model
@@ -32,6 +32,7 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         session: AsyncSession,
         db_model: TDBModel,
     ) -> TAppModel:
+        print(db_model)
         return self.app_model(**db_model.__dict__)
 
     async def app_to_db(
@@ -78,7 +79,7 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         self, session: AsyncSession, id: int, user: AppUser
     ) -> TAppModel | None:
         query = await self.auth_select(session, user, self.select_by_id(id))
-        model = (await session.execute(query)).scalar_one_or_none()
+        model = (await session.execute(query)).unique().scalar_one_or_none()
         if model:
             return await self.db_to_app(session, model)
         return None
@@ -103,15 +104,13 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         await session.refresh(model)
         return await self.db_to_app(session, model)
 
-    async def delete(
-        self, session: AsyncSession, user: AppUser, id: int
-    ) -> TAppModel | None:
+    async def delete(self, session: AsyncSession, user: AppUser, id: int) -> None:
         query = await self.auth_delete(session, user, self.select_by_id(id))
-        model = (await session.execute(query)).scalar_one_or_none()
+        model = (await session.execute(query)).unique().scalar_one_or_none()
         if model:
             await session.delete(model)
             await session.commit()
-            return await self.db_to_app(session, model)
+            return None
 
     async def get_all(
         self,
@@ -121,11 +120,11 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         query = await self.auth_select(session, user, select(self.db_model))
         return [
             await self.db_to_app(session, model.t[0])
-            for model in await session.execute(query)
+            for model in (await session.execute(query)).unique()
         ]
 
 
-class OrgRepo(BaseRepo[TDBModel, TOwnerModel]):
+class OrgRepo(BaseRepo[TDBModel, TOrgModel]):
     """
     The entity has a org_id field that grants full access to any user part of that org.
     Additionally users with a role can create, update, and delete entities.

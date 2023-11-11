@@ -72,10 +72,3 @@ yarn dev
 ```bash
 yarn lint
 ```
-
-## Planning
-
-TODO:
-
-setup auth, users table
-setup precommit hooks

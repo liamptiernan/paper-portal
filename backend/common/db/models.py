@@ -5,15 +5,6 @@ from backend.common.core.enums import Roles
 from backend.common.db.init import Base
 
 
-class Publication(Base):
-    __tablename__ = "publication"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    estimated_reach: Mapped[int] = mapped_column(nullable=True)
-    format: Mapped[str] = mapped_column(nullable=True)
-
-
 class Organization(Base):
     __tablename__ = "organization"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -27,5 +18,50 @@ class User(Base):
     full_name: Mapped[str]
     email: Mapped[str]
     role: Mapped[Roles] = mapped_column(nullable=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
+    org: Mapped[Organization] = relationship(foreign_keys=[org_id], lazy="joined")
+
+
+class PublicationRegion(Base):
+    __tablename__ = "publication_region"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    publication_id: Mapped[int] = mapped_column(
+        ForeignKey("publication.id"), nullable=False
+    )
+    publication: Mapped["Publication"] = relationship(
+        back_populates="regions", lazy="raise"
+    )
+    zip_code: Mapped[str]
+    reach: Mapped[int] = mapped_column(nullable=True)
+
+
+class Publication(Base):
+    __tablename__ = "publication"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    description: Mapped[str] = mapped_column(nullable=True)
+    format: Mapped[str]
+    location: Mapped[str] = mapped_column(nullable=True)
+    distribution_unit: Mapped[str]
+    estimated_reach: Mapped[int]
+    region_type: Mapped[str]
+    distribution_radius: Mapped[int]
+    regions: Mapped[list[PublicationRegion]] = relationship(
+        back_populates="publication", lazy="joined", cascade="all, delete-orphan"
+    )
+    org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
+    org: Mapped[Organization] = relationship(foreign_keys=[org_id])
+
+
+class AdOffering(Base):
+    __tablename__ = "ad_offering"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    publication_id: Mapped[int] = mapped_column(
+        ForeignKey("publication.id"), nullable=False
+    )
+    publication: Mapped[Publication] = relationship(foreign_keys=[publication_id])
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])

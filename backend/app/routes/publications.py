@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.utils.user import UserWithRole
@@ -16,17 +17,55 @@ router = APIRouter(
 superuser = UserWithRole(Roles.SUPERUSER)
 
 
-@router.get("/", response_model=list[Publication])
-async def get_publications(
+class PublicationsTableResponse(BaseModel):
+    data: list[Publication]
+    count: int
+
+
+@router.get("/", response_model=PublicationsTableResponse)
+async def get_all_publications(
     session: AsyncSession = Depends(get_session), user: User = Depends(superuser)
 ):
-    return await publications_repo.get_all(session, user)
+    publications = await publications_repo.get_all(session, user)
+    return PublicationsTableResponse(data=publications, count=len(publications))
 
 
-@router.put("/", response_model=Publication)
+@router.get("/{id}", response_model=Publication)
+async def get_publication(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    publication = await publications_repo.get(session, id, user)
+    if publication is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Publication not found"
+        )
+    return publication
+
+
+@router.post("/", response_model=Publication)
+async def update_publication(
+    pub_updates: Publication,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    return await publications_repo.update(session, user, pub_updates)
+
+
+@router.put("/", response_model=Publication, status_code=status.HTTP_201_CREATED)
 async def create_publication(
     new_publication: NewPublication,
     session: AsyncSession = Depends(get_session),
     user: User = Depends(superuser),
 ):
     return await publications_repo.create(session, user, new_publication)
+
+
+@router.delete("/{id}", response_model=None)
+async def delete_publication(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    return await publications_repo.delete(session, user, id)
