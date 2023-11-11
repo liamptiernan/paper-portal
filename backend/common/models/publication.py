@@ -2,12 +2,13 @@ from backend.common.models.base import AppModel, NewAppModel, OrgModel, NewOrgMo
 
 
 class NewPublicationRegion(NewAppModel):
-    publication_id: int
     zip_code: str
     reach: int | None = None
 
 
 class PublicationRegion(NewPublicationRegion, AppModel):
+    publication_id: int
+
     class Config:
         orm_mode = True
 

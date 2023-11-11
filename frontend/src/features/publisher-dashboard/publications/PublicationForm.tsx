@@ -23,6 +23,9 @@ import {
 } from "./PublicationRegions";
 import { ActionButton } from "../../../components/Actions";
 import { IconInfoSquareRounded } from "@tabler/icons-react";
+import { useUpdatePublicationMutation } from "./publicationsApi";
+import { useTryToast } from "../../../hooks/useTryToast";
+import { useNavigate } from "react-router-dom";
 
 function UnitsDisplay() {
   const { getInputProps } = usePublicationFormContext();
@@ -97,23 +100,35 @@ function DistributionUnits() {
 }
 
 interface PublicationFormProps {
-  initialValues: Publication;
+  publication: Publication;
 }
 
-export function PublicationForm({ initialValues }: PublicationFormProps) {
+export function PublicationForm({ publication }: PublicationFormProps) {
+  // TODO: maybe set null values to ""?
+  const initialValues = { ...publication };
+  const saveToast = useTryToast(
+    { title: "Publication Saved" },
+    { title: "An error occurred while saving the publication" }
+  );
+  const [updatePublication, { isLoading }] = useUpdatePublicationMutation();
   const form = usePublicationForm({
     initialValues,
     validate: {},
   });
 
-  const handleSubmit = (
-    values: Partial<Publication>,
-    _event: React.FormEvent<HTMLFormElement>
+  const navigate = useNavigate();
+
+  const handleSubmit = async (
+    values: Publication,
+    e: React.FormEvent<HTMLFormElement>
   ) => {
-    _event.preventDefault();
-    console.log("submit");
-    console.log(values);
-    console.log(_event);
+    e.preventDefault();
+    try {
+      console.log(values);
+      await saveToast(updatePublication(values).unwrap);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -181,10 +196,16 @@ export function PublicationForm({ initialValues }: PublicationFormProps) {
           })}
         >
           <Flex gap={"md"} pt=".4rem" justify="space-between" pr="lg">
-            <ActionButton size="md" w="20rem" type="submit">
+            <ActionButton loading={isLoading} size="md" w="20rem" type="submit">
               Save Changes
             </ActionButton>
-            <ActionButton size="md" w="8rem" type="submit" color="brandRed.3">
+            <ActionButton
+              onClick={() => navigate("../..")}
+              size="md"
+              w="8rem"
+              type="submit"
+              color="brandRed.3"
+            >
               Cancel
             </ActionButton>
           </Flex>

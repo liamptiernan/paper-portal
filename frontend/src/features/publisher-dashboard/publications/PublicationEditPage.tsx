@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
 
 export function PublicationEditPage() {
-  console.log("blah");
   const params = useParams();
   const publicationId = params.publicationId;
   const {
@@ -23,7 +22,7 @@ export function PublicationEditPage() {
       {publication && (
         <>
           <PublicationFormHeader />
-          <PublicationForm initialValues={publication} />
+          <PublicationForm publication={publication} />
         </>
       )}
     </Stack>

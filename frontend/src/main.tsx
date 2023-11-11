@@ -9,6 +9,7 @@ import { theme } from "./app/theme.ts";
 import { Auth0ProviderWithNavigate } from "./components/Auth0WithNavigate.tsx";
 import { Provider } from "react-redux";
 import { store } from "./app/store.ts";
+import { Notifications } from "@mantine/notifications";
 
 const mapRender = (status: Status) => {
   switch (status) {
@@ -26,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
       <BrowserRouter>
         <Provider store={store}>
+          <Notifications position="top-right" zIndex={2000} limit={5} />
           <Auth0ProviderWithNavigate>
             <Wrapper
               apiKey="AIzaSyBEGicUH8Jh4d3GbVhC4BgMLQc4z6yyj7M"

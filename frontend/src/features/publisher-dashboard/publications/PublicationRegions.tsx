@@ -10,6 +10,7 @@ import {
   List,
   Slider,
   NumberInput,
+  TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { usePublicationFormContext } from "./form-context";
@@ -158,10 +159,8 @@ export function PublicationRegions() {
   const fields = getInputProps("regions").value.map(
     (item: Partial<PublicationRegion>, index: number) => (
       <Group key={item.id || index} mt="xs">
-        <NumberInput
+        <TextInput
           withAsterisk
-          hideControls
-          type="text"
           style={{ flex: 1 }}
           {...getInputProps(`regions.${index}.zip_code`)}
         />
