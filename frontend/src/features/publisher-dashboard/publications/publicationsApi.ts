@@ -14,18 +14,20 @@ export const publicationsApi = createApi({
   endpoints: (builder) => ({
     getAllPublications: builder.query<PublicationsTableResponse, void>({
       query: () => "/publications/",
-      providesTags: (r) =>
-        r
-          ? [
-              ...r.data.map(({ id }) => ({ type: "Publication" as const, id })),
-              "Publication",
-            ]
-          : ["Publication"],
+      providesTags: (r) => {
+        const tags = [
+          { type: "Publication" as const, id: 0 },
+          { type: "Publication" as const, id: "LIST" },
+        ];
+        r?.data.forEach(({ id }) =>
+          tags.push({ type: "Publication" as const, id })
+        );
+        return tags;
+      },
     }),
     getPublication: builder.query<Publication, string>({
       query: (id) => `/publications/${id}`,
-      providesTags: (_r, _e, id) =>
-        id ? [{ type: "Publication" as const, id }] : [],
+      providesTags: (_r, _e, id) => [{ type: "Publication" as const, id }],
     }),
     updatePublication: builder.mutation<Publication, Publication>({
       query: (body) => ({
@@ -43,7 +45,17 @@ export const publicationsApi = createApi({
         method: "PUT",
         body: body,
       }),
-      invalidatesTags: ["Publication"],
+      invalidatesTags: [{ type: "Publication", id: "LIST" }],
+    }),
+    deletePublication: builder.mutation<Publication, number>({
+      query: (id) => ({
+        url: `/publications/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_r, _e, id) => [
+        { type: "Publication" as const, id },
+        { type: "Publication", id: "LIST" },
+      ],
     }),
   }),
 });
@@ -53,4 +65,5 @@ export const {
   useGetPublicationQuery,
   useUpdatePublicationMutation,
   useCreatePublicationMutation,
+  useDeletePublicationMutation,
 } = publicationsApi;

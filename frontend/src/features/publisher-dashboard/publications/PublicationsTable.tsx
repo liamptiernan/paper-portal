@@ -20,6 +20,14 @@ function ActionButtons({ id }: { id: number }) {
   );
 }
 
+function emptyTable() {
+  return (
+    <Text color="brandDark.2" align="center">
+      No publications created
+    </Text>
+  );
+}
+
 export function PublicationsTable({
   publications,
   isLoading,
@@ -66,7 +74,6 @@ export function PublicationsTable({
     ],
     []
   );
-  console.log(isLoading);
 
   // TODO: Needs pagination
   const table = useMantineReactTable({
@@ -92,6 +99,7 @@ export function PublicationsTable({
         },
       },
     },
+    renderEmptyRowsFallback: emptyTable,
     state: {
       isLoading,
     },

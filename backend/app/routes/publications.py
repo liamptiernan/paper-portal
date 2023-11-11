@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -36,7 +36,12 @@ async def get_publication(
     session: AsyncSession = Depends(get_session),
     user: User = Depends(superuser),
 ):
-    return await publications_repo.get(session, id, user)
+    publication = await publications_repo.get(session, id, user)
+    if publication is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Publication not found"
+        )
+    return publication
 
 
 @router.post("/", response_model=Publication)
@@ -57,7 +62,7 @@ async def create_publication(
     return await publications_repo.create(session, user, new_publication)
 
 
-@router.delete("/{id}", response_model=Publication | None)
+@router.delete("/{id}", response_model=None)
 async def delete_publication(
     id: int,
     session: AsyncSession = Depends(get_session),

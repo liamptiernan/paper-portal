@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   Flex,
   Group,
   NumberInput,
@@ -26,6 +27,8 @@ import { IconInfoSquareRounded } from "@tabler/icons-react";
 import { useUpdatePublicationMutation } from "./publicationsApi";
 import { useTryToast } from "../../../hooks/useTryToast";
 import { useNavigate } from "react-router-dom";
+import { useDisclosure } from "@mantine/hooks";
+import { PublicationDeleteModal } from "./DeleteModal";
 
 function UnitsDisplay() {
   const { getInputProps } = usePublicationFormContext();
@@ -105,6 +108,7 @@ interface PublicationFormProps {
 
 export function PublicationForm({ publication }: PublicationFormProps) {
   // TODO: maybe set null values to ""?
+  const [opened, { close, open }] = useDisclosure(false);
   const initialValues = { ...publication };
   const saveToast = useTryToast(
     { title: "Publication Saved" },
@@ -124,10 +128,9 @@ export function PublicationForm({ publication }: PublicationFormProps) {
   ) => {
     e.preventDefault();
     try {
-      console.log(values);
       await saveToast(updatePublication(values).unwrap);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -178,6 +181,10 @@ export function PublicationForm({ publication }: PublicationFormProps) {
                   {...form.getInputProps("estimated_reach")}
                 />
                 <RegionDataSelect />
+                <Divider />
+                <ActionButton w="12rem" compact color="brandRed" onClick={open}>
+                  Delete Publication
+                </ActionButton>
               </Stack>
               <PublicationRegionRadius />
               <PublicationRegions />
@@ -211,6 +218,11 @@ export function PublicationForm({ publication }: PublicationFormProps) {
           </Flex>
         </Box>
       </form>
+      <PublicationDeleteModal
+        opened={opened}
+        close={close}
+        publication={publication}
+      />
     </PublicationFormProvider>
   );
 }

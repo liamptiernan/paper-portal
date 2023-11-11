@@ -20,13 +20,11 @@ export function HomePage() {
       if (!token) {
         return;
       }
-      console.log(token);
-      const res = await fetch("http://localhost:8000/api/v1/publications/", {
+      await fetch("http://localhost:8000/api/v1/publications/", {
         headers: {
           Authorization: `bearer ${token}`,
         },
       });
-      console.log(res);
     }
     testFetch();
   }, [token]);

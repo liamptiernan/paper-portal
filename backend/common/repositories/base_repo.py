@@ -104,15 +104,13 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         await session.refresh(model)
         return await self.db_to_app(session, model)
 
-    async def delete(
-        self, session: AsyncSession, user: AppUser, id: int
-    ) -> TAppModel | None:
+    async def delete(self, session: AsyncSession, user: AppUser, id: int) -> None:
         query = await self.auth_delete(session, user, self.select_by_id(id))
-        model = (await session.execute(query)).scalar_one_or_none()
+        model = (await session.execute(query)).unique().scalar_one_or_none()
         if model:
             await session.delete(model)
             await session.commit()
-            return await self.db_to_app(session, model)
+            return None
 
     async def get_all(
         self,

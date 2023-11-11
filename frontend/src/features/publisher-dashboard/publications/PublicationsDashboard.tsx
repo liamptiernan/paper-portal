@@ -45,7 +45,7 @@ export function PublicationsDashboard() {
       <Flex justify={"space-between"} align={"baseline"}>
         <Stack spacing={"None"}>
           <Title>Publications</Title>
-          <Text>{publicationsRes?.count || ""} Publications</Text>
+          <Text>{publicationsRes?.count || "No"} Publications</Text>
         </Stack>
         <PrimaryButton
           onClick={handleCreatePublication}
