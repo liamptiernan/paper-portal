@@ -1,36 +1,90 @@
-import { Flex, Table } from "@mantine/core";
+import { Flex, Stack, Text } from "@mantine/core";
 import { ActionButton } from "../../../components/Actions";
+import {
+  MRT_ColumnDef,
+  MRT_Table,
+  useMantineReactTable,
+} from "mantine-react-table";
+import { useMemo } from "react";
+import { Publication } from "../types";
+import { capitalizeFirstLetter } from "../../../app/utils";
+import { useNavigate } from "react-router-dom";
 
-export function PublicationsTable() {
-  // if no rows, big create one button
-  const rows = [
-    <tr>
-      <td width={"50%"}>Greenville Times</td>
-      <td width={"25%"}>Location</td>
-      <td width={"25%"}>
-        <Flex gap={"sm"}>
-          <ActionButton>Ads</ActionButton>
-          <ActionButton>View</ActionButton>
-          <ActionButton>Edit</ActionButton>
-        </Flex>
-      </td>
-    </tr>,
-    <tr>
-      <td>Greenville Times</td>
-      <td>Location</td>
-      <td>
-        <Flex gap={"sm"}>
-          <ActionButton>Ads</ActionButton>
-          <ActionButton>View</ActionButton>
-          <ActionButton>Edit</ActionButton>
-        </Flex>
-      </td>
-    </tr>,
-  ];
-
+function ActionButtons({ id }: { id: number }) {
+  const navigate = useNavigate();
   return (
-    <Table highlightOnHover verticalSpacing={"lg"} fontSize={"md"}>
-      <tbody>{rows.map((row) => row)}</tbody>
-    </Table>
+    <Flex gap={"sm"} justify={"center"}>
+      <ActionButton onClick={() => navigate(`./${id}/edit`)}>Edit</ActionButton>
+      <ActionButton>Ads</ActionButton>
+    </Flex>
   );
+}
+
+export function PublicationsTable({
+  publications,
+}: {
+  publications?: Publication[];
+}) {
+  const columns = useMemo<MRT_ColumnDef<Publication>[]>(
+    () => [
+      {
+        accessorFn: (row) => {
+          return (
+            <Stack spacing={"xs"}>
+              <Text fw={"bold"}>{row.name}</Text> <Text>{row.description}</Text>
+            </Stack>
+          );
+        },
+        header: "Name",
+      },
+      {
+        accessorFn: (row) => {
+          return capitalizeFirstLetter(row.format);
+        },
+        header: "Format",
+      },
+      {
+        accessorFn: (row) => {
+          return `${row.estimated_reach} ${row.distribution_unit}`;
+        },
+        header: "Distribution",
+      },
+      {
+        accessorFn: (row) => {
+          return <ActionButtons id={row.id} />;
+        },
+        header: "Actions",
+      },
+    ],
+    []
+  );
+
+  // TODO: Needs pagination
+  const table = useMantineReactTable({
+    columns,
+    data: publications || [],
+    enableColumnActions: false,
+    enableColumnFilters: false,
+    enablePagination: false,
+    enableSorting: false,
+    mantineTableProps: {
+      highlightOnHover: false,
+      withColumnBorders: true,
+      sx: {
+        "thead > tr": {
+          backgroundColor: "inherit",
+          boxShadow: "none",
+        },
+        "thead > tr > th": {
+          backgroundColor: "inherit",
+        },
+        "tbody > tr > td": {
+          backgroundColor: "inherit",
+        },
+      },
+    },
+  });
+  // if no rows, big create one button
+
+  return <MRT_Table table={table} />;
 }

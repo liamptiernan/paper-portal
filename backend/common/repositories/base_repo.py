@@ -122,7 +122,7 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         query = await self.auth_select(session, user, select(self.db_model))
         return [
             await self.db_to_app(session, model.t[0])
-            for model in await session.execute(query)
+            for model in (await session.execute(query)).unique()
         ]
 
 

@@ -4,25 +4,36 @@ import { PublicationsTable } from "./PublicationsTable";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCreatePublicationMutation } from "./publicationsApi";
+import {
+  useCreatePublicationMutation,
+  useGetAllPublicationsQuery,
+} from "./publicationsApi";
+import { useTryToast } from "../../../hooks/useTryToast";
 
 export function PublicationsDashboard() {
   const [createPublication, { isLoading: createIsLoading }] =
     useCreatePublicationMutation();
   const navigate = useNavigate();
+  const toast = useTryToast(null, {
+    title: "Error creating publication",
+  });
+
+  const { data: publications } = useGetAllPublicationsQuery();
+
   const handleCreatePublication = useCallback(async () => {
     try {
       // TODO: implement isErrorWithMessage stuff to handle errors
-      // Add toast
       const newPublication = { name: "New Publication" };
-      const createdPublication = await createPublication(
-        newPublication
-      ).unwrap();
-      navigate(`${createdPublication.id}/edit`);
+      await toast(async () => {
+        const createdPublication = await createPublication(
+          newPublication
+        ).unwrap();
+        navigate(`${createdPublication.id}/edit`);
+      });
     } catch (e) {
       console.error(e);
     }
-  }, [navigate, createPublication]);
+  }, [navigate, createPublication, toast]);
 
   return (
     <Container
@@ -42,7 +53,7 @@ export function PublicationsDashboard() {
           Create
         </PrimaryButton>
       </Flex>
-      <PublicationsTable />
+      <PublicationsTable publications={publications} />
     </Container>
   );
 }
