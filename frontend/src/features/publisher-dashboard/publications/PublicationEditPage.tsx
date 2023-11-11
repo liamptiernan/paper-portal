@@ -1,4 +1,4 @@
-import { Stack } from "@mantine/core";
+import { LoadingOverlay, Stack } from "@mantine/core";
 import { PublicationFormHeader } from "./PublicationFormHeader";
 import { PublicationForm } from "./PublicationForm";
 import { useGetPublicationQuery } from "./publicationsApi";
@@ -17,7 +17,7 @@ export function PublicationEditPage() {
   // pass in some handle submit
   return (
     <Stack w="100%">
-      {isLoading && "LOADING"}
+      <LoadingOverlay visible={isLoading} />
       {isError && "ERROR"}
       {publication && (
         <>

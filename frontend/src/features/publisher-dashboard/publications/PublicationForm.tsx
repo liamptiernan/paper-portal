@@ -135,7 +135,7 @@ export function PublicationForm({ publication }: PublicationFormProps) {
     <PublicationFormProvider form={form}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Box style={{ maxHeight: "calc(100vh - 200px)", overflow: "auto" }}>
-          <Box pb="lg">
+          <Box pb="5rem">
             <Stack spacing={"xl"} w="580px">
               <TextInput
                 label="Publication Name"

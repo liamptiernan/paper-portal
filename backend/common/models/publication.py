@@ -7,7 +7,7 @@ class NewPublicationRegion(NewAppModel):
 
 
 class PublicationRegion(NewPublicationRegion, AppModel):
-    publication_id: int
+    publication_id: int | None = None
 
     class Config:
         orm_mode = True

@@ -48,7 +48,7 @@ class Publication(Base):
     region_type: Mapped[str]
     distribution_radius: Mapped[int]
     regions: Mapped[list[PublicationRegion]] = relationship(
-        back_populates="publication", lazy="joined"
+        back_populates="publication", lazy="joined", cascade="all, delete-orphan"
     )
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])
