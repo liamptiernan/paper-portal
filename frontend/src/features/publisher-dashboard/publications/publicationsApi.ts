@@ -2,17 +2,22 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { defaultFetchBaseQuery } from "../../../app/base-api";
 import type { Publication } from "../types";
 
+interface PublicationsTableResponse {
+  data: Publication[];
+  count: number;
+}
+
 export const publicationsApi = createApi({
   reducerPath: "publicationsApi",
   baseQuery: defaultFetchBaseQuery(),
   tagTypes: ["Publication"],
   endpoints: (builder) => ({
-    getAllPublications: builder.query<Publication[], void>({
+    getAllPublications: builder.query<PublicationsTableResponse, void>({
       query: () => "/publications/",
       providesTags: (r) =>
         r
           ? [
-              ...r.map(({ id }) => ({ type: "Publication" as const, id })),
+              ...r.data.map(({ id }) => ({ type: "Publication" as const, id })),
               "Publication",
             ]
           : ["Publication"],

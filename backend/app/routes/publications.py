@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.utils.user import UserWithRole
@@ -16,11 +17,17 @@ router = APIRouter(
 superuser = UserWithRole(Roles.SUPERUSER)
 
 
-@router.get("/", response_model=list[Publication])
+class PublicationsTableResponse(BaseModel):
+    data: list[Publication]
+    count: int
+
+
+@router.get("/", response_model=PublicationsTableResponse)
 async def get_all_publications(
     session: AsyncSession = Depends(get_session), user: User = Depends(superuser)
 ):
-    return await publications_repo.get_all(session, user)
+    publications = await publications_repo.get_all(session, user)
+    return PublicationsTableResponse(data=publications, count=len(publications))
 
 
 @router.get("/{id}", response_model=Publication)

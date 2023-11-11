@@ -22,8 +22,10 @@ function ActionButtons({ id }: { id: number }) {
 
 export function PublicationsTable({
   publications,
+  isLoading,
 }: {
   publications?: Publication[];
+  isLoading: boolean;
 }) {
   const columns = useMemo<MRT_ColumnDef<Publication>[]>(
     () => [
@@ -39,12 +41,18 @@ export function PublicationsTable({
       },
       {
         accessorFn: (row) => {
+          if (!row.format) {
+            return "";
+          }
           return capitalizeFirstLetter(row.format);
         },
         header: "Format",
       },
       {
         accessorFn: (row) => {
+          if (!row.estimated_reach && !row.distribution_unit) {
+            return "";
+          }
           return `${row.estimated_reach} ${row.distribution_unit}`;
         },
         header: "Distribution",
@@ -58,6 +66,7 @@ export function PublicationsTable({
     ],
     []
   );
+  console.log(isLoading);
 
   // TODO: Needs pagination
   const table = useMantineReactTable({
@@ -83,8 +92,10 @@ export function PublicationsTable({
         },
       },
     },
+    state: {
+      isLoading,
+    },
   });
-  // if no rows, big create one button
 
   return <MRT_Table table={table} />;
 }

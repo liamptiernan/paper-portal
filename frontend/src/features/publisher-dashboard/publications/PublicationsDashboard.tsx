@@ -18,7 +18,8 @@ export function PublicationsDashboard() {
     title: "Error creating publication",
   });
 
-  const { data: publications } = useGetAllPublicationsQuery();
+  const { data: publicationsRes, isLoading: fetchIsLoading } =
+    useGetAllPublicationsQuery();
 
   const handleCreatePublication = useCallback(async () => {
     try {
@@ -44,7 +45,7 @@ export function PublicationsDashboard() {
       <Flex justify={"space-between"} align={"baseline"}>
         <Stack spacing={"None"}>
           <Title>Publications</Title>
-          <Text>2 Publications</Text>
+          <Text>{publicationsRes?.count || ""} Publications</Text>
         </Stack>
         <PrimaryButton
           onClick={handleCreatePublication}
@@ -53,7 +54,10 @@ export function PublicationsDashboard() {
           Create
         </PrimaryButton>
       </Flex>
-      <PublicationsTable publications={publications} />
+      <PublicationsTable
+        publications={publicationsRes?.data}
+        isLoading={fetchIsLoading}
+      />
     </Container>
   );
 }
