@@ -59,6 +59,11 @@ class AdOffering(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
+    impact_score: Mapped[float]
+    size: Mapped[str]
+    page_start: Mapped[int]
+    page_end: Mapped[int] = mapped_column(nullable=True)
+    color: Mapped[bool]
     publication_id: Mapped[int] = mapped_column(
         ForeignKey("publication.id"), nullable=False
     )
