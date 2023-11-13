@@ -5,23 +5,22 @@ import {
   useMantineReactTable,
 } from "mantine-react-table";
 import { useMemo } from "react";
-import { Publication } from "../types";
-import { capitalizeFirstLetter } from "../../../app/utils";
+import { AdOffering } from "../types";
 
 export function AdsTable({
-  //   ads,
+  offerings,
   isLoading,
 }: {
-  //   ads?: AdUnits[];
+  offerings?: AdOffering[];
   isLoading: boolean;
 }) {
-  const columns = useMemo<MRT_ColumnDef<Publication>[]>(
+  const columns = useMemo<MRT_ColumnDef<AdOffering>[]>(
     () => [
       {
         accessorFn: (row) => {
           return (
             <Stack spacing={"xs"}>
-              <Text fw={"bold"}>{row.name}</Text> <Text>{row.description}</Text>
+              <Text fw={"bold"}>{row.name}</Text>
             </Stack>
           );
         },
@@ -29,27 +28,33 @@ export function AdsTable({
       },
       {
         accessorFn: (row) => {
-          if (!row.format) {
+          if (!row.impact_score) {
             return "";
           }
-          return capitalizeFirstLetter(row.format);
+          return row.impact_score;
         },
-        header: "Format",
+        header: "Impact",
       },
       {
         accessorFn: (row) => {
-          if (!row.estimated_reach && !row.distribution_unit) {
+          if (!row.size) {
             return "";
           }
-          return `${row.estimated_reach} ${row.distribution_unit}`;
+          return row.size;
         },
-        header: "Distribution",
+        header: "Size",
       },
       {
         accessorFn: (row) => {
-          return <ActionButtons id={row.id} />;
+          if (!row.page_start) {
+            return "";
+          }
+          if (!row.page_end) {
+            return `${row.page_start} - End`;
+          }
+          return `${row.page_start} - ${row.page_end}`;
         },
-        header: "Actions",
+        header: "Page Range",
       },
     ],
     []
@@ -58,7 +63,7 @@ export function AdsTable({
   // TODO: Needs pagination
   const table = useMantineReactTable({
     columns,
-    data: [],
+    data: offerings || [],
     enableColumnActions: false,
     enableColumnFilters: false,
     enablePagination: false,
