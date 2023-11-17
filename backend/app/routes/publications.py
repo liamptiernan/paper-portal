@@ -91,6 +91,15 @@ async def get_ad_offering(
     return ad_offering
 
 
+@router.delete("/offerings/{id}", response_model=None)
+async def delete_ad_offering(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    return await ad_offerings_repo.delete(session, user, id)
+
+
 @router.post("/offerings/", response_model=AdOffering)
 async def update_ad_offering(
     offering_updates: AdOffering,

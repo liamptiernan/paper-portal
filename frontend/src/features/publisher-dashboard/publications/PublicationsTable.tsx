@@ -84,8 +84,6 @@ export function PublicationsTable({
     enablePagination: false,
     enableSorting: false,
     mantineTableProps: {
-      highlightOnHover: false,
-      withColumnBorders: true,
       sx: {
         "thead > tr": {
           backgroundColor: "inherit",

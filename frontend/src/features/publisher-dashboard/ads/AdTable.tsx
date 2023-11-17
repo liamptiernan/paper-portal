@@ -6,6 +6,13 @@ import {
 } from "mantine-react-table";
 import { useMemo } from "react";
 import { AdOffering } from "../types";
+import { useNavigate } from "react-router-dom";
+import { ActionButton } from "../../../components/Actions";
+
+function ActionButtons({ id }: { id: number }) {
+  const navigate = useNavigate();
+  return <ActionButton onClick={() => navigate(`./${id}`)}>Edit</ActionButton>;
+}
 
 export function AdsTable({
   offerings,
@@ -56,6 +63,12 @@ export function AdsTable({
         },
         header: "Page Range",
       },
+      {
+        accessorFn: (row) => {
+          return <ActionButtons id={row.id} />;
+        },
+        header: "Action",
+      },
     ],
     []
   );
@@ -69,8 +82,6 @@ export function AdsTable({
     enablePagination: false,
     enableSorting: false,
     mantineTableProps: {
-      highlightOnHover: false,
-      withColumnBorders: true,
       sx: {
         "thead > tr": {
           backgroundColor: "inherit",

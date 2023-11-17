@@ -100,6 +100,16 @@ export const publicationsApi = createApi({
       }),
       invalidatesTags: [{ type: "Offering", id: "OFFERING-LIST" }],
     }),
+    deletePublicationAdOffering: builder.mutation<AdOffering, number>({
+      query: (id) => ({
+        url: `/publications/offerings/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_r, _e, id) => [
+        { type: "Offering" as const, id },
+        { type: "Offering", id: "OFFERING-LIST" },
+      ],
+    }),
   }),
 });
 
@@ -113,4 +123,5 @@ export const {
   useGetPublicationAdOfferingQuery,
   useUpdatePublicationAdOfferingMutation,
   useCreatePublicationAdOfferingMutation,
+  useDeletePublicationAdOfferingMutation,
 } = publicationsApi;

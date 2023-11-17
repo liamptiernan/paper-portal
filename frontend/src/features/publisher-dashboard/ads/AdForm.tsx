@@ -9,6 +9,7 @@ import {
 } from "./offering-form-context";
 import {
   Box,
+  Divider,
   Flex,
   MultiSelect,
   RangeSlider,
@@ -19,6 +20,8 @@ import {
 } from "@mantine/core";
 import { IconPalette, IconPaletteOff } from "@tabler/icons-react";
 import { ActionButton } from "../../../components/Actions";
+import { AdOfferingDeleteModal } from "./DeleteModal";
+import { useDisclosure } from "@mantine/hooks";
 
 function PageRange() {
   const { getInputProps } = useAdOfferingFormContext();
@@ -51,6 +54,7 @@ function SizeSelector() {
 
 export function AdOfferingForm({ adOffering }: { adOffering: AdOffering }) {
   // TODO: maybe set null values to ""?
+  const [opened, { close, open }] = useDisclosure(false);
   const initialValues = { ...adOffering };
   const saveToast = useTryToast(
     { title: "Ad Unit Saved" },
@@ -98,6 +102,10 @@ export function AdOfferingForm({ adOffering }: { adOffering: AdOffering }) {
                 offLabel={<IconPaletteOff size="1rem" stroke={2} />}
                 {...form.getInputProps("color", { type: "checkbox" })}
               />
+              <Divider />
+              <ActionButton w="12rem" compact color="brandRed" onClick={open}>
+                Delete Ad Unit
+              </ActionButton>
             </Stack>
           </Box>
         </Box>
@@ -128,6 +136,11 @@ export function AdOfferingForm({ adOffering }: { adOffering: AdOffering }) {
           </Flex>
         </Box>
       </form>
+      <AdOfferingDeleteModal
+        opened={opened}
+        close={close}
+        adOffering={adOffering}
+      />
     </AdOfferingFormProvider>
   );
 }
