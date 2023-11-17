@@ -32,7 +32,6 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         session: AsyncSession,
         db_model: TDBModel,
     ) -> TAppModel:
-        print(db_model)
         return self.app_model(**db_model.__dict__)
 
     async def app_to_db(

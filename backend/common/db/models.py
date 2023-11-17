@@ -67,6 +67,8 @@ class AdOffering(Base):
     publication_id: Mapped[int] = mapped_column(
         ForeignKey("publication.id"), nullable=False
     )
-    publication: Mapped[Publication] = relationship(foreign_keys=[publication_id])
+    publication: Mapped[Publication] = relationship(
+        foreign_keys=[publication_id], lazy="joined"
+    )
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])

@@ -19,6 +19,7 @@ export interface Publication {
 }
 
 export interface AdOffering {
+  id: number;
   name: string;
   publication_id: number;
   impact_score: number;

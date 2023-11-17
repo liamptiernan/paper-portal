@@ -2,12 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.routes.ad_offerings import AdOfferingsTableResponse
 from backend.app.utils.user import UserWithRole
 from backend.common.core.enums import Roles
 from backend.common.db.init import get_session
 from backend.common.models.publication import NewPublication, Publication
+from backend.common.models.ad_offering import NewAdOffering, AdOffering
 from backend.common.models.user import User
 from backend.common.repositories.publications_repo import publications_repo
+from backend.common.repositories.ad_offerings_repo import ad_offerings_repo
 
 router = APIRouter(
     prefix="/publications",
@@ -69,3 +72,50 @@ async def delete_publication(
     user: User = Depends(superuser),
 ):
     return await publications_repo.delete(session, user, id)
+
+
+# Ad Offerings
+
+
+@router.get("/offerings/{offering_id}", response_model=AdOffering)
+async def get_ad_offering(
+    offering_id: int,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    ad_offering = await ad_offerings_repo.get(session, offering_id, user)
+    if ad_offering is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Ad offering not found"
+        )
+    return ad_offering
+
+
+@router.post("/offerings/", response_model=AdOffering)
+async def update_ad_offering(
+    offering_updates: AdOffering,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    return await ad_offerings_repo.update(session, user, offering_updates)
+
+
+@router.get("/{id}/offerings/", response_model=AdOfferingsTableResponse)
+async def get_publication_ad_offerings(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    ad_offerings = await ad_offerings_repo.get_all_for_publication(id, session, user)
+    return AdOfferingsTableResponse(data=ad_offerings, count=len(ad_offerings))
+
+
+@router.put("/{publication_id}/offerings/", response_model=AdOffering)
+async def create_publication_ad_offering(
+    publication_id: int,
+    new_ad_offering: NewAdOffering,
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    new_ad_offering.publication_id = publication_id
+    return await ad_offerings_repo.create(session, user, new_ad_offering)

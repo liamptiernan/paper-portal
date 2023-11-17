@@ -17,6 +17,3 @@ class AdOffering(NewAdOffering, OrgModel):
 
     class Config:
         orm_mode = True
-
-
-# TODO: Add repos and migrations
