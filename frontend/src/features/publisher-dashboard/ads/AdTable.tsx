@@ -1,13 +1,17 @@
 import { Stack, Text } from "@mantine/core";
 import {
   MRT_ColumnDef,
+  MRT_Row,
   MRT_Table,
+  MRT_TableInstance,
   useMantineReactTable,
 } from "mantine-react-table";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { AdOffering } from "../types";
 import { useNavigate } from "react-router-dom";
 import { ActionButton } from "../../../components/Actions";
+import { useUpdateAdOfferingOrderMutation } from "../publications/publicationsApi";
+import { useTryToast } from "../../../hooks/useTryToast";
 
 function ActionButtons({ id }: { id: number }) {
   const navigate = useNavigate();
@@ -21,6 +25,11 @@ export function AdsTable({
   offerings?: AdOffering[];
   isLoading: boolean;
 }) {
+  const [reOrder] = useUpdateAdOfferingOrderMutation();
+  const toast = useTryToast(
+    { title: "Order Saved" },
+    { title: "Order failed to save" }
+  );
   const columns = useMemo<MRT_ColumnDef<AdOffering>[]>(
     () => [
       {
@@ -73,6 +82,30 @@ export function AdsTable({
     []
   );
 
+  const handleReorder = useCallback(
+    async (table: MRT_TableInstance<AdOffering>) => {
+      if (!offerings) {
+        return;
+      }
+      const newOrder = offerings.map((offering) => offering.id);
+      const { draggingRow, hoveredRow } = table.getState();
+      if (hoveredRow && draggingRow) {
+        const draggedId = newOrder.splice(draggingRow.index, 1)[0];
+        newOrder.splice(
+          (hoveredRow as MRT_Row<AdOffering>).index,
+          0,
+          draggedId
+        );
+      }
+      try {
+        await toast(reOrder(newOrder).unwrap);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [offerings, toast, reOrder]
+  );
+
   // TODO: Needs pagination
   const table = useMantineReactTable({
     columns,
@@ -81,6 +114,11 @@ export function AdsTable({
     enableColumnFilters: false,
     enablePagination: false,
     enableSorting: false,
+    enableRowDragging: true,
+    enableRowOrdering: true,
+    mantineRowDragHandleProps: ({ table }) => ({
+      onDragEnd: () => handleReorder(table),
+    }),
     mantineTableProps: {
       sx: {
         "thead > tr": {

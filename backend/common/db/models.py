@@ -65,6 +65,7 @@ class AdOffering(Base):
     page_end: Mapped[int] = mapped_column(nullable=True)
     color: Mapped[bool]
     price: Mapped[float]
+    index: Mapped[int]
     publication_id: Mapped[int] = mapped_column(
         ForeignKey("publication.id"), nullable=False
     )

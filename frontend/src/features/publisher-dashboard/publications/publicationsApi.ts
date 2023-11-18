@@ -110,6 +110,35 @@ export const publicationsApi = createApi({
         { type: "Offering", id: "OFFERING-LIST" },
       ],
     }),
+    updateAdOfferingOrder: builder.mutation<AdOffering[], number[]>({
+      query: (order) => ({
+        url: `/publications/offerings/reorder`,
+        method: "POST",
+        body: order,
+      }),
+      async onQueryStarted(_order, { dispatch, queryFulfilled }) {
+        try {
+          const { data: updatedOfferings } = await queryFulfilled;
+          console.log(updatedOfferings);
+          dispatch(
+            publicationsApi.util.updateQueryData(
+              "getPublicationAdOfferings",
+              "25",
+              (draft) => {
+                const newData = { data: updatedOfferings };
+                Object.assign(draft, newData);
+              }
+            )
+          );
+        } catch {
+          dispatch(
+            publicationsApi.util.invalidateTags([
+              { type: "Offering", id: "OFFERING-LIST" },
+            ])
+          );
+        }
+      },
+    }),
   }),
 });
 
@@ -124,4 +153,5 @@ export const {
   useUpdatePublicationAdOfferingMutation,
   useCreatePublicationAdOfferingMutation,
   useDeletePublicationAdOfferingMutation,
+  useUpdateAdOfferingOrderMutation,
 } = publicationsApi;

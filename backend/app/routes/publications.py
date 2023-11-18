@@ -100,6 +100,15 @@ async def delete_ad_offering(
     return await ad_offerings_repo.delete(session, user, id)
 
 
+@router.post("/offerings/reorder", response_model=list[AdOffering])
+async def reorder_ad_offering(
+    order: list[int],
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(superuser),
+):
+    return await ad_offerings_repo.reorder_ad_offerings(order, session, user)
+
+
 @router.post("/offerings/", response_model=AdOffering)
 async def update_ad_offering(
     offering_updates: AdOffering,
@@ -119,7 +128,11 @@ async def get_publication_ad_offerings(
     return AdOfferingsTableResponse(data=ad_offerings, count=len(ad_offerings))
 
 
-@router.put("/{publication_id}/offerings/", response_model=AdOffering)
+@router.put(
+    "/{publication_id}/offerings/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=AdOffering,
+)
 async def create_publication_ad_offering(
     publication_id: int,
     new_ad_offering: NewAdOffering,

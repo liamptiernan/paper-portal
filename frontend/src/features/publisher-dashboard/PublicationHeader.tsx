@@ -9,8 +9,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 export function PublicationFormHeader() {
   const navigate = useNavigate();
-  const path = window.location.pathname.split("/");
-  const activeTab = path[path.length - 1];
+  const path_match = window.location.pathname.match("edit|ads|integrate");
+  const activeTab = path_match ? path_match[0] : "";
   const tabNavigate = (value: string) => {
     navigate(value);
   };

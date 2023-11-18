@@ -28,5 +28,6 @@ export interface AdOffering {
   page_end: number | null;
   color: boolean;
   price: number;
+  index: number;
   publication: Publication;
 }

@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.common.db.models import AdOffering
@@ -28,6 +28,7 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             page_end=db_model.page_end,
             color=db_model.color,
             price=db_model.price,
+            index=db_model.index,
         )
 
     async def app_to_db(
@@ -46,16 +47,49 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             page_end=app_model.page_end,
             color=app_model.color,
             price=app_model.price,
+            index=app_model.index,
         )
 
     async def get_all_for_publication(
         self, id: int, session: AsyncSession, user: AppUser
     ) -> list[AppAdOffering]:
-        base_query = select(AdOffering).where(AdOffering.publication_id == id)
+        base_query = (
+            select(AdOffering)
+            .where(AdOffering.publication_id == id)
+            .order_by(AdOffering.index)
+        )
         query = await self.auth_select(session, user, base_query)
         return [
             await self.db_to_app(session, model.t[0])
             for model in (await session.execute(query)).unique()
+        ]
+
+    async def reorder_ad_offerings(
+        self, new_order: list[int], session: AsyncSession, user: AppUser
+    ) -> list[AppAdOffering]:
+        query = select(AdOffering.id).where(AdOffering.id.in_(new_order))
+        clean_order = (
+            await session.scalars(await self.auth_select(session, user, query))
+        ).all()
+        if len(clean_order) != len(new_order):
+            raise Exception("Order lengths differ")
+
+        # TODO: do some calc to get impact / 10
+        await session.execute(
+            update(AdOffering),
+            [{"id": id, "index": index} for index, id in enumerate(new_order)],
+        )
+        await session.commit()
+        res_query = await self.auth_select(
+            session,
+            user,
+            select(AdOffering)
+            .where(AdOffering.id.in_(new_order))
+            .order_by(AdOffering.index),
+        )
+        return [
+            await self.db_to_app(session, model.t[0])
+            for model in (await session.execute(res_query)).unique()
         ]
 
 
