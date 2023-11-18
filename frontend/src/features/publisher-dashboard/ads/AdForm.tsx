@@ -11,8 +11,8 @@ import {
   Box,
   Divider,
   Flex,
-  MultiSelect,
-  RangeSlider,
+  NumberInput,
+  Select,
   Stack,
   Switch,
   Text,
@@ -22,31 +22,106 @@ import { IconPalette, IconPaletteOff } from "@tabler/icons-react";
 import { ActionButton } from "../../../components/Actions";
 import { AdOfferingDeleteModal } from "./DeleteModal";
 import { useDisclosure } from "@mantine/hooks";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 
 function PageRange() {
   const { getInputProps } = useAdOfferingFormContext();
+  const startPageProps = getInputProps("page_start");
+  const endPageProps = getInputProps("page_end");
+  const [disableEndPage, setDisableEndPage] = useState(
+    endPageProps.value === null
+  );
 
+  const handleToggleEndPage = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.checked;
+      setDisableEndPage(value);
+      if (value) {
+        endPageProps.onChange(null);
+      } else {
+        endPageProps.onChange(startPageProps.value + 1);
+      }
+    },
+    [setDisableEndPage, endPageProps, startPageProps]
+  );
+
+  const handleEndPageChange = (value: number) => {
+    endPageProps.onChange(value);
+  };
+
+  const endPageValue = endPageProps.value === null ? "" : endPageProps.value;
   return (
-    <Stack>
+    <Stack spacing={"none"}>
       <Text>Page Range</Text>
-      <RangeSlider label={"test"} size="md" {...getInputProps("page_start")} />
+      <Text color="gray.6" size={"sm"}>
+        Range of pages this ad is available on
+      </Text>
+      <Flex align={"center"} gap={"1rem"} mt="md">
+        <NumberInput
+          label="Range Start"
+          size="md"
+          required
+          hideControls
+          mr="md"
+          w="7rem"
+          {...startPageProps}
+        />
+        <NumberInput
+          label="Range End"
+          size="md"
+          required
+          hideControls
+          w="7rem"
+          disabled={disableEndPage}
+          value={endPageValue}
+          onChange={handleEndPageChange}
+          // {...getInputProps("page_end")}
+        />
+        <Switch
+          label="End of Publication"
+          description="Make ad available until the last page"
+          size="md"
+          checked={disableEndPage}
+          onChange={handleToggleEndPage}
+          style={{ alignSelf: "flex-end" }}
+        />
+      </Flex>
     </Stack>
   );
 }
 
 function SizeSelector() {
   const { getInputProps } = useAdOfferingFormContext();
-  const options = [
-    {
-      label: "1/4 Page",
-      value: "1/4 Page",
-    },
-  ];
+  const initialOptions = useMemo(() => {
+    const initialOption = getInputProps("size").value;
+    const defaultSizes = [
+      "Full page",
+      "3/4 page",
+      "1/2 page",
+      "1/4 page",
+      "1/8 page",
+    ];
+    if (!defaultSizes.includes(initialOption)) {
+      defaultSizes.unshift(initialOption);
+    }
+    return defaultSizes.map((size) => ({ label: size, value: size }));
+  }, [getInputProps]);
+
+  const [options, setOptions] = useState(initialOptions);
   return (
-    <MultiSelect
+    <Select
       label={"Ad Size"}
       size="md"
+      searchable
+      creatable
+      getCreateLabel={(query) => `+ Create ${query}`}
+      onCreate={(query) => {
+        const item = { value: query, label: query };
+        setOptions((current) => [...current, item]);
+        return item;
+      }}
       data={options}
+      required
       {...getInputProps("size")}
     />
   );
