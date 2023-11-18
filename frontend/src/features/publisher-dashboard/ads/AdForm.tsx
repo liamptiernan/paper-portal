@@ -111,6 +111,7 @@ function SizeSelector() {
   return (
     <Select
       label={"Ad Size"}
+      description={"Size on page"}
       size="md"
       searchable
       creatable
@@ -164,12 +165,24 @@ export function AdOfferingForm({ adOffering }: { adOffering: AdOffering }) {
             <Stack spacing={"xl"} w="580px">
               <TextInput
                 label="Ad Unit Name"
+                description={"The name of this type of ad"}
                 size="md"
                 required
                 {...form.getInputProps("name")}
               />
               <SizeSelector />
               <PageRange />
+              <NumberInput
+                label="Price per Placement"
+                size="md"
+                required
+                precision={2}
+                icon="$"
+                hideControls
+                mr="md"
+                w="15rem"
+                {...form.getInputProps("price")}
+              />
               <Switch
                 label="Printed in Color"
                 size="md"

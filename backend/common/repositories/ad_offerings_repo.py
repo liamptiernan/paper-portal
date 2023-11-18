@@ -27,6 +27,7 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             page_start=db_model.page_start,
             page_end=db_model.page_end,
             color=db_model.color,
+            price=db_model.price,
         )
 
     async def app_to_db(
@@ -44,6 +45,7 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             page_start=app_model.page_start,
             page_end=app_model.page_end,
             color=app_model.color,
+            price=app_model.price,
         )
 
     async def get_all_for_publication(

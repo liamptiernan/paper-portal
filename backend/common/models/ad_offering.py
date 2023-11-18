@@ -10,6 +10,7 @@ class NewAdOffering(NewOrgModel):
     page_start: int = 1
     page_end: int | None = None
     color: bool = False
+    price: float = 100
 
 
 class AdOffering(NewAdOffering, OrgModel):
