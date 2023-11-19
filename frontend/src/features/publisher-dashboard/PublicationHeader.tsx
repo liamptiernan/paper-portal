@@ -5,9 +5,16 @@ import {
   IconList,
   IconWorldShare,
 } from "@tabler/icons-react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useGetPublicationQuery } from "./publications/publicationsApi";
 
 export function PublicationFormHeader() {
+  const params = useParams();
+  const publicationId = params.publicationId;
+  const { data: publication } = useGetPublicationQuery(
+    publicationId ?? skipToken
+  );
+
   const navigate = useNavigate();
   const path_match = window.location.pathname.match("edit|ads|integrate");
   const activeTab = path_match ? path_match[0] : "";
@@ -25,7 +32,7 @@ export function PublicationFormHeader() {
           color="brandDark.4"
           fw={400}
           w="fit-content"
-          onClick={() => navigate("../../../publications")}
+          onClick={() => navigate("..")}
           styles={(theme) => ({
             root: {
               "&:not([data-disabled])": theme.fn.hover({
@@ -34,9 +41,9 @@ export function PublicationFormHeader() {
             },
           })}
         >
-          Back
+          All Publications
         </Button>
-        <Title mt={"sm"}>Publication Name</Title>
+        <Title mt={"sm"}>{publication?.name}</Title>
         <Tabs radius={"lg"} value={activeTab} onTabChange={tabNavigate}>
           <Tabs.List>
             <Tabs.Tab mr="lg" value="edit" icon={<IconList />}>
