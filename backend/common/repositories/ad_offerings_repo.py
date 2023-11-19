@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.common.db.models import AdOffering
 from backend.common.models.ad_offering import AdOffering as AppAdOffering
+from backend.common.models.ad_offering import NewAdOffering as AppNewAdOffering
 from backend.common.models.publication import Publication as AppPublication
 from backend.common.repositories.base_repo import OrgRepo
 from backend.common.models.user import User as AppUser
@@ -56,7 +57,7 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
         base_query = (
             select(AdOffering)
             .where(AdOffering.publication_id == id)
-            .order_by(AdOffering.index)
+            .order_by(AdOffering.index.desc())
         )
         query = await self.auth_select(session, user, base_query)
         return [
@@ -66,7 +67,7 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
 
     async def reorder_ad_offerings(
         self, new_order: list[int], session: AsyncSession, user: AppUser
-    ) -> list[AppAdOffering]:
+    ) -> None:
         query = select(AdOffering.id).where(AdOffering.id.in_(new_order))
         clean_order = (
             await session.scalars(await self.auth_select(session, user, query))
@@ -74,23 +75,58 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
         if len(clean_order) != len(new_order):
             raise Exception("Order lengths differ")
 
-        # TODO: do some calc to get impact / 10
+        step = 0.9 / (len(new_order) - 1)
         await session.execute(
             update(AdOffering),
-            [{"id": id, "index": index} for index, id in enumerate(new_order)],
+            [
+                {
+                    "id": id,
+                    "index": index,
+                    "impact_score": round(0.1 + (index * step), 5),
+                }
+                for index, id in enumerate(new_order)
+            ],
         )
         await session.commit()
+
+    async def reorder_and_get_ad_offerings(
+        self, new_order: list[int], session: AsyncSession, user: AppUser
+    ) -> list[AppAdOffering]:
+        await self.reorder_ad_offerings(new_order, session, user)
         res_query = await self.auth_select(
             session,
             user,
             select(AdOffering)
             .where(AdOffering.id.in_(new_order))
-            .order_by(AdOffering.index),
+            .order_by(AdOffering.index.desc()),
         )
         return [
             await self.db_to_app(session, model.t[0])
             for model in (await session.execute(res_query)).unique()
         ]
+
+    async def create(
+        self, session: AsyncSession, user: AppUser, new_offering: AppNewAdOffering
+    ) -> AppAdOffering:
+        created_offering = await super().create(session, user, new_offering)
+        publication_offerings = await self.get_all_for_publication(
+            created_offering.publication_id, session, user
+        )
+        new_order = [offering.id for offering in reversed(publication_offerings)]
+        await self.reorder_ad_offerings(new_order, session, user)
+        return created_offering
+
+    async def delete(self, session: AsyncSession, user: AppUser, id: int) -> None:
+        target_ad_offering = await self.get(session, id, user)
+        if target_ad_offering is None:
+            raise Exception("Offering to delete not found")
+        await super().delete(session, user, id)
+        publication_offerings = await self.get_all_for_publication(
+            target_ad_offering.publication_id, session, user
+        )
+        new_order = [offering.id for offering in reversed(publication_offerings)]
+        print(len(new_order))
+        await self.reorder_ad_offerings(new_order, session, user)
 
 
 ad_offerings_repo = AdOfferingsRepo(AdOffering, AppAdOffering)

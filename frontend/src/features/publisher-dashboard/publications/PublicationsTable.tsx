@@ -15,7 +15,7 @@ function ActionButtons({ id }: { id: number }) {
   return (
     <Flex gap={"sm"} justify={"center"}>
       <ActionButton onClick={() => navigate(`./${id}/edit`)}>Edit</ActionButton>
-      <ActionButton>Ads</ActionButton>
+      <ActionButton onClick={() => navigate(`./${id}/ads`)}>Ads</ActionButton>
     </Flex>
   );
 }

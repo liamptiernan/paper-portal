@@ -106,7 +106,7 @@ async def reorder_ad_offering(
     session: AsyncSession = Depends(get_session),
     user: User = Depends(superuser),
 ):
-    return await ad_offerings_repo.reorder_ad_offerings(order, session, user)
+    return await ad_offerings_repo.reorder_and_get_ad_offerings(order, session, user)
 
 
 @router.post("/offerings/", response_model=AdOffering)

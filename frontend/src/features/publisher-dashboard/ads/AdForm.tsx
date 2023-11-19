@@ -145,17 +145,18 @@ export function AdOfferingForm({ adOffering }: { adOffering: AdOffering }) {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (
-    values: AdOffering,
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-    try {
-      await saveToast(updateAdOffering(values).unwrap);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const handleSubmit = useCallback(
+    async (values: AdOffering, e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      try {
+        await saveToast(updateAdOffering(values).unwrap);
+        navigate("..");
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [saveToast, updateAdOffering, navigate]
+  );
 
   return (
     <AdOfferingFormProvider form={form}>
@@ -210,7 +211,7 @@ export function AdOfferingForm({ adOffering }: { adOffering: AdOffering }) {
         >
           <Flex gap={"md"} pt=".4rem" justify="space-between" pr="lg">
             <ActionButton loading={isLoading} size="md" w="20rem" type="submit">
-              Save Changes
+              Save and Close
             </ActionButton>
             <ActionButton
               onClick={() => navigate("..")}
