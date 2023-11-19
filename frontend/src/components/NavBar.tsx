@@ -14,6 +14,10 @@ import { useAppDispatch } from "../app/hooks";
 import { setAccountModalOpen } from "../app/globalSlice";
 
 function MainNavLinks() {
+  const path_match = window.location.pathname.match(
+    "publications|purchases|users"
+  );
+  const activeLink = path_match ? path_match[0] : "";
   return (
     <>
       <NavLink
@@ -21,18 +25,24 @@ function MainNavLinks() {
         icon={<IconNews />}
         label="Publications"
         href="/publisher/publications"
+        active={activeLink === "publications"}
+        variant="subtle"
       />
       <NavLink
         component="a"
         icon={<IconBuildingWarehouse />}
         label="Purchases"
         href="/publisher/purchases"
+        active={activeLink === "purchases"}
+        variant="subtle"
       />
       <NavLink
         component="a"
         icon={<IconUsersGroup />}
         label="Users"
         href="/publisher/users"
+        active={activeLink === "users"}
+        variant="subtle"
       />
     </>
   );

@@ -1,45 +1,22 @@
-import { Stack, Title } from "@mantine/core";
-import { ActionButton, PrimaryButton } from "../../components/Actions";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
+import { Loader, Stack, Title } from "@mantine/core";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function HomePage() {
-  const { loginWithRedirect, logout, user, getAccessTokenSilently } =
-    useAuth0();
-  const [token, setToken] = useState<string>();
+  // const { user } = useAuth0();
+  const navigate = useNavigate();
   useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    };
-    getToken();
-  }, [getAccessTokenSilently, setToken]);
-
-  useEffect(() => {
-    async function testFetch() {
-      if (!token) {
-        return;
-      }
-      await fetch("http://localhost:8000/api/v1/publications/", {
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-      });
-    }
-    testFetch();
-  }, [token]);
-
+    // if user is publisher, redirect to publisher
+    // if user is customer, redirect to customer
+    navigate("/publisher/publications");
+  });
   return (
-    <>
-      <Title>Welcome Home</Title>
-      <PrimaryButton onClick={() => loginWithRedirect()}>Login</PrimaryButton>
-      <ActionButton onClick={() => logout()}>Logout</ActionButton>
-      {user && (
-        <Stack>
-          <Title order={2}>{user.name}</Title>
-          <p>{user.email}</p>
-        </Stack>
-      )}
-    </>
+    <Stack justify="center" align="center" h="100vh" spacing={"xl"}>
+      <Title>Loading your dashboard...</Title>
+      <Loader color="brandSaffron" />
+    </Stack>
   );
 }
+
+export const AuthHomePage = withAuthenticationRequired(HomePage);
