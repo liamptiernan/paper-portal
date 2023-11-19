@@ -59,9 +59,18 @@ class AdOffering(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
+    impact_score: Mapped[float]
+    size: Mapped[str]
+    page_start: Mapped[int]
+    page_end: Mapped[int] = mapped_column(nullable=True)
+    color: Mapped[bool]
+    price: Mapped[float]
+    index: Mapped[int]
     publication_id: Mapped[int] = mapped_column(
         ForeignKey("publication.id"), nullable=False
     )
-    publication: Mapped[Publication] = relationship(foreign_keys=[publication_id])
+    publication: Mapped[Publication] = relationship(
+        foreign_keys=[publication_id], lazy="joined"
+    )
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])

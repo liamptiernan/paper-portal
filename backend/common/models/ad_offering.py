@@ -5,6 +5,13 @@ from backend.common.models.publication import Publication
 class NewAdOffering(NewOrgModel):
     name: str
     publication_id: int
+    impact_score: float = 1
+    size: str = "1/4 Page"
+    page_start: int = 1
+    page_end: int | None = None
+    color: bool = False
+    price: float = 100
+    index: int = 0
 
 
 class AdOffering(NewAdOffering, OrgModel):
@@ -12,6 +19,3 @@ class AdOffering(NewAdOffering, OrgModel):
 
     class Config:
         orm_mode = True
-
-
-# TODO: Add repos and migrations

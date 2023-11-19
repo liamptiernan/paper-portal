@@ -17,3 +17,17 @@ export interface Publication {
   distribution_radius: number;
   regions: PublicationRegion[];
 }
+
+export interface AdOffering {
+  id: number;
+  name: string;
+  publication_id: number;
+  impact_score: number;
+  size: string;
+  page_start: number;
+  page_end: number | null;
+  color: boolean;
+  price: number;
+  index: number;
+  publication: Publication;
+}

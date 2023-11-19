@@ -11,8 +11,17 @@ import {
 function MainNavLinks() {
   return (
     <>
-      <NavLink component="a" icon={<IconNews />} label="Publications" />
-      <NavLink component="a" icon={<IconBuildingWarehouse />} label="Ads" />
+      <NavLink
+        component="a"
+        icon={<IconNews />}
+        label="Publications"
+        href="/publisher/publications"
+      />
+      <NavLink
+        component="a"
+        icon={<IconBuildingWarehouse />}
+        label="Purchases"
+      />
     </>
   );
 }
