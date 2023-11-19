@@ -26,8 +26,14 @@ function MainNavLinks() {
         component="a"
         icon={<IconBuildingWarehouse />}
         label="Purchases"
+        href="/publisher/purchases"
       />
-      <NavLink component="a" icon={<IconUsersGroup />} label="Users" />
+      <NavLink
+        component="a"
+        icon={<IconUsersGroup />}
+        label="Users"
+        href="/publisher/users"
+      />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Container, Flex, Modal, Stack, Title } from "@mantine/core";
+import { Container, Flex, Modal, Stack, Text, Title } from "@mantine/core";
 import { accountModalOpen, setAccountModalOpen } from "../app/globalSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useCallback } from "react";
@@ -50,7 +50,7 @@ export function AccountModal() {
     <Modal
       opened={opened}
       onClose={handleClose}
-      title={<Title>Account Info</Title>}
+      title={<Text size="1.5rem">Account Info</Text>}
     >
       <ModalBody user={user} isAuthenticated={isAuthenticated} />
       <Flex justify="center" mt="md">
