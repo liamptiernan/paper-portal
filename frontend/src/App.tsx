@@ -8,11 +8,13 @@ import { AuthPublisherDashboard } from "./features/publisher-dashboard/publicati
 import { PublicationFormHeader } from "./features/publisher-dashboard/PublicationHeader";
 import { AdTablePage } from "./features/publisher-dashboard/ads/PublicationAdTablePage";
 import { AdOfferingEditPage } from "./features/publisher-dashboard/ads/PublicationAdEditPage";
+import { ErrorPage } from "./components/ErrorPage";
 // import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="*" element={<ErrorPage />} />
       <Route path="/" element={<HomePage />} />;
       <Route path="/customer" element={<PurchaseLayout />}>
         <Route path="purchase" element={<AdPurchaseForm />}></Route>

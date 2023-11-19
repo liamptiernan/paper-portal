@@ -6,7 +6,12 @@ import {
   IconDoorExit,
   IconNews,
   IconUser,
+  IconUsersGroup,
 } from "@tabler/icons-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useCallback } from "react";
+import { useAppDispatch } from "../app/hooks";
+import { setAccountModalOpen } from "../app/globalSlice";
 
 function MainNavLinks() {
   return (
@@ -22,15 +27,32 @@ function MainNavLinks() {
         icon={<IconBuildingWarehouse />}
         label="Purchases"
       />
+      <NavLink component="a" icon={<IconUsersGroup />} label="Users" />
     </>
   );
 }
 
 function FooterNavLinks() {
+  const { logout } = useAuth0();
+  const dispatch = useAppDispatch();
+
+  const handleOpen = useCallback(() => {
+    dispatch(setAccountModalOpen(true));
+  }, [dispatch]);
   return (
     <>
-      <NavLink component="a" icon={<IconDoorExit />} label="Log out" />
-      <NavLink component="a" icon={<IconUser />} label="Account" />
+      <NavLink
+        onClick={() => logout()}
+        component="a"
+        icon={<IconDoorExit />}
+        label="Log out"
+      />
+      <NavLink
+        onClick={() => handleOpen()}
+        component="a"
+        icon={<IconUser />}
+        label="Account"
+      />
     </>
   );
 }
