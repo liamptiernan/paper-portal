@@ -4,6 +4,7 @@ import { MainNavBar } from "../../components/NavBar";
 import { useNavBarStyles } from "../portal-form/styles";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { Outlet } from "react-router-dom";
+import { AccountModal } from "../../components/AccountModal";
 
 export function PurchaseLayout() {
   const { classes } = useNavBarStyles();
@@ -26,6 +27,7 @@ export function AdminLayout() {
         <MainNavBar />
         <Outlet />
       </Flex>
+      <AccountModal />
     </>
   );
 }
