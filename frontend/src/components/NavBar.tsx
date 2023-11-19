@@ -4,6 +4,7 @@ import {
   IconBuildingCommunity,
   IconBuildingWarehouse,
   IconDoorExit,
+  IconHelp,
   IconNews,
   IconUser,
   IconUsersGroup,
@@ -57,6 +58,7 @@ function FooterNavLinks() {
   }, [dispatch]);
   return (
     <>
+      <NavLink component="a" icon={<IconHelp />} label="Help" />
       <NavLink
         onClick={() => logout()}
         component="a"
