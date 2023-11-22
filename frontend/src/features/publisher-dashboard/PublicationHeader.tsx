@@ -7,6 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useGetPublicationQuery } from "./publications/publicationsApi";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export function PublicationFormHeader() {
   const params = useParams();
