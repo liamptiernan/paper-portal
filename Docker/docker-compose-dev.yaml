@@ -22,6 +22,6 @@ services:
     image: paper-test:latest
     command: bash -lc ". ./.venv/bin/activate && python app/main.py"
     ports:
-      - "8000:8000"
+      - "80:80"
 volumes:
   paper-postgres:

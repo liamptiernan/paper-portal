@@ -8,7 +8,6 @@ RUN yarn run build
 
 FROM python:3.11.1-bullseye as builder
 
-
 RUN apt-get update && apt-get install -y locales && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG=en_US.utf8 DEBIAN_FRONTEND=noninteractive
@@ -31,14 +30,15 @@ RUN python3 -m venv $POETRY_VENV \
 # Add `poetry` to PATH
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
-
 ARG UNAME=user
-ARG HOME_DIR=/home/${UNAME}
+# ARG HOME_DIR=/home/${UNAME}
 ADD pyproject.toml poetry.lock ./
 
 RUN . .venv/bin/activate && \
     poetry install
 
 ADD backend ./
+
+COPY --from=frontend /frontend/dist/ ${HOME_DIR}/frontend/dist
 
 RUN echo ". ${HOME_DIR}/backend/.venv/bin/activate" >> ~/.bashrc

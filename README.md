@@ -72,3 +72,17 @@ yarn dev
 ```bash
 yarn lint
 ```
+
+## Docker
+
+```bash
+docker build -f Docker/app.Dockerfile -t paper-test .
+
+# with arm
+
+docker buildx build -f Docker/app.Dockerfile --platform=linux/amd64 -t paper-test .
+```
+
+## AWS
+
+CLI: cli profile name paper-dev-profile
