@@ -6,7 +6,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { AdsTable } from "./AdTable";
-import { ActionButton, PrimaryButton } from "../../../components/Actions";
+import { ActionButton } from "../../../components/Actions";
 import { useCallback } from "react";
 import { useTryToast } from "../../../hooks/useTryToast";
 
@@ -44,10 +44,10 @@ export function AdTablePage() {
     <Stack maw={"1300px"}>
       <LoadingOverlay visible={isLoading} />
       <Flex justify={"flex-end"} gap={"xl"}>
-        <ActionButton>Help</ActionButton>
-        <PrimaryButton onClick={handleCreateOffering} isLoading={isCreating}>
+        <ActionButton onClick={handleCreateOffering} isLoading={isCreating}>
           Create Ad Unit
-        </PrimaryButton>
+        </ActionButton>
+        <ActionButton>Help</ActionButton>
       </Flex>
       {isError && "ERROR"}
       {offeringsRes && <AdsTable offerings={offeringsRes.data} />}
