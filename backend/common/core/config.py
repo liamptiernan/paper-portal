@@ -9,7 +9,6 @@ root_dir = envs_dir.joinpath("../../../..").resolve()
 
 env_type = os.getenv("ENV_TYPE", "local")
 is_local = env_type == "local"
-is_cli = os.getenv("IS_CLI", False)
 
 config = {
     **dotenv_values(envs_dir.joinpath("base.env")),
