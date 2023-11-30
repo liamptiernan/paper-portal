@@ -30,6 +30,7 @@ cors(app)
 @app.middleware("http")
 async def frontend_routing(request: Request, call_next: Any):
     response = await call_next(request)
+
     if (
         response.status_code == status.HTTP_404_NOT_FOUND
         and not request.url.path.startswith("/api")
