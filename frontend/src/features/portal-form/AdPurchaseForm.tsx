@@ -54,7 +54,7 @@ export function AdPurchaseForm() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
-    document.title = "Community - Ad Designer";
+    document.title = "Market Angler - Ad Designer";
   }, []);
 
   const { classes: controllerClasses } = useGeneralStyles();
@@ -96,6 +96,7 @@ export function AdPurchaseForm() {
     setHasSubmitted(true);
     console.log("submit");
     console.log(values);
+    console.log(_event);
   };
 
   // TODO: add form validation and routing

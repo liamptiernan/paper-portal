@@ -1,5 +1,10 @@
 FROM node:18-alpine as frontend
 
+ENV VITE_AUTH0_DOMAIN="dev-6183kr8ygsr350dr.us.auth0.com"
+ENV VITE_AUTH0_CLIENT_ID="IaghBtXBVqY6KVhCdhl21WA7hqqTN7sw"
+ENV VITE_AUTH0_AUDIENCE="https://www.paperportal.com/api/v1"
+ENV VITE_BASE_API_URL="http://localhost:80/api/v1/test"
+
 WORKDIR /frontend
 ADD frontend/package.json frontend/yarn.lock ./
 RUN yarn install

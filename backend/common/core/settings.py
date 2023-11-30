@@ -6,7 +6,7 @@ load_dotenv(env_type)
 
 
 class Settings(BaseSettings):
-    db_url: str = config["DB_URL"]
+    db_url: str = f"postgresql+psycopg://{config['DB_USERNAME']}:{config['DB_PASSWORD']}@{config['DB_ADDRESS']}:{config['DB_PORT']}/{config['DB_NAME']}"  # noqa: E501
     is_local: bool = env_type == "local"
     auth0_audience: str
     auth0_domain: str
