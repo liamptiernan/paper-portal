@@ -96,3 +96,10 @@ aws ecs execute-command \
 --container "paper-portal-dev" \
 --command "/bin/bash" \
 --interactive
+
+**TODO:**
+
+Create a task definition that will alembic upgrade head
+Create the service and run it
+
+Get execute-command working to get on the box
