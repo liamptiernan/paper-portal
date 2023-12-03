@@ -4,6 +4,8 @@ import { Routes, Route } from "react-router-dom";
 import { MainNavBar } from "./components/NavBar";
 import { useNavBarStyles } from "./features/portal-form/styles";
 
+// demo
+
 function AppLayout() {
   const { classes } = useNavBarStyles();
   return (
