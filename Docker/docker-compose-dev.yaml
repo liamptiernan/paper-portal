@@ -18,5 +18,10 @@ services:
     ports:
       - 8081:8080
 
+  # webapp:
+  #   image: paper-test:latest
+  #   command: bash -lc ". ./.venv/bin/activate && python app/main.py"
+  #   ports:
+  #     - "80:80"
 volumes:
   paper-postgres:

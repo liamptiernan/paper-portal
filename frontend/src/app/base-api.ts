@@ -5,6 +5,7 @@ import { Auth0Client } from "@auth0/auth0-spa-js";
 const domain: string = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId: string = import.meta.env.VITE_AUTH0_CLIENT_ID;
 const audience: string = import.meta.env.VITE_AUTH0_AUDIENCE;
+const baseUrl: string = import.meta.env.VITE_BASE_API_URL;
 
 const client = new Auth0Client({
   domain: domain,
@@ -13,7 +14,7 @@ const client = new Auth0Client({
 
 export const defaultFetchBaseQuery = (options: FetchBaseQueryArgs = {}) => {
   return fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_API_URL,
+    baseUrl,
     prepareHeaders: async function prepareHeaders(headers) {
       const token = await client.getTokenSilently({
         authorizationParams: { audience },
