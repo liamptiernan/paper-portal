@@ -36,7 +36,6 @@ RUN python3 -m venv $POETRY_VENV \
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
 ARG UNAME=user
-# ARG HOME_DIR=/home/${UNAME}
 ADD pyproject.toml poetry.lock ./
 
 RUN . .venv/bin/activate && \
