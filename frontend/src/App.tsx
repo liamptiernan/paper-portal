@@ -10,7 +10,7 @@ import { AdTablePage } from "./features/publisher-dashboard/ads/PublicationAdTab
 import { AdOfferingEditPage } from "./features/publisher-dashboard/ads/PublicationAdEditPage";
 import { ErrorPage } from "./components/ErrorPage";
 import { PurchasesDashboard } from "./features/publisher-dashboard/purchases/PurchasesDashboard";
-import { UsersDashboard } from "./features/publisher-dashboard/users/UsersDashboard";
+import { UsersDashboard } from "./features/users/UsersDashboard";
 import { IntegrateTab } from "./features/publisher-dashboard/publications/IntegrateTab";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
