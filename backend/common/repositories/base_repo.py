@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy import Select, select, Update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.common.core.enums import UserRole
 from backend.common.db.init import Base
 from backend.common.models.base import AppModel, OwnedModel, OrgModel
 from backend.common.models.user import User as AppUser
@@ -71,13 +72,13 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
     ) -> TAppModel:
         return updates
 
-    def select_by_id(self, id: int) -> Select[tuple[TDBModel]]:
+    def _select_by_id(self, id: int) -> Select[tuple[TDBModel]]:
         return select(self.db_model).where(self.db_model.id == id)
 
     async def get(
         self, session: AsyncSession, id: int, user: AppUser
     ) -> TAppModel | None:
-        query = await self.auth_select(session, user, self.select_by_id(id))
+        query = await self.auth_select(session, user, self._select_by_id(id))
         model = (await session.execute(query)).unique().scalar_one_or_none()
         if model:
             return await self.db_to_app(session, model)
@@ -104,7 +105,7 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
         return await self.db_to_app(session, model)
 
     async def delete(self, session: AsyncSession, user: AppUser, id: int) -> None:
-        query = await self.auth_delete(session, user, self.select_by_id(id))
+        query = await self.auth_delete(session, user, self._select_by_id(id))
         model = (await session.execute(query)).unique().scalar_one_or_none()
         if model:
             await session.delete(model)
@@ -133,7 +134,8 @@ class OrgRepo(BaseRepo[TDBModel, TOrgModel]):
     async def auth_select(
         self, session: AsyncSession, user: AppUser, query: Select | Update
     ):
-        # if user.role == SuperUser, bypass
+        if UserRole.SUPERUSER in user.roles:
+            return query
         return query.filter_by(org_id=user.org_id)
 
     async def auth_delete(

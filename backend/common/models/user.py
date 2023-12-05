@@ -1,14 +1,16 @@
 from pydantic import BaseModel
 
-from backend.common.core.enums import Roles
+from backend.common.core.enums import UserRole
 from backend.common.models.base import AppModel
 from backend.common.models.organization import Organization
 
 
 class NewUser(BaseModel):
-    full_name: str
+    given_name: str
+    family_name: str
+    auth_id: str
     email: str
-    role: Roles | None = None
+    roles: list[UserRole] = []
     org_id: int
 
 

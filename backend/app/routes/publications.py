@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.routes.ad_offerings import AdOfferingsTableResponse
 from backend.app.utils.user import UserWithRole
-from backend.common.core.enums import Roles
+from backend.common.core.enums import UserRole
 from backend.common.db.init import get_session
 from backend.common.models.publication import NewPublication, Publication
 from backend.common.models.ad_offering import NewAdOffering, AdOffering
@@ -17,7 +17,7 @@ router = APIRouter(
     tags=["Publications"],
 )
 
-superuser = UserWithRole(Roles.SUPERUSER)
+superuser = UserWithRole(UserRole.SUPERUSER)
 
 
 class PublicationsTableResponse(BaseModel):
