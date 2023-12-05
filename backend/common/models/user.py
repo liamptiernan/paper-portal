@@ -1,11 +1,9 @@
-from pydantic import BaseModel
-
 from backend.common.core.enums import UserRole
-from backend.common.models.base import AppModel
+from backend.common.models.base import AppModel, NewAppModel
 from backend.common.models.organization import Organization
 
 
-class NewUser(BaseModel):
+class NewUser(NewAppModel):
     given_name: str
     family_name: str
     auth_id: str

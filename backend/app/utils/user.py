@@ -58,11 +58,12 @@ async def create_new_authd_user(
     payload: dict[str, Any], session: AsyncSession, api_user: User
 ) -> User:
     attr_key = settings.auth0_attr_key
-    given_name = payload.get(attr_key + "given_name")
-    family_name = payload.get(attr_key + "family_name")
-    user_id = payload.get(attr_key + "user_id")
+    # TODO: if not either one of these, placeholder
+    given_name = payload.get(attr_key + "given_name", "New User")
+    family_name = payload.get(attr_key + "family_name", "")
+    user_id = payload.get(attr_key + "auth0_id")
     email = payload.get(attr_key + "email")
-    if not (email and given_name and family_name and user_id):
+    if not (email and given_name and family_name is not None and user_id):
         raise Exception("Payload incomplete")
 
     new_org = NewOrganization(name="New Organization")

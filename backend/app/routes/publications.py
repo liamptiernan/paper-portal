@@ -17,7 +17,7 @@ router = APIRouter(
     tags=["Publications"],
 )
 
-superuser = UserWithRole(UserRole.SUPERUSER)
+pub_admin = UserWithRole(UserRole.PUBADMIN)
 
 
 class PublicationsTableResponse(BaseModel):
@@ -27,7 +27,7 @@ class PublicationsTableResponse(BaseModel):
 
 @router.get("/", response_model=PublicationsTableResponse)
 async def get_all_publications(
-    session: AsyncSession = Depends(get_session), user: User = Depends(superuser)
+    session: AsyncSession = Depends(get_session), user: User = Depends(pub_admin)
 ):
     publications = await publications_repo.get_all(session, user)
     return PublicationsTableResponse(data=publications, count=len(publications))
@@ -37,7 +37,7 @@ async def get_all_publications(
 async def get_publication(
     id: int,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     publication = await publications_repo.get(session, id, user)
     if publication is None:
@@ -51,7 +51,7 @@ async def get_publication(
 async def update_publication(
     pub_updates: Publication,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     return await publications_repo.update(session, user, pub_updates)
 
@@ -60,7 +60,7 @@ async def update_publication(
 async def create_publication(
     new_publication: NewPublication,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     return await publications_repo.create(session, user, new_publication)
 
@@ -69,7 +69,7 @@ async def create_publication(
 async def delete_publication(
     id: int,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     return await publications_repo.delete(session, user, id)
 
@@ -81,7 +81,7 @@ async def delete_publication(
 async def get_ad_offering(
     offering_id: int,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     ad_offering = await ad_offerings_repo.get(session, offering_id, user)
     if ad_offering is None:
@@ -95,7 +95,7 @@ async def get_ad_offering(
 async def delete_ad_offering(
     id: int,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     return await ad_offerings_repo.delete(session, user, id)
 
@@ -104,7 +104,7 @@ async def delete_ad_offering(
 async def reorder_ad_offering(
     order: list[int],
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     return await ad_offerings_repo.reorder_and_get_ad_offerings(order, session, user)
 
@@ -113,7 +113,7 @@ async def reorder_ad_offering(
 async def update_ad_offering(
     offering_updates: AdOffering,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     return await ad_offerings_repo.update(session, user, offering_updates)
 
@@ -122,7 +122,7 @@ async def update_ad_offering(
 async def get_publication_ad_offerings(
     id: int,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     ad_offerings = await ad_offerings_repo.get_all_for_publication(id, session, user)
     return AdOfferingsTableResponse(data=ad_offerings, count=len(ad_offerings))
@@ -137,7 +137,7 @@ async def create_publication_ad_offering(
     publication_id: int,
     new_ad_offering: NewAdOffering,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(superuser),
+    user: User = Depends(pub_admin),
 ):
     new_ad_offering.publication_id = publication_id
     return await ad_offerings_repo.create(session, user, new_ad_offering)
