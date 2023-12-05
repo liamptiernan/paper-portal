@@ -1,14 +1,6 @@
-import { Route, RouteProps } from "react-router-dom";
-// export function ProtectedRoute(props: RouteProps & ProtectedRouteProps) {
-//   const Element = withAuthenticationRequired(props.protectedElement);
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+import React from "react";
 
-//   return <Route element={<Element />} {...props} />;
-// }
-
-export function ProtectedRoute(props: RouteProps) {
-  return (
-    <>
-      <Route {...props} />
-    </>
-  );
+export function ProtectedRoute(protectedElement: React.ComponentType<object>) {
+  return withAuthenticationRequired(protectedElement);
 }

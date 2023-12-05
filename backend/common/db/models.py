@@ -1,7 +1,7 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ARRAY, Column, ForeignKey, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.common.core.enums import Roles
+from backend.common.core.enums import UserRole
 from backend.common.db.init import Base
 
 
@@ -11,13 +11,24 @@ class Organization(Base):
     name: Mapped[str]
 
 
+class UserInvite(Base):
+    __tablename__ = "user_invite"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
+    target_email: Mapped[str]
+    target_roles: Mapped[list[UserRole]] = Column(ARRAY(VARCHAR))  # type: ignore
+    accepted: Mapped[bool]
+
+
 class User(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    full_name: Mapped[str]
+    given_name: Mapped[str]
+    family_name: Mapped[str]
+    auth_id: Mapped[str]
     email: Mapped[str]
-    role: Mapped[Roles] = mapped_column(nullable=True)
+    roles: Mapped[list[UserRole]] = Column(ARRAY(VARCHAR))  # type: ignore
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id], lazy="joined")
 

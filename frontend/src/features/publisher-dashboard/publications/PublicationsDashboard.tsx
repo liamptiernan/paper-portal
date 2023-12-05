@@ -1,7 +1,6 @@
 import { Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { PrimaryButton } from "../../../components/Actions";
 import { PublicationsTable } from "./PublicationsTable";
-import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -61,7 +60,3 @@ export function PublicationsDashboard() {
     </Container>
   );
 }
-
-export const AuthPublisherDashboard = withAuthenticationRequired(
-  PublicationsDashboard
-);

@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthHomePage } from "./features/home/HomePage";
 import { AdminLayout, PurchaseLayout } from "./features/app-layout/AppLayout";
 import { PublicationEditPage } from "./features/publisher-dashboard/publications/PublicationEditPage";
-import { AuthPublisherDashboard } from "./features/publisher-dashboard/publications/PublicationsDashboard";
+import { PublicationsDashboard } from "./features/publisher-dashboard/publications/PublicationsDashboard";
 import { PublicationFormHeader } from "./features/publisher-dashboard/PublicationHeader";
 import { AdTablePage } from "./features/publisher-dashboard/ads/PublicationAdTablePage";
 import { AdOfferingEditPage } from "./features/publisher-dashboard/ads/PublicationAdEditPage";
@@ -12,7 +12,9 @@ import { ErrorPage } from "./components/ErrorPage";
 import { PurchasesDashboard } from "./features/publisher-dashboard/purchases/PurchasesDashboard";
 import { UsersDashboard } from "./features/publisher-dashboard/users/UsersDashboard";
 import { IntegrateTab } from "./features/publisher-dashboard/publications/IntegrateTab";
-// import ProtectedRoute from "./components/ProtectedRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+
+const AuthAdminLayout = ProtectedRoute(AdminLayout);
 
 export default function App() {
   return (
@@ -22,9 +24,9 @@ export default function App() {
       <Route path="/customer" element={<PurchaseLayout />}>
         <Route path="purchase" element={<AdPurchaseForm />}></Route>
       </Route>
-      <Route path="/publisher" element={<AdminLayout />}>
+      <Route path="/publisher" element={<AuthAdminLayout />}>
         <Route path="publications">
-          <Route index element={<AuthPublisherDashboard />} />
+          <Route index element={<PublicationsDashboard />} />
           <Route path=":publicationId" element={<PublicationFormHeader />}>
             <Route path="edit" element={<PublicationEditPage />} />
             <Route path="ads">

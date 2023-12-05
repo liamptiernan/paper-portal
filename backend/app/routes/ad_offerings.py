@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.utils.user import UserWithRole
-from backend.common.core.enums import Roles
+from backend.common.core.enums import UserRole
 from backend.common.db.init import get_session
 from backend.common.models.ad_offering import AdOffering, NewAdOffering
 from backend.common.models.user import User
@@ -14,7 +14,7 @@ router = APIRouter(
     tags=["AdOfferings"],
 )
 
-superuser = UserWithRole(Roles.SUPERUSER)
+superuser = UserWithRole(UserRole.SUPERUSER)
 
 
 class AdOfferingsTableResponse(BaseModel):

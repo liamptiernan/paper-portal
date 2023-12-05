@@ -1,5 +1,6 @@
-import logging
 from dataclasses import dataclass
+import logging
+from typing import Any
 
 import jwt
 from fastapi import Depends
@@ -13,10 +14,12 @@ from backend.app.utils.custom_exceptions import (
     PermissionDeniedException,
 )
 from backend.common.core.settings import settings
-from backend.common.core.enums import Roles
+from backend.common.core.enums import UserRole
 from backend.common.db.init import get_session
-from backend.common.models.user import User
+from backend.common.models.user import User, NewUser
+from backend.common.models.organization import NewOrganization
 from backend.common.repositories.users_repo import users_repo
+from backend.common.repositories.organizations_repo import organizations_repo
 
 scheme = HTTPBearer(auto_error=False)
 
@@ -51,6 +54,33 @@ class JsonWebToken:
         return payload
 
 
+async def create_new_authd_user(
+    payload: dict[str, Any], session: AsyncSession, api_user: User
+) -> User:
+    attr_key = settings.auth0_attr_key
+    # TODO: if not either one of these, placeholder
+    given_name = payload.get(attr_key + "given_name", "New User")
+    family_name = payload.get(attr_key + "family_name", "")
+    user_id = payload.get(attr_key + "auth0_id")
+    email = payload.get(attr_key + "email")
+    if not (email and given_name and family_name is not None and user_id):
+        raise Exception("Payload incomplete")
+
+    new_org = NewOrganization(name="New Organization")
+
+    created_org = await organizations_repo.create(session, api_user, new_org)
+
+    new_user = NewUser(
+        given_name=given_name,
+        family_name=family_name,
+        auth_id=user_id,
+        email=email,
+        org_id=created_org.id,
+        roles=[UserRole.PUBADMIN],
+    )
+    return await users_repo.create(session, api_user, new_user)
+
+
 async def get_current_user(
     auth: HTTPAuthorizationCredentials = Depends(scheme),
     session: AsyncSession = Depends(get_session),
@@ -61,31 +91,33 @@ async def get_current_user(
     except Exception as ex:
         logging.error(ex)
         raise RequiresAuthenticationException
-    email_key = settings.auth0_email_key
-    email = payload.get(email_key)
-    user = await users_repo.get_by_email_no_auth(session, email) if email else None
-    if not user:
-        logging.error(f"User not found: email={email}")
-        raise PermissionDeniedException
 
+    attr_key = settings.auth0_attr_key
+    email = payload.get(attr_key + "email")
+    if not email:
+        raise Exception("Payload incomplete")
+    api_user = await users_repo.get_api_user(session)
+    user = await users_repo.get_by_email(session, api_user, email)
+    if not user:
+        # if no user but they auth'd, we need to add them to our db
+        logging.info(f"User not found: email={email}. Creating user")
+        user = await create_new_authd_user(payload, session, api_user)
     return user
 
 
 class UserWithRole:
     """
     - Allows for "Paramerterized" Deps in FastAPI
-    - Roles are considered as OR
+    - UserRole are considered as OR
     """
 
-    def __init__(self, *roles: Roles) -> None:
+    def __init__(self, *roles: UserRole) -> None:
         self.roles = roles
 
     def __call__(self, user: User = Depends(get_current_user)):
-        if user.role is None:
-            if not self.roles:
-                return user
-            raise PermissionDeniedException
+        if not self.roles:
+            return user
 
-        if user.role.value not in self.roles:
-            raise PermissionDeniedException
-        return user
+        if any(role in user.roles for role in self.roles):
+            return user
+        raise PermissionDeniedException

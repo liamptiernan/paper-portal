@@ -15,7 +15,7 @@ function ModalBody({
   if (!(user && isAuthenticated)) {
     return <h2>User info not found</h2>;
   }
-
+  console.log(user);
   return (
     <Stack spacing={"xs"}>
       <Container mb="sm">

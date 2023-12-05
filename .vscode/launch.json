@@ -17,7 +17,7 @@
         "PYTHONPATH": "${workspaceFolder}"
       },
       "cwd": "${workspaceFolder}/backend/app",
-      "args": ["app:app", "--reload", "--port", "8000", "--host", "0.0.0.0"],
+      "args": ["app:app", "--reload", "--port", "80", "--host", "0.0.0.0"],
       "jinja": true,
       "justMyCode": true
     },

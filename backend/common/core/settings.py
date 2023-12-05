@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     auth0_audience: str
     auth0_domain: str
     client_origin_url: str
-    auth0_email_key: str
+    auth0_attr_key: str
 
 
 settings = Settings()

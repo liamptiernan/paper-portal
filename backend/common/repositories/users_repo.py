@@ -15,9 +15,11 @@ class UsersRepo(BaseRepo[User, AppUser]):
     ) -> AppUser:
         return AppUser(
             id=db_model.id,
-            full_name=db_model.full_name,
+            given_name=db_model.given_name,
+            family_name=db_model.family_name,
+            auth_id=db_model.auth_id,
             email=db_model.email,
-            role=db_model.role,
+            roles=db_model.roles,
             org_id=db_model.org_id,
             org=AppOrganization(**db_model.org.__dict__),
         )
@@ -29,20 +31,31 @@ class UsersRepo(BaseRepo[User, AppUser]):
     ) -> User:
         return User(
             id=app_model.id,
-            full_name=app_model.full_name,
+            given_name=app_model.given_name,
+            family_name=app_model.family_name,
+            auth_id=app_model.auth_id,
             email=app_model.email,
-            role=app_model.role,
+            roles=app_model.roles,
             org_id=app_model.org_id,
         )
 
-    async def get_by_email_no_auth(
+    async def get_by_email(
         self,
         session: AsyncSession,
+        user: AppUser,
         email: str,
     ) -> AppUser | None:
         query = select(User).filter_by(email=email).limit(1)
+        query = await self.auth_select(session, user, query)
         db_user = await session.scalar(query)
         return await self.db_to_app(session, db_user) if db_user else None
+
+    async def get_api_user(self, session: AsyncSession) -> AppUser:
+        query = select(User).filter_by(email="api@marketangler.com").limit(1)
+        api_user = await session.scalar(query)
+        if api_user is None:
+            raise Exception("API user not found")
+        return api_user
 
 
 users_repo = UsersRepo(User, AppUser)
