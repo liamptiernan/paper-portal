@@ -9,6 +9,8 @@ import { User, displayRoles } from "./types";
 import { ActionButton } from "../../components/Actions";
 import { useAppDispatch } from "../../app/hooks";
 import { setActiveEditUser, setRolesModalOpen } from "./usersSlice";
+import { useAuth0 } from "@auth0/auth0-react";
+import { User as Auth0User } from "@auth0/auth0-react";
 
 function emptyTable() {
   return (
@@ -18,22 +20,29 @@ function emptyTable() {
   );
 }
 
-function ActionButtons({ row }: { row: User }) {
+function ActionButtons({
+  row,
+  currentUser,
+}: {
+  row: User;
+  currentUser?: Auth0User;
+}) {
   const dispatch = useAppDispatch();
-
+  const disabled = !currentUser || currentUser?.email === row.email;
   const handleEditOpen = () => {
     dispatch(setActiveEditUser(row));
     dispatch(setRolesModalOpen(true));
   };
+
+  const handleDelete = () => {
+    console.log("delete");
+  };
   return (
     <Flex gap={"sm"} justify={"start"}>
-      <ActionButton onClick={handleEditOpen}>Edit</ActionButton>
-      <ActionButton
-        color="brandRed"
-        onClick={() => {
-          console.log("remove");
-        }}
-      >
+      <ActionButton disabled={disabled} onClick={handleEditOpen}>
+        Edit
+      </ActionButton>
+      <ActionButton color="brandRed" disabled={disabled} onClick={handleDelete}>
         Remove
       </ActionButton>
     </Flex>
@@ -47,6 +56,7 @@ export function UsersTable({
   users?: User[];
   isLoading: boolean;
 }) {
+  const { user: currentUser } = useAuth0();
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
       {
@@ -73,12 +83,12 @@ export function UsersTable({
           if (!row.email) {
             return "";
           }
-          return <ActionButtons row={row} />;
+          return <ActionButtons row={row} currentUser={currentUser} />;
         },
         header: "Actions",
       },
     ],
-    []
+    [currentUser]
   );
 
   // TODO: Needs pagination
