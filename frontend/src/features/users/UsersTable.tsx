@@ -11,6 +11,8 @@ import { useAppDispatch } from "../../app/hooks";
 import { setActiveEditUser, setRolesModalOpen } from "./usersSlice";
 import { useAuth0 } from "@auth0/auth0-react";
 import { User as Auth0User } from "@auth0/auth0-react";
+import { useRemoveUserFromOrgMutation } from "./usersApi";
+import { useTryToast } from "../../hooks/useTryToast";
 
 function emptyTable() {
   return (
@@ -28,21 +30,37 @@ function ActionButtons({
   currentUser?: Auth0User;
 }) {
   const dispatch = useAppDispatch();
+  const [removeUser, { isLoading: removeIsLoading }] =
+    useRemoveUserFromOrgMutation();
+  const toast = useTryToast(
+    { title: "User removed from organization" },
+    { title: "Error removing user from org" }
+  );
+
   const disabled = !currentUser || currentUser?.email === row.email;
   const handleEditOpen = () => {
     dispatch(setActiveEditUser(row));
     dispatch(setRolesModalOpen(true));
   };
 
-  const handleDelete = () => {
-    console.log("delete");
+  const handleRemove = () => {
+    try {
+      toast(removeUser(row.id).unwrap);
+    } catch (e) {
+      console.error(e);
+    }
   };
   return (
     <Flex gap={"sm"} justify={"start"}>
       <ActionButton disabled={disabled} onClick={handleEditOpen}>
         Edit
       </ActionButton>
-      <ActionButton color="brandRed" disabled={disabled} onClick={handleDelete}>
+      <ActionButton
+        color="brandRed"
+        isLoading={removeIsLoading}
+        disabled={disabled}
+        onClick={handleRemove}
+      >
         Remove
       </ActionButton>
     </Flex>
@@ -72,6 +90,9 @@ export function UsersTable({
         accessorFn: (row) => {
           if (!row.roles) {
             return "";
+          }
+          if (row.roles.length === 0) {
+            return "Base Permissions";
           }
           const roleLabels = row.roles.map((role) => displayRoles[role]);
           return roleLabels.join(", ");

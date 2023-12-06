@@ -14,7 +14,7 @@ export function HomePage() {
   return (
     <Stack justify="center" align="center" h="100vh" spacing={"xl"}>
       <Title>Loading your dashboard...</Title>
-      <Loader color="brandSaffron" />
+      <Loader color="brandYellow" />
     </Stack>
   );
 }

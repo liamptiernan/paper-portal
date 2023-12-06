@@ -47,7 +47,7 @@ class UsersRepo(OrgRepo[User, AppUser]):
         if not existing:
             raise RepoAuthException()
 
-        # Cannot change owner or client
+        # Cannot change org
         updates.org_id = existing.org_id
 
         # Super user not allowed
@@ -76,6 +76,19 @@ class UsersRepo(OrgRepo[User, AppUser]):
         if api_user is None:
             raise Exception("API user not found")
         return api_user
+
+    async def change_org(
+        self,
+        session: AsyncSession,
+        update_user: AppUser,
+        new_org_id: int,
+    ) -> AppUser:
+        update_user.org_id = new_org_id
+        model = await self.app_to_db(session, update_user)
+        model = await session.merge(model)
+        await session.commit()
+        await session.refresh(model)
+        return await self.db_to_app(session, model)
 
 
 users_repo = UsersRepo(User, AppUser)

@@ -12,7 +12,6 @@ export function UsersDashboard() {
   const toast = useTryToast(null, {
     title: "Error creating publication",
   });
-
   const { data: userRes, isLoading: fetchIsLoading } = useGetAllUsersQuery();
 
   const handleInviteUser = useCallback(async () => {

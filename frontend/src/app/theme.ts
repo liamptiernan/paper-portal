@@ -1,13 +1,13 @@
-import { MantineThemeOverride } from '@mantine/core';
+import { MantineThemeOverride } from "@mantine/core";
 
 export const theme: MantineThemeOverride = {
   colors: {
-    brandSaffron: [
+    brandYellow: [
       "#FCF9F2",
       "#F4E9CC",
       "#F1DCA7",
       "#F1D282",
-      "#F5CB5C",
+      "#FFC33A",
       "#EABD45",
       "#DDAF34",
       "#CA9F2C",
@@ -19,7 +19,7 @@ export const theme: MantineThemeOverride = {
       "#99CCE7",
       "#51AEDF",
       "#1C95D6",
-      "#0E79B2",
+      "#2F5DFF",
       "#10587E",
       "#104059",
       "#0F2E3F",
@@ -31,7 +31,19 @@ export const theme: MantineThemeOverride = {
       "#F8D3D4",
       "#F6ABAE",
       "#F88387",
-      "#FF5A5F",
+      "#FF2065",
+      "#F54147",
+      "#E92E34",
+      "#D92228",
+      "#BB272B",
+      "#A22A2D",
+    ],
+    brandGreen: [
+      "#FEFBFB",
+      "#F8D3D4",
+      "#F6ABAE",
+      "#F88387",
+      "#25D98D",
       "#F54147",
       "#E92E34",
       "#D92228",
@@ -49,7 +61,7 @@ export const theme: MantineThemeOverride = {
       "#151413",
       "#0F0E0D",
       "#0A0A09",
-    ]
+    ],
   },
   primaryColor: "brandBlue",
   primaryShade: 4,
