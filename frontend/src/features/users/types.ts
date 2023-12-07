@@ -17,3 +17,11 @@ export interface User {
   email: string;
   roles: UserRoles[];
 }
+
+export interface UserInvite {
+  id: number;
+  org_id: number;
+  target_email: string;
+  target_roles: UserRoles[];
+  accepted: boolean;
+}

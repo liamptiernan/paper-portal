@@ -16,6 +16,7 @@ router = APIRouter(
 )
 
 pub_admin = UserWithRole(UserRole.PUBADMIN)
+superuser = UserWithRole(UserRole.SUPERUSER)
 
 
 class UsersTableResponse(BaseModel):
@@ -87,7 +88,7 @@ async def remove_user_from_org(
 async def delete_user(
     id: int,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(pub_admin),
+    user: User = Depends(superuser),
 ):
     if id == user.id:
         raise HTTPException(

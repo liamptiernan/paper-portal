@@ -5,7 +5,7 @@ from backend.common.models.base import OrgModel, NewOrgModel
 class NewUserInvite(NewOrgModel):
     target_email: str
     target_roles: list[UserRole] = []
-    accepted: bool
+    accepted: bool = False
 
 
 class UserInvite(OrgModel, NewUserInvite):
