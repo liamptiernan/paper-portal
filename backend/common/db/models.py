@@ -18,6 +18,7 @@ class UserInvite(Base):
     target_email: Mapped[str]
     target_roles: Mapped[list[UserRole]] = Column(ARRAY(VARCHAR))  # type: ignore
     accepted: Mapped[bool]
+    declined: Mapped[bool]
 
 
 class User(Base):

@@ -25,6 +25,7 @@ export function useTryToast<T>(
             autoClose: 3500,
             message: null,
             radius: "xl",
+            color: "brandGreen",
           },
           success instanceof Function ? success(result) : success
         );
@@ -37,6 +38,7 @@ export function useTryToast<T>(
             icon: <IconX />,
             autoClose: 3500,
             message: null,
+            color: "brandRed",
           },
           error instanceof Function ? error(err) : error
         );

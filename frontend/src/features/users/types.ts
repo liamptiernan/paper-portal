@@ -24,4 +24,5 @@ export interface UserInvite {
   target_email: string;
   target_roles: UserRoles[];
   accepted: boolean;
+  declined: boolean;
 }

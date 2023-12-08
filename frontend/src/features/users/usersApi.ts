@@ -78,6 +78,19 @@ export const usersApi = createApi({
       query: (id) => `/user-invites/${id}`,
       providesTags: (_r, _e, id) => [{ type: "UserInvite" as const, id }],
     }),
+    getInvitesByUser: builder.query<UserInvitesTableResponse, void>({
+      query: () => `/user-invites/current`,
+      providesTags: (r) => {
+        const tags = [
+          { type: "UserInvite" as const, id: 0 },
+          { type: "UserInvite" as const, id: "LIST" },
+        ];
+        r?.data.forEach(({ id }) =>
+          tags.push({ type: "UserInvite" as const, id })
+        );
+        return tags;
+      },
+    }),
     updateUserInvite: builder.mutation<UserInvite, UserInvite>({
       query: (body) => ({
         url: "/user-invites/",
@@ -116,4 +129,5 @@ export const {
   useRemoveUserFromOrgMutation,
   useDeleteUserMutation,
   useCreateUserInviteMutation,
+  useGetInvitesByUserQuery,
 } = usersApi;

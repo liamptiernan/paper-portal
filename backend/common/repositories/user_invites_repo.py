@@ -22,5 +22,16 @@ class UserInvitesRepo(OrgRepo[UserInvite, AppUserInvite]):
             return await self.db_to_app(session, model)
         return None
 
+    async def get_all_for_user(
+        self,
+        session: AsyncSession,
+        user: AppUser,
+    ) -> list[AppUserInvite]:
+        query = select(UserInvite).filter_by(target_email=user.email, accepted=False)
+        return [
+            await self.db_to_app(session, model.t[0])
+            for model in (await session.execute(query)).unique()
+        ]
+
 
 user_invites_repo = UserInvitesRepo(UserInvite, AppUserInvite)

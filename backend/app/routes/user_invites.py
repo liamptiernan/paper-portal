@@ -15,6 +15,7 @@ router = APIRouter(
 )
 
 pub_admin = UserWithRole(UserRole.PUBADMIN)
+base_user = UserWithRole()
 
 
 class UserInvitesTableResponse(BaseModel):
@@ -27,6 +28,14 @@ async def get_all_user_invites(
     session: AsyncSession = Depends(get_session), user: User = Depends(pub_admin)
 ):
     user_invites = await user_invites_repo.get_all(session, user)
+    return UserInvitesTableResponse(data=user_invites, count=len(user_invites))
+
+
+@router.get("/current", response_model=UserInvitesTableResponse)
+async def get_invites_by_current_user_email(
+    session: AsyncSession = Depends(get_session), user: User = Depends(base_user)
+):
+    user_invites = await user_invites_repo.get_all_for_user(session, user)
     return UserInvitesTableResponse(data=user_invites, count=len(user_invites))
 
 
