@@ -20,6 +20,7 @@ class UsersRepo(OrgRepo[User, AppUser]):
             family_name=db_model.family_name,
             auth_id=db_model.auth_id,
             email=db_model.email,
+            verified=db_model.verified,
             roles=db_model.roles,
             org_id=db_model.org_id,
             org=AppOrganization(**db_model.org.__dict__),
@@ -36,6 +37,7 @@ class UsersRepo(OrgRepo[User, AppUser]):
             family_name=app_model.family_name,
             auth_id=app_model.auth_id,
             email=app_model.email,
+            verified=app_model.verified,
             roles=app_model.roles,
             org_id=app_model.org_id,
         )

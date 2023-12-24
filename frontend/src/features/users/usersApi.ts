@@ -91,14 +91,16 @@ export const usersApi = createApi({
         return tags;
       },
     }),
-    updateUserInvite: builder.mutation<UserInvite, UserInvite>({
-      query: (body) => ({
-        url: "/user-invites/",
+    acceptUserInvite: builder.mutation<User, number>({
+      query: (id) => ({
+        url: `/user-invites/accept`,
         method: "POST",
-        body: body,
+        body: { id },
       }),
-      invalidatesTags: (_r, _e, body) => [
-        { type: "UserInvite" as const, id: body.id },
+      invalidatesTags: (res, _e, id) => [
+        { type: "UserInvite", id },
+        { type: "UserInvite", id: "LIST" },
+        { type: "User", id: res?.id },
       ],
     }),
     createUserInvite: builder.mutation<UserInvite, Partial<UserInvite>>({
@@ -130,4 +132,6 @@ export const {
   useDeleteUserMutation,
   useCreateUserInviteMutation,
   useGetInvitesByUserQuery,
+  useAcceptUserInviteMutation,
+  useDeleteUserInviteMutation,
 } = usersApi;

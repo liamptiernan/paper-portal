@@ -8,6 +8,7 @@ class NewUser(NewOrgModel):
     family_name: str
     auth_id: str
     email: str
+    verified: bool = False
     roles: list[UserRole] = []
 
 

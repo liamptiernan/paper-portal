@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../../../app/hooks";
 import { setAccountModalOpen } from "../../../app/globalSlice";
 import { ActionButton } from "../../../components/Actions";
+import { IconMail } from "@tabler/icons-react";
 
 export function useUserInviteNotify() {
-  // fetch pending invites
   const { data: userInvites, isLoading } = useGetInvitesByUserQuery();
 
   function NotificationMessage() {
@@ -15,7 +15,12 @@ export function useUserInviteNotify() {
       dispatch(setAccountModalOpen(true));
     };
     return (
-      <ActionButton variant="subtle" compact onClick={openAccountModal}>
+      <ActionButton
+        variant="subtle"
+        compact
+        onClick={openAccountModal}
+        size="xs"
+      >
         View Invite
       </ActionButton>
     );
@@ -29,10 +34,8 @@ export function useUserInviteNotify() {
         message: <NotificationMessage />,
         autoClose: false,
         color: "brandYellow",
+        icon: <IconMail size={"1.25rem"} />,
       });
     }
   }, [userInvites, isLoading]);
-  // return them
-  // display notification if there are any
-  return userInvites;
 }

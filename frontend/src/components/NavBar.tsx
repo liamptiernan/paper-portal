@@ -14,6 +14,7 @@ import { useCallback } from "react";
 import { useAppDispatch } from "../app/hooks";
 import { setAccountModalOpen } from "../app/globalSlice";
 import { useUserInviteNotify } from "../features/users/user-invites/useUserInviteNotification";
+import { useGetInvitesByUserQuery } from "../features/users/usersApi";
 
 function MainNavLinks() {
   const path_match = window.location.pathname.match(
@@ -53,8 +54,7 @@ function MainNavLinks() {
 function FooterNavLinks() {
   const { logout } = useAuth0();
   const dispatch = useAppDispatch();
-  useUserInviteNotify();
-  // must be verified to accept!
+  const { data: userInvites } = useGetInvitesByUserQuery();
 
   const handleOpen = useCallback(() => {
     dispatch(setAccountModalOpen(true));
@@ -72,7 +72,7 @@ function FooterNavLinks() {
         onClick={() => handleOpen()}
         component="a"
         icon={
-          <Indicator>
+          <Indicator disabled={!(userInvites && userInvites.count > 0)}>
             <IconUser />
           </Indicator>
         }
@@ -84,6 +84,7 @@ function FooterNavLinks() {
 
 export function MainNavBar() {
   const { classes } = useNavBarStyles();
+  useUserInviteNotify();
   return (
     <Navbar width={{ base: 150 }} className={classes.navContainer}>
       <Navbar.Section>

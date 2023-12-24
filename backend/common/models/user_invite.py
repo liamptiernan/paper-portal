@@ -10,5 +10,7 @@ class NewUserInvite(NewOrgModel):
 
 
 class UserInvite(OrgModel, NewUserInvite):
+    org_name: str
+
     class Config:
         orm_mode = True

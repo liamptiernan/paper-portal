@@ -21,6 +21,7 @@ export interface User {
 export interface UserInvite {
   id: number;
   org_id: number;
+  org_name: string;
   target_email: string;
   target_roles: UserRoles[];
   accepted: boolean;

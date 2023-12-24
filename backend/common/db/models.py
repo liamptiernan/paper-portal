@@ -19,6 +19,7 @@ class UserInvite(Base):
     target_roles: Mapped[list[UserRole]] = Column(ARRAY(VARCHAR))  # type: ignore
     accepted: Mapped[bool]
     declined: Mapped[bool]
+    org: Mapped[Organization] = relationship(foreign_keys=[org_id], lazy="joined")
 
 
 class User(Base):
@@ -29,6 +30,7 @@ class User(Base):
     family_name: Mapped[str]
     auth_id: Mapped[str]
     email: Mapped[str]
+    verified: Mapped[bool]
     roles: Mapped[list[UserRole]] = Column(ARRAY(VARCHAR))  # type: ignore
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id], lazy="joined")
