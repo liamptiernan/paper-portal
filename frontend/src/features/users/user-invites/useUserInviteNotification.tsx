@@ -30,12 +30,15 @@ export function useUserInviteNotify() {
     if (!userInvites || isLoading) return;
     if (userInvites.count > 0) {
       notifications.show({
+        id: "orgInvite",
         title: "You have been invited to join an organization",
         message: <NotificationMessage />,
         autoClose: false,
         color: "brandYellow",
         icon: <IconMail size={"1.25rem"} />,
       });
+    } else {
+      notifications.hide("orgInvite");
     }
   }, [userInvites, isLoading]);
 }
