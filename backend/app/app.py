@@ -8,6 +8,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.routes import publications
+from backend.app.routes import users
+from backend.app.routes import user_invites
 from backend.app.utils.cors import cors
 
 frontend_build_dir = Path(__file__).parent.joinpath("../../frontend/dist").resolve()
@@ -46,4 +48,6 @@ async def ping():
 
 api_prefix = "/api/v1"
 app.include_router(publications.router, prefix=api_prefix)
+app.include_router(users.router, prefix=api_prefix)
+app.include_router(user_invites.router, prefix=api_prefix)
 app.mount("/", StaticFiles(directory=frontend_build_dir, html=True), name="static")

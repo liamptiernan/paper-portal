@@ -30,7 +30,7 @@ export function SpendSlider() {
       <></>
       <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
         <Slider
-          color="brandSaffron"
+          color="brandYellow"
           precision={2}
           step={10}
           min={10}
@@ -44,7 +44,7 @@ export function SpendSlider() {
       </MediaQuery>
       <MediaQuery largerThan={"md"} styles={{ display: "none" }}>
         <Slider
-          color="brandSaffron"
+          color="brandYellow"
           precision={2}
           step={10}
           min={10}

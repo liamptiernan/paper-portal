@@ -1,4 +1,4 @@
-import { Flex, NavLink, Navbar, ThemeIcon } from "@mantine/core";
+import { Flex, Indicator, NavLink, Navbar, ThemeIcon } from "@mantine/core";
 import { useNavBarStyles } from "./styles";
 import {
   IconBuildingCommunity,
@@ -13,6 +13,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback } from "react";
 import { useAppDispatch } from "../app/hooks";
 import { setAccountModalOpen } from "../app/globalSlice";
+import { useUserInviteNotify } from "../features/users/user-invites/useUserInviteNotification";
+import { useGetInvitesByUserQuery } from "../features/users/usersApi";
 
 function MainNavLinks() {
   const path_match = window.location.pathname.match(
@@ -52,6 +54,7 @@ function MainNavLinks() {
 function FooterNavLinks() {
   const { logout } = useAuth0();
   const dispatch = useAppDispatch();
+  const { data: userInvites } = useGetInvitesByUserQuery();
 
   const handleOpen = useCallback(() => {
     dispatch(setAccountModalOpen(true));
@@ -68,7 +71,11 @@ function FooterNavLinks() {
       <NavLink
         onClick={() => handleOpen()}
         component="a"
-        icon={<IconUser />}
+        icon={
+          <Indicator disabled={!(userInvites && userInvites.count > 0)}>
+            <IconUser />
+          </Indicator>
+        }
         label="Account"
       />
     </>
@@ -77,6 +84,7 @@ function FooterNavLinks() {
 
 export function MainNavBar() {
   const { classes } = useNavBarStyles();
+  useUserInviteNotify();
   return (
     <Navbar width={{ base: 150 }} className={classes.navContainer}>
       <Navbar.Section>

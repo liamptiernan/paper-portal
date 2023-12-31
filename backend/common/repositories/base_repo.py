@@ -111,6 +111,7 @@ class BaseRepo(Generic[TDBModel, TAppModel]):
             await session.delete(model)
             await session.commit()
             return None
+        raise RepoException("Item not found")
 
     async def get_all(
         self,

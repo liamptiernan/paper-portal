@@ -119,7 +119,6 @@ export const publicationsApi = createApi({
       async onQueryStarted(_order, { dispatch, queryFulfilled }) {
         try {
           const { data: updatedOfferings } = await queryFulfilled;
-          console.log(updatedOfferings);
           dispatch(
             publicationsApi.util.updateQueryData(
               "getPublicationAdOfferings",

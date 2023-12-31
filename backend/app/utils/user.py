@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.utils.custom_exceptions import (
     BadCredentialsException,
     RequiresAuthenticationException,
+    RequiresVerificationException,
     UnableCredentialsException,
     PermissionDeniedException,
 )
@@ -63,7 +64,8 @@ async def create_new_authd_user(
     family_name = payload.get(attr_key + "family_name", "")
     user_id = payload.get(attr_key + "auth0_id")
     email = payload.get(attr_key + "email")
-    if not (email and given_name and family_name is not None and user_id):
+    verified = payload.get(attr_key + "verified")
+    if not (email and given_name and family_name is not None and user_id and verified):
         raise Exception("Payload incomplete")
 
     new_org = NewOrganization(name="New Organization")
@@ -75,6 +77,7 @@ async def create_new_authd_user(
         family_name=family_name,
         auth_id=user_id,
         email=email,
+        verified=verified,
         org_id=created_org.id,
         roles=[UserRole.PUBADMIN],
     )
@@ -94,7 +97,8 @@ async def get_current_user(
 
     attr_key = settings.auth0_attr_key
     email = payload.get(attr_key + "email")
-    if not email:
+    verified = payload.get(attr_key + "verified")
+    if not email or verified is None:
         raise Exception("Payload incomplete")
     api_user = await users_repo.get_api_user(session)
     user = await users_repo.get_by_email(session, api_user, email)
@@ -102,6 +106,9 @@ async def get_current_user(
         # if no user but they auth'd, we need to add them to our db
         logging.info(f"User not found: email={email}. Creating user")
         user = await create_new_authd_user(payload, session, api_user)
+    if verified != user.verified:
+        user.verified = verified
+        user = await users_repo.update(session, api_user, user)
     return user
 
 
@@ -111,10 +118,13 @@ class UserWithRole:
     - UserRole are considered as OR
     """
 
-    def __init__(self, *roles: UserRole) -> None:
+    def __init__(self, *roles: UserRole, require_verified: bool = True) -> None:
         self.roles = roles
+        self.require_verified = require_verified
 
     def __call__(self, user: User = Depends(get_current_user)):
+        if self.require_verified and not user.verified:
+            raise RequiresVerificationException
         if not self.roles:
             return user
 
