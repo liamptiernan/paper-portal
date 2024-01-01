@@ -20,6 +20,12 @@ export const useTextStyles = createStyles((theme) => ({
 
 export const useNavBarStyles = createStyles((theme) => ({
   navContainer: {
-    backgroundColor: theme.colors.gray[2], // TODO: change to brand blue color
+    backgroundColor: theme.colors.brandBlue[0],
+  },
+  navLinkBody: {
+    color: theme.colors.brandBlue,
+  },
+  navLinkIcon: {
+    color: theme.colors.brandBlue,
   },
 }));
