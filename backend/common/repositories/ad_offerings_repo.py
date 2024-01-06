@@ -75,7 +75,10 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
         if len(clean_order) != len(new_order):
             raise Exception("Order lengths differ")
 
-        step = 0.9 / (len(new_order) - 1)
+        if offering_count := len(new_order) - 1:
+            step = 0.9 / offering_count
+        else:
+            step = 0.9
         await session.execute(
             update(AdOffering),
             [

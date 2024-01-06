@@ -27,7 +27,8 @@ export function SpendSlider() {
 
   return (
     <FormSection title={<Title fw={400}>What's your monthly budget?</Title>}>
-      <></>
+      {/* display what ad this buys you */}
+      {/* provide option to select ad type from a drop down */}
       <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
         <Slider
           color="brandYellow"

@@ -16,12 +16,14 @@ import {
   Flex,
   MultiSelect,
   MediaQuery,
+  TextInput,
 } from "@mantine/core";
 import { IconCirclePlus, IconUpload } from "@tabler/icons-react";
 import { PersonalAdSelection } from "../types";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 import { useState } from "react";
+import { ColorSelectValue } from "../../../components/Select";
 
 function PersonalAdSelect() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -74,12 +76,16 @@ function PersonalAdQuestions() {
 
 function MultiColorPicker() {
   const [currentColors, setCurrentColors] = useState<string[]>([]);
-  const [currentColorPicker, setCurrentColorPicker] = useState<string>("");
+  const [currentColorPicker, setCurrentColorPicker] = useState<string>();
 
   const handleColorAdd = () => {
     const newColors = [...currentColors];
+    if (!currentColorPicker) {
+      return;
+    }
     newColors.push(currentColorPicker);
     setCurrentColors(newColors);
+    setCurrentColorPicker("");
   };
 
   const handleSelectChange = (newValues: string[]) => {
@@ -89,15 +95,21 @@ function MultiColorPicker() {
   return (
     <Box>
       <Text>Your brand colors</Text>
+      <Text color="dark.2" size={"sm"}>
+        Specific brand colors you'd like us to use in the ad
+      </Text>
       <Paper withBorder p="lg">
         <Stack spacing={"md"}>
           <Flex align={"center"} gap={"md"}>
             <ColorInput
               size="md"
+              placeholder="Enter a color"
               withEyeDropper={false}
               onChange={setCurrentColorPicker}
+              value={currentColorPicker}
             />
             <Button
+              disabled={!currentColorPicker}
               onClick={handleColorAdd}
               variant="subtle"
               leftIcon={<IconCirclePlus />}
@@ -113,13 +125,9 @@ function MultiColorPicker() {
             data={currentColors}
             onChange={handleSelectChange}
             size="md"
+            valueComponent={ColorSelectValue}
             value={currentColors}
           />
-          {/* <Center>
-        {currentColors.map((color) => {
-          return <Chip color={color}>{color}</Chip>;
-        })}
-      </Center> */}
         </Stack>
       </Paper>
     </Box>
@@ -138,6 +146,9 @@ function DesignedAdQuestions() {
       transitionTimingFunction="linear"
     >
       <Stack spacing={"xl"}>
+        <Text color="dark.2">
+          Please provide some information so we can design your ad
+        </Text>
         <MultiColorPicker />
         <FileInput
           label="Brand Logo"
@@ -145,8 +156,27 @@ function DesignedAdQuestions() {
           size="md"
           {...getInputProps("brand_logo_checksum")}
         />
+        <TextInput
+          label="Business Phone #"
+          description="Optional. Phone number you want to appear in the ad"
+          size="md"
+          {...getInputProps("ad_phone_number")}
+        />
+        <TextInput
+          label="Business Email"
+          description="Optional. Email address you want to appear in the ad"
+          size="md"
+          {...getInputProps("ad_email")}
+        />
+        <TextInput
+          label="Website"
+          description="Optional. Website address you want to appear in the ad"
+          size="md"
+          {...getInputProps("ad_website")}
+        />
         <Textarea
-          label="Provide any particular text you'd like included in the ad here"
+          label="Please provide the copy you want included in your ad"
+          description="A short piece of text you want to appear in your ad"
           size="md"
           {...getInputProps("provided_copy")}
         ></Textarea>

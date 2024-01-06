@@ -1,18 +1,13 @@
 import {
-  Checkbox,
   Collapse,
-  Flex,
   MultiSelect,
-  RangeSlider,
   Select,
   Stack,
   Switch,
-  Text,
   Title,
 } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
-import MapInput from "./MapInput";
 
 function AdvancedToggle() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -43,45 +38,6 @@ function Section() {
   );
 }
 
-function Age() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const marks = [
-    { value: 1, label: 1 },
-    { value: 20, label: 20 },
-    { value: 40, label: 40 },
-    { value: 60, label: 60 },
-    { value: 80, label: 80 },
-    { value: 100, label: "100+" },
-  ];
-  return (
-    <Stack mb="lg">
-      <Text>What's your target age range?</Text>
-      <RangeSlider
-        marks={marks}
-        min={1}
-        max={100}
-        {...getInputProps("target_ages")}
-      />
-    </Stack>
-  );
-}
-
-function Gender() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  return (
-    <Checkbox.Group
-      label="Gender"
-      size="md"
-      {...getInputProps("target_genders")}
-    >
-      <Flex gap={"lg"}>
-        <Checkbox label="Male" value="male" />
-        <Checkbox label="Female" value="female" />
-      </Flex>
-    </Checkbox.Group>
-  );
-}
-
 function Publications() {
   const { getInputProps } = useAdPurchaseFormContext();
   const options = [
@@ -104,14 +60,12 @@ export function DemographicQuestions() {
   const display = getInputProps("advanced_options").value;
   return (
     <FormSection title={<Title fw={400}>Who's your target audience?</Title>}>
-      <MapInput />
       <AdvancedToggle />
       <Collapse in={display} transitionDuration={300}>
         <Stack spacing={"md"}>
-          <Section />
-          <Age />
-          <Gender />
+          {/* only display multiple options here if there are multiple options */}
           <Publications />
+          <Section />
         </Stack>
       </Collapse>
     </FormSection>
