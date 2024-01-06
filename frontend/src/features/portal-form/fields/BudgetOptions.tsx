@@ -1,8 +1,8 @@
-import { MediaQuery, Slider, Title } from "@mantine/core";
+import { Box, MediaQuery, Slider, Switch, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 
-export function SpendSlider() {
+function SpendSlider() {
   const { getInputProps } = useAdPurchaseFormContext();
   const marks = [
     { value: 10, label: "$10" },
@@ -26,9 +26,8 @@ export function SpendSlider() {
   };
 
   return (
-    <FormSection title={<Title fw={400}>What's your monthly budget?</Title>}>
-      {/* display what ad this buys you */}
-      {/* provide option to select ad type from a drop down */}
+    <Box mb="xl">
+      <Text>What's your monthly budget?</Text>
       <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
         <Slider
           color="brandYellow"
@@ -57,6 +56,29 @@ export function SpendSlider() {
           {...getInputProps("target_monthly_spend")}
         />
       </MediaQuery>
+    </Box>
+  );
+}
+
+export function BudgetOptions() {
+  const { getInputProps } = useAdPurchaseFormContext();
+  const SectionTitle = (
+    <Title fw={400}>
+      <Text span inherit>
+        Tell us about your budget
+      </Text>
+    </Title>
+  );
+  return (
+    <FormSection title={SectionTitle}>
+      <SpendSlider />
+      <Switch
+        label="Would you like to make this a reoccuring placement?"
+        description="Consistency is key. Make a lasting impression with a monthly ad placement and receive a discount."
+        size="md"
+        {...getInputProps("page_end")}
+      />
+      <>Show What this buys</>
     </FormSection>
   );
 }

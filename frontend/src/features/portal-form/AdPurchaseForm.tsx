@@ -63,9 +63,6 @@ export function AdPurchaseForm() {
     initialValues: {
       personal_ad: PersonalAdSelection.Designed,
       regions: [],
-      advanced_options: false,
-      target_ages: [1, 100],
-      target_genders: [],
       target_publications: [],
       target_area_radius: 50,
       target_area_center: "12202",
@@ -114,12 +111,12 @@ export function AdPurchaseForm() {
             >
               <Stepper.Step label="Welcome" icon={<IconSparkles />} />
               <Stepper.Step label="Business" icon={<IconBuildingStore />} />
+              <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
               <Stepper.Step label="Design" icon={<IconAd2 />} />
               <Stepper.Step
                 label="Demographics"
                 icon={<IconAdjustmentsHorizontal />}
               />
-              <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
               <Stepper.Step label="Contact" icon={<IconAddressBook />} />
               <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
             </Stepper>

@@ -15,7 +15,7 @@ import { LoginInfo } from "./LoginInfo";
 import { CampaignSummary } from "./fields/CampaignGoals";
 import { AdDesignQuestions } from "./fields/AdDesignQuestions";
 import { DemographicQuestions } from "./fields/DemographicQuestions";
-import { SpendSlider } from "./fields/BudgetOptions";
+import { BudgetOptions } from "./fields/BudgetOptions";
 import { ContactInfo } from "./ContactInfo";
 import { PaymentInfo } from "./PaymentInfo";
 import { useAdPurchaseFormContext } from "./form-context";
@@ -201,9 +201,9 @@ export function PurchaseViewerLayout({
   const steps = [
     <LoginInfo />,
     <CampaignSummary />,
+    <BudgetOptions />,
     <AdDesignQuestions />,
     <DemographicQuestions />,
-    <SpendSlider />,
     <ContactInfo />,
     <PaymentInfo />,
   ];
@@ -214,13 +214,13 @@ export function PurchaseViewerLayout({
         direction={{ base: "column", md: "row" }}
         gap={{ base: "none", md: "sm" }}
       >
-        {activeStep <= 2 ? (
+        {activeStep <= 1 ? (
           <PrevBorderButton onClick={onBack} disabled={activeStep < 1} />
         ) : null}
         {steps[activeStep]}
-        {activeStep <= 2 ? <NextBorderButton onClick={onNext} /> : null}
+        {activeStep <= 1 ? <NextBorderButton onClick={onNext} /> : null}
         <Transition
-          mounted={activeStep > 2}
+          mounted={activeStep > 1}
           transition="fade"
           duration={400}
           timingFunction="ease"
