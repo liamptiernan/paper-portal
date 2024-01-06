@@ -81,11 +81,9 @@ export interface AdPurchase {
   regions: string[];
   target_area_center: string;
   target_area_radius: number;
-  advanced_options: boolean;
   target_section?: string;
-  target_ages: number[];
-  target_genders: string[];
   target_publications: string[];
+  target_dates: [Date | null, Date | null];
   target_monthly_spend?: number;
   contact_name?: string;
   contact_phone?: string;
