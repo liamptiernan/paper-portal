@@ -21,7 +21,7 @@ export default function App() {
     <Routes>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/" element={<AuthHomePage />} />;
-      <Route path="purchase/:orgId" element={<AdPurchaseForm />} />
+      <Route path="purchase/:publicationId" element={<AdPurchaseForm />} />
       <Route path="/publisher" element={<AuthAdminLayout />}>
         <Route path="publications">
           <Route index element={<PublicationsDashboard />} />

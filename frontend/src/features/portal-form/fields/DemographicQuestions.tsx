@@ -43,14 +43,7 @@ function Publications() {
 
 function PublicationDate() {
   const { getInputProps } = useAdPurchaseFormContext();
-  const options = [
-    { value: "greenville_times", label: "Greenville Times" },
-    { value: "ravena_herald", label: "Ravena Herald" },
-    { value: "albany_courier", label: "Albany Courier" },
-  ];
-  if (options.length <= 1) {
-    return null;
-  }
+
   return (
     <DatePickerInput
       label="In what range of dates would you like us to print your ad?"

@@ -1,6 +1,7 @@
 import { Box, MediaQuery, Slider, Switch, Text, Title } from "@mantine/core";
-import { useAdPurchaseFormContext } from "../form-context";
-import { FormSection } from "../../../components/FormSection";
+import { useAdPurchaseFormContext } from "../../form-context";
+import { FormSection } from "../../../../components/FormSection";
+import { AdChoices } from "./AdChoices";
 
 function SpendSlider() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -74,11 +75,11 @@ export function BudgetOptions() {
       <SpendSlider />
       <Switch
         label="Would you like to make this a reoccuring placement?"
-        description="Consistency is key. Make a lasting impression with a monthly ad placement and receive a discount."
+        description="Receive a discount and make a lasting impression with a monthly ad placement."
         size="md"
         {...getInputProps("page_end")}
       />
-      <>Show What this buys</>
+      <AdChoices />
     </FormSection>
   );
 }

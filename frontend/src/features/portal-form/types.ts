@@ -93,3 +93,15 @@ export interface AdPurchase {
   address_state?: States;
   address_zip?: number;
 }
+
+export interface PublicAdOffering {
+  id: number;
+  name: string;
+  impact_score: number;
+  size: string;
+  page_start: number;
+  page_end: number | null;
+  color: boolean;
+  price: number;
+  index: number;
+}

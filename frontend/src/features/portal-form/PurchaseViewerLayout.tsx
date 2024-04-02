@@ -15,7 +15,7 @@ import { LoginInfo } from "./LoginInfo";
 import { CampaignSummary } from "./fields/CampaignGoals";
 import { AdDesignQuestions } from "./fields/AdDesignQuestions";
 import { DemographicQuestions } from "./fields/DemographicQuestions";
-import { BudgetOptions } from "./fields/BudgetOptions";
+import { BudgetOptions } from "./fields/budget/BudgetOptions";
 import { ContactInfo } from "./ContactInfo";
 import { PaymentInfo } from "./PaymentInfo";
 import { useAdPurchaseFormContext } from "./form-context";
