@@ -54,7 +54,7 @@ export function AdPurchaseForm() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
-    document.title = "Market Angler - Ad Designer";
+    document.title = "MarketAngler - Ad Designer";
   }, []);
 
   const { classes: controllerClasses } = useGeneralStyles();
