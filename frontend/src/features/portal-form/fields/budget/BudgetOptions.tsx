@@ -74,7 +74,7 @@ export function BudgetOptions() {
     <FormSection title={SectionTitle}>
       <SpendSlider />
       <Switch
-        label="Would you like to make this a reoccuring placement?"
+        label="Make this a reoccuring placement"
         description="Receive a discount and make a lasting impression with a monthly ad placement."
         size="md"
         {...getInputProps("page_end")}

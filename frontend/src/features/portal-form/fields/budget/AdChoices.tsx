@@ -12,6 +12,7 @@ import {
   Title,
   Loader,
   Center,
+  Box,
 } from "@mantine/core";
 import {
   IconComet,
@@ -48,9 +49,9 @@ function printedInMessage(adOffering: PublicAdOffering) {
 
 function pageRangeMessage(adOffering: PublicAdOffering) {
   if (adOffering.page_end !== null) {
-    return `Will appear between pages ${adOffering.page_start} and ${adOffering.page_end}`;
+    return `Between pages ${adOffering.page_start} and ${adOffering.page_end}`;
   }
-  return `Will appear between page ${adOffering.page_start} and the end of the publication`;
+  return `Between page ${adOffering.page_start} and the end of the publication`;
 }
 
 function AdChoiceCard({ adOffering }: { adOffering: PublicAdOffering }) {
@@ -58,7 +59,7 @@ function AdChoiceCard({ adOffering }: { adOffering: PublicAdOffering }) {
   // Add select button to top of card that sets this as the selected ad
   // in redux
   return (
-    <Card withBorder shadow="sm">
+    <Card withBorder shadow="sm" my="xs">
       <Title order={3} fw={500}>
         {adOffering.name}
       </Title>
@@ -127,12 +128,19 @@ export function AdChoices() {
     );
   }
 
-  // TODO make this a scrollable section no bigger than page
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        borderTop: "1px solid",
+        borderBottom: "1px solid",
+        borderColor: theme.colors.gray[3],
+        maxHeight: "calc(100vh - 375px)",
+        overflow: "auto",
+      })}
+    >
       {availableOfferings.map((adOffering) => (
         <AdChoiceCard adOffering={adOffering} key={adOffering.id} />
       ))}
-    </>
+    </Box>
   );
 }
