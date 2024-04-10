@@ -62,6 +62,12 @@ function SpendSlider() {
 }
 
 export function BudgetOptions() {
+  // TODO continue here
+  // Add allow_reoccuring and base_reoccuring_discount as a field to publication
+  // fetch that and display switch accordingly
+  // update card UI if enabled to show discount
+
+  // Then, add selected ad info to ad summary box
   const { getInputProps } = useAdPurchaseFormContext();
   const SectionTitle = (
     <Title fw={400}>

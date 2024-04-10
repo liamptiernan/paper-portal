@@ -112,9 +112,6 @@ function CardHeader({ adOffering }: { adOffering: PublicAdOffering }) {
 }
 
 export function AdChoiceCard({ adOffering }: { adOffering: PublicAdOffering }) {
-  // TODO: continue here
-  // Add select button to top of card that sets this as the selected ad
-  // in redux
   return (
     <Card withBorder shadow="sm" my="xs">
       <CardHeader adOffering={adOffering} />
