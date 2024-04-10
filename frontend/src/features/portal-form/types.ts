@@ -70,6 +70,7 @@ export interface AdPurchase {
   email?: string;
   business_description?: string;
   campaign_goal?: string;
+  selected_ad_offerings: PublicAdOffering[];
   personal_ad: PersonalAdSelection;
   personal_ad_checksum?: string;
   brand_colors?: string[];
