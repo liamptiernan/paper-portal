@@ -1,34 +1,9 @@
 import { useParams } from "react-router-dom";
 import { Loader, Center, Box, Text } from "@mantine/core";
-import { skipToken } from "@reduxjs/toolkit/query";
-import { useGetAdOfferingsQuery } from "../../purchaseFormApi";
-import { PublicAdOffering } from "../../types";
-import { useAdPurchaseFormContext } from "../../form-context";
 import { AdChoiceCard } from "./AdChoiceCard";
+import { useAvailableAdOfferings } from "./hooks";
 
-function useAvailableAdOfferings(publicationId?: string): {
-  availableOfferings: PublicAdOffering[];
-  isLoading: boolean;
-} {
-  /*
-   * Get all add offerings for publication
-   * Filter by current budget selection
-   */
-  const { data: adOfferings, isLoading } = useGetAdOfferingsQuery(
-    publicationId ?? skipToken
-  );
-  const { getInputProps } = useAdPurchaseFormContext();
-  const budget: number = getInputProps("target_monthly_spend").value;
-  if (!adOfferings) {
-    return { availableOfferings: [], isLoading };
-  }
-  const availableOfferings = adOfferings
-    .filter((adOffering) => adOffering.price <= budget)
-    .sort((a, b) => b.impact_score - a.impact_score);
-  return { availableOfferings, isLoading };
-}
-
-export function AdChoices() {
+function AdChoicesList() {
   const params = useParams();
   const publicationId = params.publicationId;
   const { availableOfferings, isLoading } =
@@ -41,7 +16,24 @@ export function AdChoices() {
       </Center>
     );
   }
+  if (availableOfferings.length === 0) {
+    return (
+      <Box my="md">
+        <Text>No ads available at this budget.</Text>
+        <Text>Increase your budget to view more options.</Text>
+      </Box>
+    );
+  }
+  return (
+    <div>
+      {availableOfferings.map((adOffering) => (
+        <AdChoiceCard adOffering={adOffering} key={adOffering.id} />
+      ))}
+    </div>
+  );
+}
 
+export function AdChoices() {
   return (
     <Box>
       <Text>Select ad options below.</Text>
@@ -55,9 +47,7 @@ export function AdChoices() {
         })}
         px="md"
       >
-        {availableOfferings.map((adOffering) => (
-          <AdChoiceCard adOffering={adOffering} key={adOffering.id} />
-        ))}
+        <AdChoicesList />
       </Box>
     </Box>
   );

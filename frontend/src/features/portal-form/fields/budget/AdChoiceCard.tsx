@@ -17,8 +17,7 @@ import {
   IconPalette,
   IconRulerMeasure,
 } from "@tabler/icons-react";
-import { useAdPurchaseFormContext } from "../../form-context";
-import { useCallback, useMemo } from "react";
+import { useSelectedAdOffering } from "./hooks";
 
 function printedInMessage(adOffering: PublicAdOffering) {
   return adOffering.color ? "color" : "black and white";
@@ -31,31 +30,9 @@ function pageRangeMessage(adOffering: PublicAdOffering) {
   return `Between page ${adOffering.page_start} and the end of the publication`;
 }
 
-function useSelectedAdOfferings(adOffering: PublicAdOffering) {
-  const adForm = useAdPurchaseFormContext();
-  const selectedAdIndex = useMemo(() => {
-    const selectedAds: PublicAdOffering[] = adForm.getInputProps(
-      "selected_ad_offerings"
-    ).value;
-    return selectedAds.findIndex((ad) => ad.id === adOffering.id);
-  }, [adForm, adOffering.id]);
-
-  const onSelect = useCallback(() => {
-    adForm.insertListItem("selected_ad_offerings", adOffering);
-  }, [adForm, adOffering]);
-
-  const onDeselect = useCallback(() => {
-    if (selectedAdIndex === -1) {
-      return;
-    }
-    adForm.removeListItem("selected_ad_offerings", selectedAdIndex);
-  }, [adForm, selectedAdIndex]);
-  return { onSelect, onDeselect, selectedAdIndex };
-}
-
 function SelectButton({ adOffering }: { adOffering: PublicAdOffering }) {
   const { onSelect, onDeselect, selectedAdIndex } =
-    useSelectedAdOfferings(adOffering);
+    useSelectedAdOffering(adOffering);
 
   if (selectedAdIndex !== -1) {
     return (
