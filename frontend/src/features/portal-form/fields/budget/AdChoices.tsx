@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Loader, Center, Box } from "@mantine/core";
+import { Loader, Center, Box, Text } from "@mantine/core";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useGetAdOfferingsQuery } from "../../purchaseFormApi";
 import { PublicAdOffering } from "../../types";
@@ -43,19 +43,22 @@ export function AdChoices() {
   }
 
   return (
-    <Box
-      sx={(theme) => ({
-        borderTop: "1px solid",
-        borderBottom: "1px solid",
-        borderColor: theme.colors.gray[3],
-        maxHeight: "calc(100vh - 375px)",
-        overflow: "auto",
-      })}
-      px="md"
-    >
-      {availableOfferings.map((adOffering) => (
-        <AdChoiceCard adOffering={adOffering} key={adOffering.id} />
-      ))}
+    <Box>
+      <Text>Select ad options below.</Text>
+      <Box
+        sx={(theme) => ({
+          borderTop: "1px solid",
+          borderBottom: "1px solid",
+          borderColor: theme.colors.gray[3],
+          maxHeight: "calc(100vh - 300px)",
+          overflow: "auto",
+        })}
+        px="md"
+      >
+        {availableOfferings.map((adOffering) => (
+          <AdChoiceCard adOffering={adOffering} key={adOffering.id} />
+        ))}
+      </Box>
     </Box>
   );
 }

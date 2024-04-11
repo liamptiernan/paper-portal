@@ -1,4 +1,4 @@
-import { Box, MediaQuery, Slider, Switch, Text, Title } from "@mantine/core";
+import { Box, MediaQuery, Slider, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../../form-context";
 import { FormSection } from "../../../../components/FormSection";
 import { AdChoices } from "./AdChoices";
@@ -38,7 +38,6 @@ function SpendSlider() {
           max={2500}
           marks={marks}
           label={label}
-          labelAlwaysOn
           size={"xl"}
           {...getInputProps("target_monthly_spend")}
         />
@@ -52,7 +51,6 @@ function SpendSlider() {
           max={2500}
           marks={smallMarks}
           label={label}
-          labelAlwaysOn
           size={"xl"}
           {...getInputProps("target_monthly_spend")}
         />
@@ -62,29 +60,14 @@ function SpendSlider() {
 }
 
 export function BudgetOptions() {
-  // TODO continue here
-  // Add allow_reoccuring and base_reoccuring_discount as a field to publication
-  // fetch that and display switch accordingly
-  // update card UI if enabled to show discount
-
-  // Then, add selected ad info to ad summary box
-  const { getInputProps } = useAdPurchaseFormContext();
   const SectionTitle = (
-    <Title fw={400}>
-      <Text span inherit>
-        Tell us about your budget
-      </Text>
+    <Title mb={"-1.25rem"} fw={400}>
+      Choose the type of ads you want.
     </Title>
   );
   return (
     <FormSection title={SectionTitle}>
       <SpendSlider />
-      <Switch
-        label="Make this a reoccuring placement"
-        description="Receive a discount and make a lasting impression with a monthly ad placement."
-        size="md"
-        {...getInputProps("page_end")}
-      />
       <AdChoices />
     </FormSection>
   );
