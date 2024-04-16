@@ -24,6 +24,7 @@ import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 import { useState } from "react";
 import { ColorSelectValue } from "../../../components/Select";
+import { useAllSelectedAdOfferings } from "./budget/hooks";
 
 function PersonalAdSelect() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -55,6 +56,21 @@ function PersonalAdSelect() {
 
 function PersonalAdQuestions() {
   const { getInputProps } = useAdPurchaseFormContext();
+  const { selectedAds } = useAllSelectedAdOfferings();
+  const selectedAd = selectedAds.length ? selectedAds[0] : null;
+  let description;
+  if (selectedAd) {
+    description = (
+      <div>
+        <Text>
+          Ad must be {selectedAd.x_dimension} inches x {selectedAd.y_dimension}{" "}
+          inches. At least 300 DPI is recommended.
+        </Text>{" "}
+        <Text>We'll verify your ad and approve it.</Text>
+      </div>
+    );
+  }
+
   const display =
     getInputProps("personal_ad").value &&
     getInputProps("personal_ad").value === PersonalAdSelection.Personal;
@@ -66,6 +82,7 @@ function PersonalAdQuestions() {
     >
       <FileInput
         label="Upload Your Ad"
+        description={description}
         size="md"
         icon={<IconUpload size={rem(14)} />}
         {...getInputProps("personal_ad_checksum")}
@@ -152,6 +169,7 @@ function DesignedAdQuestions() {
         <MultiColorPicker />
         <FileInput
           label="Brand Logo"
+          description="Include your high resolution logo"
           icon={<IconUpload size={rem(14)} />}
           size="md"
           {...getInputProps("brand_logo_checksum")}

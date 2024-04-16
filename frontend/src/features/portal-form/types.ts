@@ -100,6 +100,8 @@ export interface PublicAdOffering {
   name: string;
   impact_score: number;
   size: string;
+  x_dimension: number;
+  y_dimension: number;
   page_start: number;
   page_end: number | null;
   color: boolean;

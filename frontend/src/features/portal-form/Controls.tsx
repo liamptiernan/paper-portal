@@ -8,7 +8,7 @@ export function NextButton({
   isSubmit: boolean;
 }) {
   if (isSubmit) {
-    return <Button type="submit">Submit</Button>;
+    return <Button type="submit">Purchase</Button>;
   }
   return <Button onClick={onNext}>Next</Button>;
 }

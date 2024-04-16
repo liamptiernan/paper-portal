@@ -75,6 +75,8 @@ class AdOffering(Base):
     name: Mapped[str]
     impact_score: Mapped[float]
     size: Mapped[str]
+    x_dimension: Mapped[int]
+    y_dimension: Mapped[int]
     page_start: Mapped[int]
     page_end: Mapped[int] = mapped_column(nullable=True)
     color: Mapped[bool]

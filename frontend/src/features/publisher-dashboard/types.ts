@@ -24,6 +24,8 @@ export interface AdOffering {
   publication_id: number;
   impact_score: number;
   size: string;
+  x_dimension: number;
+  y_dimension: number;
   page_start: number;
   page_end: number | null;
   color: boolean;

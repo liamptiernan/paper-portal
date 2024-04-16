@@ -1,4 +1,4 @@
-import { MultiSelect, Select, Space, Text, Title } from "@mantine/core";
+import { Select, Space, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
 import { DatePickerInput } from "@mantine/dates";
@@ -10,33 +10,14 @@ function Section() {
     { value: "news", label: "News" },
     { value: "local_events", label: "Local Events" },
   ];
+  // TODO drive this from publication
   return (
     <Select
       label="What section of the paper do you want your ad to appear in?"
+      description="We'll contact you if we can't accommodate your request."
       data={options}
       size="md"
       {...getInputProps("target_section")}
-    />
-  );
-}
-
-function Publications() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const options = [
-    { value: "greenville_times", label: "Greenville Times" },
-    { value: "ravena_herald", label: "Ravena Herald" },
-    { value: "albany_courier", label: "Albany Courier" },
-  ];
-  if (options.length <= 1) {
-    return null;
-  }
-  return (
-    <MultiSelect
-      label="What publications do you want your ad to appear in?"
-      data={options}
-      size="md"
-      required
-      {...getInputProps("target_publications")}
     />
   );
 }
@@ -47,6 +28,7 @@ function PublicationDate() {
   return (
     <DatePickerInput
       label="In what range of dates would you like us to print your ad?"
+      description="We'll contact you if we can't accommodate your request."
       type="range"
       size="md"
       {...getInputProps("target_dates")}
@@ -69,7 +51,6 @@ export function DemographicQuestions() {
   );
   return (
     <FormSection title={SectionTitle}>
-      <Publications />
       <Section />
       <PublicationDate />
     </FormSection>
