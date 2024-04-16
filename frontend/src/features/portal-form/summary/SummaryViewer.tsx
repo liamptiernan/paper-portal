@@ -9,31 +9,43 @@ import {
   Tooltip,
 } from "@mantine/core";
 
-import { useAdPurchaseFormContext } from "../form-context";
 import { BackButton, NextButton } from "../Controls";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { adInfo } from "../fixtures/adInfo";
 import { CartSummary } from "./CartSummary";
+import { useGetPublicationQuery } from "../../publisher-dashboard/publications/publicationsApi";
+import { useParams } from "react-router-dom";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useAllSelectedAdOfferings } from "../fields/budget/hooks";
+import { useMemo } from "react";
 
-function calcReach(radius: number) {
-  return (radius ^ 2) * 3.14 * 1000;
-}
-
-function calcImpactScore(radius: number, monthlyCost: number) {
-  const publications = Math.ceil(radius * 0.03);
-  const budget = monthlyCost / publications;
-  const correctedBudget = budget >= 10 ? budget : 10;
-
-  let closest: number | undefined;
-  let score: number | undefined;
-  for (const ad of adInfo) {
-    const dist = Math.abs(ad.cost - correctedBudget);
-    if (closest === undefined || dist < closest) {
-      closest = dist;
-      score = ad.impact;
-    }
-  }
-  return score;
+function ImpactScore() {
+  const { selectedAds } = useAllSelectedAdOfferings();
+  const avgImpact = useMemo(() => {
+    if (selectedAds.length === 0) return undefined;
+    return (
+      selectedAds.reduce((acc, ad) => acc + ad.impact_score, 0) /
+      selectedAds.length
+    );
+  }, [selectedAds]);
+  return (
+    <Flex justify={"space-between"}>
+      <Group style={{ gap: ".1rem" }}>
+        <Text size="lg">Impact Score</Text>
+        <Tooltip
+          multiline
+          width={250}
+          label="How impactful your ad will be, relative to others in the publication"
+        >
+          <IconInfoCircle color="gray" />
+        </Tooltip>
+      </Group>
+      {avgImpact !== undefined ? (
+        <Text size="lg" fw={600} color="brandBlue">
+          {avgImpact * 100}%
+        </Text>
+      ) : null}
+    </Flex>
+  );
 }
 
 export function SummaryViewer({
@@ -47,21 +59,16 @@ export function SummaryViewer({
   onNext: () => void;
   isSubmit: boolean;
 }) {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const monthlyCost: number = getInputProps("target_monthly_spend").value;
-  const radius: number = getInputProps("target_area_radius").value;
-
+  const params = useParams();
+  const publicationId = params.publicationId;
+  const { data: publication } = useGetPublicationQuery(
+    publicationId ?? skipToken
+  );
   // TODO: continue here
-  //   pub should control reach
-  // ads should control impact score
-  //   ad should control total
-
   // Then, limit to one ad selected
   // Then update language in ad design
   // Ad dimension and dpi suggestions for upload
   // ad config to disable upload
-  const estimatedReach = calcReach(radius);
-  const impactScore = calcImpactScore(radius, monthlyCost) || 0.99;
   return (
     <Paper
       withBorder
@@ -86,24 +93,11 @@ export function SummaryViewer({
             </Tooltip>
           </Group>
           <Text fw={600} size="lg" color="brandBlue">
-            {estimatedReach.toLocaleString()}
+            {publication?.estimated_reach.toLocaleString()}{" "}
+            {publication?.distribution_unit}
           </Text>
         </Flex>
-        <Flex justify={"space-between"}>
-          <Group style={{ gap: ".1rem" }}>
-            <Text size="lg">Impact Score</Text>
-            <Tooltip
-              multiline
-              width={250}
-              label="How impactful your ad will be, relative to others in the publication"
-            >
-              <IconInfoCircle color="gray" />
-            </Tooltip>
-          </Group>
-          <Text size="lg" fw={600} color="brandBlue">
-            {Math.round(impactScore * 100)}
-          </Text>
-        </Flex>
+        <ImpactScore />
         <Divider />
         <NextButton onNext={onNext} isSubmit={isSubmit} />
         <BackButton onBack={onBack} />
