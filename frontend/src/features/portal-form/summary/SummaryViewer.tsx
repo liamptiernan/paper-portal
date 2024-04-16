@@ -65,10 +65,10 @@ export function SummaryViewer({
     publicationId ?? skipToken
   );
   // TODO: continue here
-  // Then, limit to one ad selected
   // Then update language in ad design
   // Ad dimension and dpi suggestions for upload
   // ad config to disable upload
+  // work in stripe
   return (
     <Paper
       withBorder

@@ -42,6 +42,11 @@ export function useSelectedAdOffering(adOffering: PublicAdOffering) {
   }, [adForm, adOffering.id]);
 
   const onSelect = useCallback(() => {
+    const selectedAds = adForm.getInputProps("selected_ad_offerings").value;
+    if (selectedAds.length !== 0) {
+      // limit to one ad selected for now
+      adForm.removeListItem("selected_ad_offerings", 0);
+    }
     adForm.insertListItem("selected_ad_offerings", adOffering);
   }, [adForm, adOffering]);
 
