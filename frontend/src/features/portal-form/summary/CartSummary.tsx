@@ -1,13 +1,28 @@
-import { Divider, Flex, Text, ThemeIcon } from "@mantine/core";
+import { ActionIcon, Divider, Flex, Text, ThemeIcon } from "@mantine/core";
 import { useCostSummary } from "./hooks";
-import { useAllSelectedAdOfferings } from "../fields/budget/hooks";
+import {
+  useAllSelectedAdOfferings,
+  useSelectedAdOffering,
+} from "../fields/budget/hooks";
 import { PublicAdOffering } from "../types";
-import { IconMoodLookDown } from "@tabler/icons-react";
+import { IconMoodLookDown, IconX } from "@tabler/icons-react";
 
 function AdLineItem({ ad }: { ad: PublicAdOffering }) {
+  const { onDeselect } = useSelectedAdOffering(ad);
   return (
     <Flex justify={"space-between"}>
-      <Text>{ad.name}</Text>
+      <Flex align={"center"}>
+        <ActionIcon
+          size="xs"
+          radius="xl"
+          color="brandRed.1"
+          variant="subtle"
+          onClick={onDeselect}
+        >
+          <IconX />
+        </ActionIcon>
+        <Text>{ad.name}</Text>
+      </Flex>
       <Text>${ad.price}</Text>
     </Flex>
   );
