@@ -25,6 +25,7 @@ import { FormSection } from "../../../components/FormSection";
 import { useState } from "react";
 import { ColorSelectValue } from "../../../components/Select";
 import { useAllSelectedAdOfferings } from "./budget/hooks";
+import { LogoUpload } from "./Logo";
 
 function PersonalAdSelect() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -167,13 +168,7 @@ function DesignedAdQuestions() {
           Please provide some information so we can design your ad
         </Text>
         <MultiColorPicker />
-        <FileInput
-          label="Brand Logo"
-          description="Include your high resolution logo"
-          icon={<IconUpload size={rem(14)} />}
-          size="md"
-          {...getInputProps("brand_logo_checksum")}
-        />
+        <LogoUpload />
         <TextInput
           label="Business Phone #"
           description="Optional. Phone number you want to appear in the ad"

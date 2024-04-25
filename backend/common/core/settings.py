@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     client_origin_url: str
     auth0_attr_key: str
     ad_bucket_name: str
+    s3_endpoint_url: str
 
 
 settings = Settings()

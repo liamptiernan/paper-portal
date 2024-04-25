@@ -1,22 +1,33 @@
 from contextlib import contextmanager
 from pathlib import Path
 import tempfile
+from typing import BinaryIO
 
 import boto3
 
+from backend.common.core.config import config
 from backend.common.core.settings import settings
 
 
 class S3Client:
     def __init__(self):
-        self.client = boto3.resource("s3")
+        self.client = boto3.resource(
+            "s3",
+            endpoint_url=settings.s3_endpoint_url,
+            aws_access_key_id=config["AWS_ACCESS_KEY_ID"],
+            aws_secret_access_key=config["AWS_SECRET_ACCESS_KEY"],
+        )
         self.bucket = self.client.Bucket(settings.ad_bucket_name)
         self.prefix: str
 
     def get_full_path(self, relative_key: str):
         return str(Path(self.prefix).joinpath(relative_key))
 
-    def upload_file(self, file_name: str, relative_key: str):
+    def upload_file_obj(self, file: BinaryIO, relative_key: str):
+        key = self.get_full_path(relative_key)
+        self.bucket.upload_fileobj(file, key)
+
+    def upload_file_by_name(self, file_name: str, relative_key: str):
         key = self.get_full_path(relative_key)
         self.bucket.upload_file(file_name, key)
 

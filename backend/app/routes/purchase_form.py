@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, UploadFile, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.common.db.init import get_session
 from backend.common.models.ad_offering import PublicAdOffering
 from backend.common.repositories.ad_offerings_repo import ad_offerings_repo
 from backend.common.storage.client import LogoClient
-from backend.common.storage.utils import get_hash
+from backend.common.storage.utils import get_key
 
 router = APIRouter(
     prefix="/purchase-form",
@@ -26,10 +26,15 @@ async def get_form_config(
 @router.post("/upload/logo", response_model=str)
 async def upload_logo(logo: UploadFile) -> str:
     logo_client = LogoClient()
-    checksum = get_hash(logo.file.read())
-    if not logo.filename:
-        raise ValueError("No filename")
-    logo_client.upload_file(file_name=logo.filename, relative_key=checksum)
-    return checksum
+    try:
+        relative_key = get_key(logo.file)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(e)
+        )
+    logo_client.upload_file_obj(file=logo.file, relative_key=relative_key)
+    return relative_key
+    # TODO: add this endpoint to the front end and test this
+
     # return the checksum
     # maybe some cleanup if this is ultimately associated with an object?

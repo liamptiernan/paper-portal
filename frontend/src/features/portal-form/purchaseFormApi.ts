@@ -11,7 +11,15 @@ export const purchaseFormApi = createApi({
       query: (publicationId) => `/purchase-form/config/${publicationId}`,
       providesTags: (_r, _e, id) => [{ type: "Config" as const, id }],
     }),
+    uploadLogo: builder.mutation<string, FormData>({
+      query: (formData) => ({
+        url: "/purchase-form/upload/logo",
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useGetAdOfferingsQuery } = purchaseFormApi;
+export const { useGetAdOfferingsQuery, useUploadLogoMutation } =
+  purchaseFormApi;
