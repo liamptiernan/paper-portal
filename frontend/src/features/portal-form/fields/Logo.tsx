@@ -1,9 +1,7 @@
-import { FileInput, Loader, ThemeIcon, rem } from "@mantine/core";
-import { IconFileAlert, IconFileCheck, IconUpload } from "@tabler/icons-react";
 import { useAdPurchaseFormContext } from "../form-context";
 import { useUploadLogoMutation } from "../purchaseFormApi";
-import { useCallback, useMemo, useState } from "react";
-import { isErrorWithData } from "../../../common/helpers";
+import { useCallback, useState } from "react";
+import { FileUpload } from "../../../components/Upload";
 
 function useUploadLogo() {
   const [upload, { error }] = useUploadLogoMutation();
@@ -39,68 +37,14 @@ function useUploadLogo() {
 
 export function LogoUpload() {
   const { uploadLogo, status, error } = useUploadLogo();
-  console.log("error", error);
-  const errorMessage = useMemo(() => {
-    if (!error) {
-      return "";
-    }
-    if (!isErrorWithData(error)) {
-      return "An error occurred";
-    }
-    return error.data.detail;
-  }, [error]);
-
-  const Icon = () => {
-    if (status === "loading") {
-      return <Loader size={"sm"} />;
-    }
-    if (status === "success") {
-      return (
-        <ThemeIcon
-          variant="outline"
-          style={{ border: "none" }}
-          radius={"xl"}
-          color="brandGreen.5"
-          size={"sm"}
-        >
-          <IconFileCheck />
-        </ThemeIcon>
-      );
-    }
-    if (status === "error") {
-      return (
-        <ThemeIcon
-          variant="outline"
-          style={{ border: "none" }}
-          radius={"xl"}
-          color="red"
-          size={"sm"}
-        >
-          <IconFileAlert />
-        </ThemeIcon>
-      );
-    }
-    return null;
-  };
 
   return (
-    <FileInput
+    <FileUpload
       label="Brand Logo"
-      w="20rem"
       description="Include your high resolution logo"
-      icon={<Icon />}
-      rightSection={
-        <ThemeIcon
-          variant="outline"
-          style={{ border: "none" }}
-          color="brandDark.1"
-        >
-          <IconUpload size={rem(14)} />
-        </ThemeIcon>
-      }
-      size="md"
       onChange={uploadLogo}
-      error={errorMessage}
+      errorResponse={error}
+      status={status}
     />
   );
 }

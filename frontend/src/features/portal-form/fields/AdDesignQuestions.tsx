@@ -26,6 +26,7 @@ import { useState } from "react";
 import { ColorSelectValue } from "../../../components/Select";
 import { useAllSelectedAdOfferings } from "./budget/hooks";
 import { LogoUpload } from "./Logo";
+import { FileUpload } from "../../../components/Upload";
 
 function PersonalAdSelect() {
   const { getInputProps } = useAdPurchaseFormContext();
@@ -81,6 +82,13 @@ function PersonalAdQuestions() {
       transitionDuration={200}
       transitionTimingFunction="linear"
     >
+      <FileUpload
+        label="Upload Your Ad"
+        description={description}
+        size="md"
+        icon={<IconUpload size={rem(14)} />}
+        {...getInputProps("personal_ad_checksum")}
+      />
       <FileInput
         label="Upload Your Ad"
         description={description}
