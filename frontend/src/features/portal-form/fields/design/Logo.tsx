@@ -1,7 +1,7 @@
-import { useAdPurchaseFormContext } from "../form-context";
-import { useUploadLogoMutation } from "../purchaseFormApi";
+import { useAdPurchaseFormContext } from "../../form-context";
+import { useUploadLogoMutation } from "../../purchaseFormApi";
 import { useCallback, useState } from "react";
-import { FileUpload } from "../../../components/Upload";
+import { FileUpload } from "../../../../components/Upload";
 
 function useUploadLogo() {
   const [upload, { error }] = useUploadLogoMutation();

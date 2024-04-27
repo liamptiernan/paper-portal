@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.common.db.init import get_session
 from backend.common.models.ad_offering import PublicAdOffering
 from backend.common.repositories.ad_offerings_repo import ad_offerings_repo
-from backend.common.storage.client import LogoClient
+from backend.common.storage.client import AdClient, LogoClient
 from backend.common.storage.utils import get_key
 
 router = APIRouter(
@@ -34,7 +34,18 @@ async def upload_logo(logo: UploadFile) -> str:
         )
     logo_client.upload_file_obj(file=logo.file, relative_key=relative_key)
     return relative_key
-    # TODO: add this endpoint to the front end and test this
 
-    # return the checksum
+
+@router.post("/upload/ad", response_model=str)
+async def upload_ad(ad: UploadFile) -> str:
+    logo_client = AdClient()
+    try:
+        relative_key = get_key(ad.file)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(e)
+        )
+    logo_client.upload_file_obj(file=ad.file, relative_key=relative_key)
+    return relative_key
+    # TODO:
     # maybe some cleanup if this is ultimately associated with an object?

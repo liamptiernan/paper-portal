@@ -60,3 +60,9 @@ class LogoClient(S3Client):
     def __init__(self):
         super().__init__()
         self.prefix = "logos"
+
+
+class AdClient(S3Client):
+    def __init__(self):
+        super().__init__()
+        self.prefix = "ads"

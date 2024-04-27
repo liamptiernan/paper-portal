@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Transition } from "@mantine/core";
 import { LoginInfo } from "./LoginInfo";
 import { CampaignSummary } from "./fields/CampaignGoals";
-import { AdDesignQuestions } from "./fields/AdDesignQuestions";
+import { AdDesignQuestions } from "./fields/design/AdDesignQuestions";
 import { DemographicQuestions } from "./fields/DemographicQuestions";
 import { BudgetOptions } from "./fields/budget/BudgetOptions";
 import { ContactInfo } from "./ContactInfo";

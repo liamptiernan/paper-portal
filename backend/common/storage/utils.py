@@ -4,7 +4,9 @@ import mimetypes
 from typing import BinaryIO
 
 
-supported_types = set(["image/png", "image/jpg", "application/pdf", "image/svg+xml"])
+supported_types = set(
+    ["image/png", "image/jpg", "image/jpeg", "application/pdf", "image/svg+xml"]
+)
 
 
 def get_hash(file: BinaryIO) -> str:

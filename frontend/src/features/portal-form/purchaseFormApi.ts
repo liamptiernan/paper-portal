@@ -18,8 +18,18 @@ export const purchaseFormApi = createApi({
         body: formData,
       }),
     }),
+    uploadAd: builder.mutation<string, FormData>({
+      query: (formData) => ({
+        url: "/purchase-form/upload/ad",
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useGetAdOfferingsQuery, useUploadLogoMutation } =
-  purchaseFormApi;
+export const {
+  useGetAdOfferingsQuery,
+  useUploadLogoMutation,
+  useUploadAdMutation,
+} = purchaseFormApi;
