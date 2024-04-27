@@ -23,6 +23,7 @@ class NewPublication(NewOrgModel):
     region_type: str = "regions"
     distribution_radius: int = 0
     regions: list[PublicationRegion] = []
+    sections: list[str] = []
 
 
 class Publication(NewPublication, OrgModel):

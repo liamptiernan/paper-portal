@@ -13,8 +13,8 @@ router = APIRouter(
 )
 
 
-@router.get("/config/{publication_id}", response_model=list[PublicAdOffering])
-async def get_form_config(
+@router.get("/config/{publication_id}/offerings", response_model=list[PublicAdOffering])
+async def get_ad_offerings(
     publication_id: int,
     session: AsyncSession = Depends(get_session),
 ):

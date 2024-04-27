@@ -16,6 +16,7 @@ export interface Publication {
   region_type: string;
   distribution_radius: number;
   regions: PublicationRegion[];
+  sections: string[];
 }
 
 export interface AdOffering {

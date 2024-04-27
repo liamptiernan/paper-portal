@@ -26,6 +26,7 @@ class PublicationsRepo(OrgRepo[Publication, AppPublication]):
             regions=[
                 AppPublicationRegion(**region.__dict__) for region in db_model.regions
             ],
+            sections=db_model.sections,
         )
 
     async def app_to_db(
@@ -47,6 +48,7 @@ class PublicationsRepo(OrgRepo[Publication, AppPublication]):
             regions=[
                 PublicationRegion(**region.model_dump()) for region in app_model.regions
             ],
+            sections=app_model.sections,
         )
 
 

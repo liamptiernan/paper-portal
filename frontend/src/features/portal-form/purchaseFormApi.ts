@@ -8,7 +8,8 @@ export const purchaseFormApi = createApi({
   tagTypes: ["Config"],
   endpoints: (builder) => ({
     getAdOfferings: builder.query<PublicAdOffering[], string>({
-      query: (publicationId) => `/purchase-form/config/${publicationId}`,
+      query: (publicationId) =>
+        `/purchase-form/config/${publicationId}/offerings`,
       providesTags: (_r, _e, id) => [{ type: "Config" as const, id }],
     }),
     uploadLogo: builder.mutation<string, FormData>({

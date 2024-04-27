@@ -65,7 +65,6 @@ export function SummaryViewer({
     publicationId ?? skipToken
   );
   // TODO: continue here
-  // ad upload for ad
   // ad config to disable upload
   // add sections to publication with language (allow purchases to choose where...)
   // add form validation

@@ -64,6 +64,7 @@ class Publication(Base):
     regions: Mapped[list[PublicationRegion]] = relationship(
         back_populates="publication", lazy="joined", cascade="all, delete-orphan"
     )
+    sections: Mapped[list[str]] = Column(ARRAY(VARCHAR), nullable=False)  # type: ignore
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])
 
