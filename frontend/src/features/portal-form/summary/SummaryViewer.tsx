@@ -66,7 +66,6 @@ export function SummaryViewer({
   );
   // TODO: continue here
   // ad config to disable upload
-  // add sections to publication with language (allow purchases to choose where...)
   // add form validation
   // fix auth stuff in form
   // work in stripe

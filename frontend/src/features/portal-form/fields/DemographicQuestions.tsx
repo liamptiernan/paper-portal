@@ -1,7 +1,6 @@
 import { Select, Space, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
-import { DatePickerInput } from "@mantine/dates";
 import { useGetPublicationQuery } from "../../publisher-dashboard/publications/publicationsApi";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useParams } from "react-router-dom";
@@ -38,20 +37,6 @@ function Section() {
   );
 }
 
-function PublicationDate() {
-  const { getInputProps } = useAdPurchaseFormContext();
-
-  return (
-    <DatePickerInput
-      label="In what range of dates would you like us to print your ad?"
-      description="We'll contact you if we can't accommodate your request."
-      type="range"
-      size="md"
-      {...getInputProps("target_dates")}
-    />
-  );
-}
-
 export function DemographicQuestions() {
   const SectionTitle = (
     <Title fw={400}>
@@ -67,8 +52,8 @@ export function DemographicQuestions() {
   );
   return (
     <FormSection title={SectionTitle}>
+      <></>
       <Section />
-      <PublicationDate />
     </FormSection>
   );
 }
