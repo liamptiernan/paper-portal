@@ -66,11 +66,11 @@ export enum States {
 }
 
 export interface AdPurchase {
-  business_name?: string;
-  email?: string;
-  business_description?: string;
-  campaign_goal?: string;
-  selected_ad_offerings: PublicAdOffering[];
+  business_name: string;
+  email: string;
+  business_description: string;
+  campaign_goal: string[];
+  selected_ad_offering: PublicAdOffering;
   personal_ad: PersonalAdSelection;
   personal_ad_checksum?: string;
   brand_colors?: string[];

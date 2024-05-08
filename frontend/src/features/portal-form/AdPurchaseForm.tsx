@@ -62,7 +62,6 @@ export function AdPurchaseForm() {
   const form = useAdPurchaseForm({
     initialValues: {
       personal_ad: PersonalAdSelection.Designed,
-      selected_ad_offerings: [],
       regions: [],
       target_publications: [],
       target_area_radius: 50,

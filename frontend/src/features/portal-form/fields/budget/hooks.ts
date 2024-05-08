@@ -6,57 +6,32 @@ import { useGetAdOfferingsQuery } from "../../purchaseFormApi";
 
 export function useAllSelectedAdOfferings() {
   const adForm = useAdPurchaseFormContext();
-  const selectedAds: PublicAdOffering[] = adForm.getInputProps(
-    "selected_ad_offerings"
+  const selectedAd: PublicAdOffering | undefined = adForm.getInputProps(
+    "selected_ad_offering"
   ).value;
-
-  const onSelect = useCallback(
-    (adOffering: PublicAdOffering) => {
-      adForm.insertListItem("selected_ad_offerings", adOffering);
-    },
-    [adForm]
-  );
-
-  const onDeselect = useCallback(
-    (adOffering: PublicAdOffering) => {
-      const selectedAdIndex = selectedAds.findIndex(
-        (ad) => ad.id === adOffering.id
-      );
-      if (selectedAdIndex === -1) {
-        return;
-      }
-      adForm.removeListItem("selected_ad_offerings", selectedAdIndex);
-    },
-    [adForm, selectedAds]
-  );
-  return { selectedAds, onSelect, onDeselect };
+  return { selectedAd };
 }
 
 export function useSelectedAdOffering(adOffering: PublicAdOffering) {
   const adForm = useAdPurchaseFormContext();
-  const selectedAdIndex = useMemo(() => {
-    const selectedAds: PublicAdOffering[] = adForm.getInputProps(
-      "selected_ad_offerings"
+  const isSelectedAd = useMemo(() => {
+    const selectedAd: PublicAdOffering = adForm.getInputProps(
+      "selected_ad_offering"
     ).value;
-    return selectedAds.findIndex((ad) => ad.id === adOffering.id);
+    return selectedAd.id === adOffering.id;
   }, [adForm, adOffering.id]);
 
   const onSelect = useCallback(() => {
-    const selectedAds = adForm.getInputProps("selected_ad_offerings").value;
-    if (selectedAds.length !== 0) {
-      // limit to one ad selected for now
-      adForm.removeListItem("selected_ad_offerings", 0);
-    }
-    adForm.insertListItem("selected_ad_offerings", adOffering);
+    adForm.setFieldValue("selected_ad_offering", adOffering);
   }, [adForm, adOffering]);
 
   const onDeselect = useCallback(() => {
-    if (selectedAdIndex === -1) {
+    if (!isSelectedAd) {
       return;
     }
-    adForm.removeListItem("selected_ad_offerings", selectedAdIndex);
-  }, [adForm, selectedAdIndex]);
-  return { onSelect, onDeselect, selectedAdIndex };
+    adForm.setFieldValue("selected_ad_offering", undefined);
+  }, [adForm, isSelectedAd]);
+  return { onSelect, onDeselect, isSelectedAd };
 }
 
 export function useAvailableAdOfferings(publicationId?: string): {

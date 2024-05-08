@@ -41,8 +41,8 @@ function ListHeader() {
 }
 
 function AdList() {
-  const { selectedAds } = useAllSelectedAdOfferings();
-  if (selectedAds.length === 0) {
+  const { selectedAd } = useAllSelectedAdOfferings();
+  if (!selectedAd) {
     return (
       <div>
         <Divider mb={"sm"} />
@@ -67,9 +67,7 @@ function AdList() {
     <div>
       <Divider mb={"sm"} />
       <ListHeader />
-      {selectedAds.map((ad) => (
-        <AdLineItem ad={ad} key={ad.id} />
-      ))}
+      {selectedAd && <AdLineItem ad={selectedAd} />}
     </div>
   );
 }

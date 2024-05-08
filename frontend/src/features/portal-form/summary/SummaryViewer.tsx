@@ -16,17 +16,10 @@ import { useGetPublicationQuery } from "../../publisher-dashboard/publications/p
 import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useAllSelectedAdOfferings } from "../fields/budget/hooks";
-import { useMemo } from "react";
 
 function ImpactScore() {
-  const { selectedAds } = useAllSelectedAdOfferings();
-  const avgImpact = useMemo(() => {
-    if (selectedAds.length === 0) return undefined;
-    return (
-      selectedAds.reduce((acc, ad) => acc + ad.impact_score, 0) /
-      selectedAds.length
-    );
-  }, [selectedAds]);
+  const { selectedAd } = useAllSelectedAdOfferings();
+
   return (
     <Flex justify={"space-between"}>
       <Group style={{ gap: ".1rem" }}>
@@ -39,9 +32,9 @@ function ImpactScore() {
           <IconInfoCircle color="gray" />
         </Tooltip>
       </Group>
-      {avgImpact !== undefined ? (
+      {selectedAd !== undefined ? (
         <Text size="lg" fw={600} color="brandBlue">
-          {avgImpact * 100}%
+          {selectedAd.impact_score * 100}%
         </Text>
       ) : null}
     </Flex>
@@ -66,7 +59,7 @@ export function SummaryViewer({
   );
   // TODO: continue here
   // ad config to disable upload
-  // add form validation
+  // add form validation - in progress
   // fix auth stuff in form
   // work in stripe
   return (

@@ -39,8 +39,7 @@ function useUploadAd() {
 
 export function AdUpload() {
   const { uploadAd, status, error } = useUploadAd();
-  const { selectedAds } = useAllSelectedAdOfferings();
-  const selectedAd = selectedAds.length ? selectedAds[0] : null;
+  const { selectedAd } = useAllSelectedAdOfferings();
   let description;
   if (selectedAd) {
     description = (

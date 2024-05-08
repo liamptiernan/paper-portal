@@ -31,10 +31,10 @@ function pageRangeMessage(adOffering: PublicAdOffering) {
 }
 
 function SelectButton({ adOffering }: { adOffering: PublicAdOffering }) {
-  const { onSelect, onDeselect, selectedAdIndex } =
+  const { onSelect, onDeselect, isSelectedAd } =
     useSelectedAdOffering(adOffering);
 
-  if (selectedAdIndex !== -1) {
+  if (isSelectedAd) {
     return (
       <Button
         variant="outline"
