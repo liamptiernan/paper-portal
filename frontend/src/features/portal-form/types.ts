@@ -70,7 +70,7 @@ export interface AdPurchase {
   email: string;
   business_description: string;
   campaign_goal: string[];
-  selected_ad_offering: PublicAdOffering;
+  selected_ad_offering: PublicAdOffering | null;
   personal_ad: PersonalAdSelection;
   personal_ad_checksum?: string;
   brand_colors?: string[];
@@ -79,20 +79,21 @@ export interface AdPurchase {
   ad_email?: string;
   ad_website?: string;
   provided_copy?: string;
-  regions: string[];
-  target_area_center: string;
-  target_area_radius: number;
   target_section?: string;
-  target_publications: string[];
-  target_dates: [Date | null, Date | null];
-  target_monthly_spend?: number;
-  contact_name?: string;
-  contact_phone?: string;
-  address_1?: string;
-  address_2?: string;
-  address_city?: string;
-  address_state?: States;
-  address_zip?: number;
+  contact_name: string;
+  contact_phone: string;
+  contact_address_1: string;
+  contact_address_2?: string;
+  contact_city: string;
+  contact_state?: States;
+  contact_zip?: number;
+  billing_name: string;
+  billing_phone: string;
+  billing_address_1: string;
+  billing_address_2?: string;
+  billing_city: string;
+  billing_state?: States;
+  billing_zip?: number;
 }
 
 export interface PublicAdOffering {

@@ -61,12 +61,21 @@ export function AdPurchaseForm() {
 
   const form = useAdPurchaseForm({
     initialValues: {
+      business_name: "",
+      email: "",
+      business_description: "",
+      campaign_goal: [],
+      selected_ad_offering: null,
       personal_ad: PersonalAdSelection.Designed,
-      regions: [],
-      target_publications: [],
-      target_area_radius: 50,
-      target_area_center: "12202",
-      target_monthly_spend: 250,
+      brand_colors: [],
+      contact_name: "",
+      contact_phone: "",
+      contact_address_1: "",
+      contact_city: "",
+      billing_name: "",
+      billing_phone: "",
+      billing_address_1: "",
+      billing_city: "",
     },
     validate: {
       email: (value) => {

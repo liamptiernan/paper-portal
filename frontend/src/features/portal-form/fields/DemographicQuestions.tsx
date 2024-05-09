@@ -23,6 +23,7 @@ function Section() {
   const sectionOptions = useGetSectionOptions();
 
   if (!sectionOptions) {
+    // TODO: if none, do something else
     return null;
   }
 
