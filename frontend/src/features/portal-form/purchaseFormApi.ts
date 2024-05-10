@@ -1,16 +1,21 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { defaultFetchBaseQuery } from "../../app/base-api";
-import { PublicAdOffering } from "./types";
+import { noAuthFetchBaseQuery } from "../../app/base-api";
+import { PublicAdOffering, PublicPublication } from "./types";
 
 export const purchaseFormApi = createApi({
   reducerPath: "purchaseFormApi",
-  baseQuery: defaultFetchBaseQuery(),
-  tagTypes: ["Config"],
+  baseQuery: noAuthFetchBaseQuery(),
+  tagTypes: ["AdOfferings", "Publication"],
   endpoints: (builder) => ({
+    getPublicPublication: builder.query<PublicPublication, string>({
+      query: (publicationId) =>
+        `/purchase-form/config/${publicationId}/publication`,
+      providesTags: (_r, _e, id) => [{ type: "Publication" as const, id }],
+    }),
     getAdOfferings: builder.query<PublicAdOffering[], string>({
       query: (publicationId) =>
         `/purchase-form/config/${publicationId}/offerings`,
-      providesTags: (_r, _e, id) => [{ type: "Config" as const, id }],
+      providesTags: (_r, _e, id) => [{ type: "AdOfferings" as const, id }],
     }),
     uploadLogo: builder.mutation<string, FormData>({
       query: (formData) => ({
@@ -30,6 +35,7 @@ export const purchaseFormApi = createApi({
 });
 
 export const {
+  useGetPublicPublicationQuery,
   useGetAdOfferingsQuery,
   useUploadLogoMutation,
   useUploadAdMutation,

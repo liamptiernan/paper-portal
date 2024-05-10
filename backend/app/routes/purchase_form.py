@@ -3,7 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.common.db.init import get_session
 from backend.common.models.ad_offering import PublicAdOffering
+from backend.common.models.publication import PublicPublication
 from backend.common.repositories.ad_offerings_repo import ad_offerings_repo
+from backend.common.repositories.publications_repo import publications_repo
 from backend.common.storage.client import AdClient, LogoClient
 from backend.common.storage.utils import get_key
 
@@ -11,6 +13,21 @@ router = APIRouter(
     prefix="/purchase-form",
     tags=["Purchase"],
 )
+
+
+@router.get("/config/{publication_id}/publication", response_model=PublicPublication)
+async def get_form_publication(
+    publication_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    publication = await publications_repo.get_public_publication(
+        session, publication_id
+    )
+    if publication is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Publication not found"
+        )
+    return publication
 
 
 @router.get("/config/{publication_id}/offerings", response_model=list[PublicAdOffering])

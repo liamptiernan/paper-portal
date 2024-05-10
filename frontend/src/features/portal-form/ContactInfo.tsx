@@ -1,12 +1,14 @@
 import { Flex, Select, Space, TextInput, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "./form-context";
 import { FormSection } from "../../components/FormSection";
+import { States } from "./types";
+
 export function ContactInfo() {
   const { getInputProps } = useAdPurchaseFormContext();
-  const options = [
-    { value: "ny", label: "NY" },
-    { value: "pa", label: "PA" },
-  ];
+  const options = Object.values(States).map((state) => ({
+    value: state,
+    label: state,
+  }));
 
   const SectionTitle = (
     <Title fw={400}>

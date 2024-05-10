@@ -1,3 +1,5 @@
+import { PublicationRegion } from "../publisher-dashboard/types";
+
 export enum PersonalAdSelection {
   Personal = "personal",
   Designed = "designed",
@@ -108,4 +110,18 @@ export interface PublicAdOffering {
   color: boolean;
   price: number;
   index: number;
+}
+
+export interface PublicPublication {
+  id: number;
+  name: string;
+  description: string | null;
+  format: string;
+  location: string | null;
+  distribution_unit: string;
+  estimated_reach: number;
+  region_type: string;
+  distribution_radius: number;
+  regions: PublicationRegion[];
+  sections: string[];
 }

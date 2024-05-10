@@ -1,14 +1,14 @@
 import { Select, Space, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
-import { useGetPublicationQuery } from "../../publisher-dashboard/publications/publicationsApi";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useParams } from "react-router-dom";
+import { useGetPublicPublicationQuery } from "../purchaseFormApi";
 
 function useGetSectionOptions() {
   const params = useParams();
   const publicationId = params["publicationId"];
-  const { data: publication } = useGetPublicationQuery(
+  const { data: publication } = useGetPublicPublicationQuery(
     publicationId ?? skipToken
   );
 

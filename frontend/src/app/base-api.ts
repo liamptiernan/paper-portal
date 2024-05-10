@@ -25,3 +25,10 @@ export const defaultFetchBaseQuery = (options: FetchBaseQueryArgs = {}) => {
     ...options,
   });
 };
+
+export const noAuthFetchBaseQuery = (options: FetchBaseQueryArgs = {}) => {
+  return fetchBaseQuery({
+    baseUrl,
+    ...options,
+  });
+};

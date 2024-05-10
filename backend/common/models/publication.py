@@ -13,7 +13,20 @@ class PublicationRegion(NewPublicationRegion, AppModel):
         orm_mode = True
 
 
-class NewPublication(NewOrgModel):
+class PublicPublication(AppModel):
+    name: str
+    description: str | None = None
+    format: str = "print"
+    location: str | None = None
+    distribution_unit: str = "individuals"
+    estimated_reach: int = 0
+    region_type: str = "regions"
+    distribution_radius: int = 0
+    regions: list[PublicationRegion] = []
+    sections: list[str] = []
+
+
+class NewPublication(PublicPublication, NewOrgModel):
     name: str
     description: str | None = None
     format: str = "print"
