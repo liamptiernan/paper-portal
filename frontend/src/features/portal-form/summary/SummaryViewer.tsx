@@ -12,10 +12,10 @@ import {
 import { BackButton, NextButton } from "../Controls";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { CartSummary } from "./CartSummary";
-import { useGetPublicationQuery } from "../../publisher-dashboard/publications/publicationsApi";
 import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useAllSelectedAdOfferings } from "../fields/budget/hooks";
+import { useGetPublicPublicationQuery } from "../purchaseFormApi";
 
 function ImpactScore() {
   const { selectedAd } = useAllSelectedAdOfferings();
@@ -54,13 +54,12 @@ export function SummaryViewer({
 }) {
   const params = useParams();
   const publicationId = params.publicationId;
-  const { data: publication } = useGetPublicationQuery(
+  const { data: publication } = useGetPublicPublicationQuery(
     publicationId ?? skipToken
   );
   // TODO: continue here
   // ad config to disable upload
   // add form validation - in progress
-  // fix auth stuff in form
   // work in stripe
   return (
     <Paper
