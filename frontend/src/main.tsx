@@ -1,7 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import App from "./App.tsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
@@ -11,17 +10,6 @@ import { Provider } from "react-redux";
 import { store } from "./app/store.ts";
 import { Notifications } from "@mantine/notifications";
 
-const mapRender = (status: Status) => {
-  switch (status) {
-    case Status.LOADING:
-      return <></>;
-    case Status.FAILURE:
-      return <></>;
-    case Status.SUCCESS:
-      return <></>;
-  }
-};
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
@@ -29,12 +17,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Provider store={store}>
           <Notifications position="top-right" zIndex={2000} limit={5} />
           <Auth0ProviderWithNavigate>
-            <Wrapper
-              apiKey="AIzaSyBEGicUH8Jh4d3GbVhC4BgMLQc4z6yyj7M"
-              render={mapRender}
-            >
-              <App />
-            </Wrapper>
+            <App />
           </Auth0ProviderWithNavigate>
         </Provider>
       </BrowserRouter>

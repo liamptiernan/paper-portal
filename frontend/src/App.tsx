@@ -2,7 +2,7 @@ import { AdPurchaseForm } from "./features/portal-form/AdPurchaseForm";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import { AuthHomePage } from "./features/home/HomePage";
-import { AdminLayout, PurchaseLayout } from "./features/app-layout/AppLayout";
+import { AdminLayout } from "./features/app-layout/AppLayout";
 import { PublicationEditPage } from "./features/publisher-dashboard/publications/PublicationEditPage";
 import { PublicationsDashboard } from "./features/publisher-dashboard/publications/PublicationsDashboard";
 import { PublicationFormHeader } from "./features/publisher-dashboard/PublicationHeader";
@@ -21,9 +21,7 @@ export default function App() {
     <Routes>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/" element={<AuthHomePage />} />;
-      <Route path="/customer" element={<PurchaseLayout />}>
-        <Route path="purchase" element={<AdPurchaseForm />}></Route>
-      </Route>
+      <Route path="purchase/:publicationId" element={<AdPurchaseForm />} />
       <Route path="/publisher" element={<AuthAdminLayout />}>
         <Route path="publications">
           <Route index element={<PublicationsDashboard />} />

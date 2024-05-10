@@ -1,119 +1,60 @@
-import {
-  Checkbox,
-  Collapse,
-  Flex,
-  MultiSelect,
-  RangeSlider,
-  Select,
-  Stack,
-  Switch,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Select, Space, Text, Title } from "@mantine/core";
 import { useAdPurchaseFormContext } from "../form-context";
 import { FormSection } from "../../../components/FormSection";
-import MapInput from "./MapInput";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useParams } from "react-router-dom";
+import { useGetPublicPublicationQuery } from "../purchaseFormApi";
 
-function AdvancedToggle() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  return (
-    <Switch
-      label="View advanced options"
-      size="md"
-      // labelPosition="left"
-      {...getInputProps("advanced_options", { type: "checkbox" })}
-    />
+function useGetSectionOptions() {
+  const params = useParams();
+  const publicationId = params["publicationId"];
+  const { data: publication } = useGetPublicPublicationQuery(
+    publicationId ?? skipToken
   );
+
+  return publication?.sections.map((section) => ({
+    label: section,
+    value: section,
+  }));
 }
 
 function Section() {
   const { getInputProps } = useAdPurchaseFormContext();
-  const options = [
-    { value: "sports", label: "Sports" },
-    { value: "news", label: "News" },
-    { value: "local_events", label: "Local Events" },
-  ];
+  const sectionOptions = useGetSectionOptions();
+
+  if (!sectionOptions) {
+    // TODO: if none, do something else
+    return null;
+  }
+
   return (
     <Select
       label="What section of the paper do you want your ad to appear in?"
-      data={options}
+      description="We'll contact you if we can't accommodate your request."
+      data={sectionOptions}
       size="md"
       {...getInputProps("target_section")}
     />
   );
 }
 
-function Age() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const marks = [
-    { value: 1, label: 1 },
-    { value: 20, label: 20 },
-    { value: 40, label: 40 },
-    { value: 60, label: 60 },
-    { value: 80, label: 80 },
-    { value: 100, label: "100+" },
-  ];
-  return (
-    <Stack mb="lg">
-      <Text>What's your target age range?</Text>
-      <RangeSlider
-        marks={marks}
-        min={1}
-        max={100}
-        {...getInputProps("target_ages")}
-      />
-    </Stack>
-  );
-}
-
-function Gender() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  return (
-    <Checkbox.Group
-      label="Gender"
-      size="md"
-      {...getInputProps("target_genders")}
-    >
-      <Flex gap={"lg"}>
-        <Checkbox label="Male" value="male" />
-        <Checkbox label="Female" value="female" />
-      </Flex>
-    </Checkbox.Group>
-  );
-}
-
-function Publications() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const options = [
-    { value: "greenville_times", label: "Greenville Times" },
-    { value: "ravena_herald", label: "Ravena Herald" },
-    { value: "albany_courier", label: "Albany Courier" },
-  ];
-  return (
-    <MultiSelect
-      label="What publications do you want your ad to appear in?"
-      data={options}
-      size="md"
-      {...getInputProps("target_publications")}
-    />
-  );
-}
-
 export function DemographicQuestions() {
-  const { getInputProps } = useAdPurchaseFormContext();
-  const display = getInputProps("advanced_options").value;
+  const SectionTitle = (
+    <Title fw={400}>
+      <Text span inherit>
+        Who's your target audience?
+      </Text>
+      <Space h="md" />
+      <Text inherit fw={400} fz={"xl"} color="brandDark.2">
+        Leave optional questions blank, and we'll make the best decision for
+        you.
+      </Text>
+    </Title>
+  );
   return (
-    <FormSection title={<Title fw={400}>Who's your target audience?</Title>}>
-      <MapInput />
-      <AdvancedToggle />
-      <Collapse in={display} transitionDuration={300}>
-        <Stack spacing={"md"}>
-          <Section />
-          <Age />
-          <Gender />
-          <Publications />
-        </Stack>
-      </Collapse>
+    <FormSection title={SectionTitle}>
+      <></>
+      <Section />
     </FormSection>
   );
 }

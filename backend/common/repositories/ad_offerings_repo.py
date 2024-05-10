@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.common.db.models import AdOffering
 from backend.common.models.ad_offering import AdOffering as AppAdOffering
 from backend.common.models.ad_offering import NewAdOffering as AppNewAdOffering
+from backend.common.models.ad_offering import PublicAdOffering
 from backend.common.models.publication import Publication as AppPublication
 from backend.common.repositories.base_repo import OrgRepo
 from backend.common.models.user import User as AppUser
@@ -25,6 +26,27 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             ),  # TODO: we probably dont need this join by default
             impact_score=db_model.impact_score,
             size=db_model.size,
+            x_dimension=db_model.x_dimension,
+            y_dimension=db_model.y_dimension,
+            page_start=db_model.page_start,
+            page_end=db_model.page_end,
+            color=db_model.color,
+            price=db_model.price,
+            index=db_model.index,
+        )
+
+    async def db_to_public(
+        self,
+        session: AsyncSession,
+        db_model: AdOffering,
+    ) -> PublicAdOffering:
+        return PublicAdOffering(
+            id=db_model.id,
+            name=db_model.name,
+            impact_score=db_model.impact_score,
+            size=db_model.size,
+            x_dimension=db_model.x_dimension,
+            y_dimension=db_model.y_dimension,
             page_start=db_model.page_start,
             page_end=db_model.page_end,
             color=db_model.color,
@@ -44,6 +66,8 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             publication_id=app_model.publication_id,
             impact_score=app_model.impact_score,
             size=app_model.size,
+            x_dimension=app_model.x_dimension,
+            y_dimension=app_model.y_dimension,
             page_start=app_model.page_start,
             page_end=app_model.page_end,
             color=app_model.color,
@@ -65,6 +89,19 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
             for model in (await session.execute(query)).unique()
         ]
 
+    async def get_all_public_for_publication(
+        self, id: int, session: AsyncSession
+    ) -> list[PublicAdOffering]:
+        base_query = (
+            select(AdOffering)
+            .where(AdOffering.publication_id == id)
+            .order_by(AdOffering.index.desc())
+        )
+        return [
+            await self.db_to_public(session, model.t[0])
+            for model in (await session.execute(base_query)).unique()
+        ]
+
     async def reorder_ad_offerings(
         self, new_order: list[int], session: AsyncSession, user: AppUser
     ) -> None:
@@ -75,7 +112,10 @@ class AdOfferingsRepo(OrgRepo[AdOffering, AppAdOffering]):
         if len(clean_order) != len(new_order):
             raise Exception("Order lengths differ")
 
-        step = 0.9 / (len(new_order) - 1)
+        if offering_count := len(new_order) - 1:
+            step = 0.9 / offering_count
+        else:
+            step = 0.9
         await session.execute(
             update(AdOffering),
             [

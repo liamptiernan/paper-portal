@@ -7,7 +7,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AdPurchase, PersonalAdSelection } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
 import {
@@ -18,9 +18,18 @@ import {
   IconCashBanknote,
   IconReportAnalytics,
   IconSparkles,
+  IconX,
 } from "@tabler/icons-react";
 import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
 import { useGeneralStyles } from "./styles";
+import { hasLength, isEmail, isNotEmpty } from "@mantine/form";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  decrementActiveStep,
+  getActiveStep,
+  incrementActiveStep,
+} from "./purchaseFormSlice";
+import { notifications } from "@mantine/notifications";
 
 function SubmitView() {
   return (
@@ -49,44 +58,116 @@ function SubmitView() {
   );
 }
 
+function useValidateForm() {
+  const activeStep = useAppSelector(getActiveStep);
+
+  const validate = useCallback(
+    (values: AdPurchase) => {
+      if (activeStep === 0) {
+        return {
+          business_name: isNotEmpty("Business name is required")(
+            values.business_name
+          ),
+          email: isEmail("Must be a valid email")(values.email),
+        };
+      }
+      if (activeStep === 1) {
+        return {
+          business_description: isNotEmpty("Business description is required")(
+            values.business_description
+          ),
+          campaign_goal:
+            values.campaign_goal.length === 0
+              ? "Select at least one campaign goal"
+              : null,
+        };
+      }
+      if (activeStep === 2) {
+        if (!values.selected_ad_offering) {
+          notifications.show({
+            title: "Ad option required",
+            icon: <IconX />,
+            message: "You must select an ad option to continue",
+            color: "red",
+          });
+          return {
+            selected_ad_offering: "You must select an ad option",
+          };
+        }
+      }
+      if (activeStep === 3) {
+        if (values.personal_ad === PersonalAdSelection.Personal) {
+          return {
+            personal_ad_checksum: isNotEmpty(
+              "If providing your own ad, you must upload a file"
+            )(values.personal_ad_checksum),
+          };
+        }
+      }
+      if (activeStep === 5) {
+        return {
+          contact_name: isNotEmpty("Required")(values.contact_name),
+          contact_phone:
+            isNotEmpty("Required")(values.contact_phone) ||
+            hasLength({ min: 7 }, "Must be 7 digits")(values.contact_phone),
+          contact_address_1: isNotEmpty("Required")(values.contact_address_1),
+          contact_city: isNotEmpty("Required")(values.contact_city),
+          contact_state: isNotEmpty("Required")(values.contact_state),
+          contact_zip: isNotEmpty("Required")(values.contact_zip),
+        };
+      }
+      return {};
+    },
+    [activeStep]
+  );
+
+  return validate;
+}
+
 export function AdPurchaseForm() {
-  const [activeStep, setActiveStep] = useState(0);
+  const dispatch = useAppDispatch();
+  const validateForm = useValidateForm();
+
+  const activeStep = useAppSelector(getActiveStep);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
-    document.title = "Market Angler - Ad Designer";
+    document.title = "MarketAngler - Ad Designer";
   }, []);
 
   const { classes: controllerClasses } = useGeneralStyles();
 
   const form = useAdPurchaseForm({
     initialValues: {
+      business_name: "",
+      email: "",
+      business_description: "",
+      campaign_goal: [],
+      selected_ad_offering: null,
       personal_ad: PersonalAdSelection.Designed,
-      regions: [],
-      advanced_options: false,
-      target_ages: [1, 100],
-      target_genders: [],
-      target_publications: [],
-      target_area_radius: 50,
-      target_area_center: "12202",
-      target_monthly_spend: 250,
+      personal_ad_checksum: "",
+      brand_colors: [],
+      contact_name: "",
+      contact_phone: "",
+      contact_address_1: "",
+      contact_city: "",
+      billing_name: "",
+      billing_phone: "",
+      billing_address_1: "",
+      billing_city: "",
     },
-    validate: {
-      email: (value) => {
-        if (!value) {
-          return null;
-        }
-        /^\S+@\S+$/.test(value) ? null : "Invalid email";
-      },
-    },
+    validate: validateForm,
   });
 
   const onNext = () => {
-    setActiveStep((active) => active + 1);
+    if (form.validate().hasErrors) {
+      return;
+    }
+    dispatch(incrementActiveStep());
   };
 
   const onBack = () => {
-    setActiveStep((active) => (active > 0 ? active - 1 : active));
+    dispatch(decrementActiveStep());
   };
 
   const handleSubmit = (
@@ -114,12 +195,12 @@ export function AdPurchaseForm() {
             >
               <Stepper.Step label="Welcome" icon={<IconSparkles />} />
               <Stepper.Step label="Business" icon={<IconBuildingStore />} />
+              <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
               <Stepper.Step label="Design" icon={<IconAd2 />} />
               <Stepper.Step
                 label="Demographics"
                 icon={<IconAdjustmentsHorizontal />}
               />
-              <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
               <Stepper.Step label="Contact" icon={<IconAddressBook />} />
               <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
             </Stepper>

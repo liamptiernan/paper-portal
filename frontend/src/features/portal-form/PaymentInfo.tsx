@@ -56,7 +56,7 @@ function BillingAddress() {
       <Stack spacing={"md"}>
         <Text>Billing Address</Text>
         <Checkbox
-          label="Same as business contact info"
+          label="Check if same as business contact info"
           size={"md"}
           {...getInputProps("reuse_contact")}
         />

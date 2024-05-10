@@ -18,12 +18,16 @@ class Settings(BaseSettings):
         }
     db_username: str = db_login["username"]
     db_password: str = db_login["password"]
-    db_url: str = f"postgresql+psycopg://{db_username}:{db_password}@{config['DB_ADDRESS']}:{config['DB_PORT']}/{config['DB_NAME']}"  # noqa: E501
+    db_url: str = (
+        f"postgresql+psycopg://{db_username}:{db_password}@{config['DB_ADDRESS']}:{config['DB_PORT']}/{config['DB_NAME']}"  # noqa: E501
+    )
     is_local: bool = env_type == "local"
     auth0_audience: str
     auth0_domain: str
     client_origin_url: str
     auth0_attr_key: str
+    ad_bucket_name: str
+    s3_endpoint_url: str
 
 
 settings = Settings()
