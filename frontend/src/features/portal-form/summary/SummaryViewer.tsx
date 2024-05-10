@@ -32,7 +32,7 @@ function ImpactScore() {
           <IconInfoCircle color="gray" />
         </Tooltip>
       </Group>
-      {selectedAd !== undefined ? (
+      {selectedAd !== null ? (
         <Text size="lg" fw={600} color="brandBlue">
           {selectedAd.impact_score * 100}%
         </Text>

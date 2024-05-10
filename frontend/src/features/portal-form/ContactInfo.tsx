@@ -39,33 +39,33 @@ export function ContactInfo() {
         label="Address Line 1"
         size="md"
         required
-        {...getInputProps("address_1")}
+        {...getInputProps("contact_address_1")}
       />
       <TextInput
         label="Address Line 2"
         size="md"
-        {...getInputProps("address_2")}
+        {...getInputProps("contact_address_2")}
       />
       <Flex gap={"md"}>
         <TextInput
           label="City"
           size="md"
           required
-          {...getInputProps("address_city")}
+          {...getInputProps("contact_city")}
         />
         <Select
           data={options}
           label="State"
           size="md"
           required
-          {...getInputProps("address_state")}
+          {...getInputProps("contact_state")}
         />
       </Flex>
       <TextInput
         label="Zip"
         size="md"
         required
-        {...getInputProps("address_zip")}
+        {...getInputProps("contact_zip")}
       />
     </FormSection>
   );

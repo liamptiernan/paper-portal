@@ -72,8 +72,8 @@ export interface AdPurchase {
   campaign_goal: string[];
   selected_ad_offering: PublicAdOffering | null;
   personal_ad: PersonalAdSelection;
-  personal_ad_checksum?: string;
-  brand_colors?: string[];
+  personal_ad_checksum: string;
+  brand_colors: string[];
   brand_logo_checksum?: string;
   ad_phone_number?: string;
   ad_email?: string;

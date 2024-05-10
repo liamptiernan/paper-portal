@@ -6,7 +6,7 @@ import { useGetAdOfferingsQuery } from "../../purchaseFormApi";
 
 export function useAllSelectedAdOfferings() {
   const adForm = useAdPurchaseFormContext();
-  const selectedAd: PublicAdOffering | undefined = adForm.getInputProps(
+  const selectedAd: PublicAdOffering | null = adForm.getInputProps(
     "selected_ad_offering"
   ).value;
   return { selectedAd };
@@ -15,9 +15,12 @@ export function useAllSelectedAdOfferings() {
 export function useSelectedAdOffering(adOffering: PublicAdOffering) {
   const adForm = useAdPurchaseFormContext();
   const isSelectedAd = useMemo(() => {
-    const selectedAd: PublicAdOffering = adForm.getInputProps(
+    const selectedAd: PublicAdOffering | null = adForm.getInputProps(
       "selected_ad_offering"
     ).value;
+    if (!selectedAd) {
+      return false;
+    }
     return selectedAd.id === adOffering.id;
   }, [adForm, adOffering.id]);
 
@@ -29,7 +32,7 @@ export function useSelectedAdOffering(adOffering: PublicAdOffering) {
     if (!isSelectedAd) {
       return;
     }
-    adForm.setFieldValue("selected_ad_offering", undefined);
+    adForm.setFieldValue("selected_ad_offering", null);
   }, [adForm, isSelectedAd]);
   return { onSelect, onDeselect, isSelectedAd };
 }

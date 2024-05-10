@@ -40,6 +40,7 @@ function useUploadAd() {
 export function AdUpload() {
   const { uploadAd, status, error } = useUploadAd();
   const { selectedAd } = useAllSelectedAdOfferings();
+  const { getInputProps } = useAdPurchaseFormContext();
   let description;
   if (selectedAd) {
     description = (
@@ -57,9 +58,12 @@ export function AdUpload() {
     <FileUpload
       label="Upload Your Ad"
       description={description}
+      error={getInputProps("personal_ad_checksum").error}
+      required
       onChange={uploadAd}
       errorResponse={error}
       status={status}
+      w="100%"
     />
   );
 }
