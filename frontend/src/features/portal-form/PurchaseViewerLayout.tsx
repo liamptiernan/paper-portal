@@ -1,17 +1,17 @@
 import { Box, Button, Flex, Transition } from "@mantine/core";
-import { LoginInfo } from "./LoginInfo";
+import { LoginInfo } from "./fields/LoginInfo.tsx";
 import { CampaignSummary } from "./fields/CampaignGoals";
 import { AdDesignQuestions } from "./fields/design/AdDesignQuestions";
 import { DemographicQuestions } from "./fields/DemographicQuestions";
 import { BudgetOptions } from "./fields/budget/BudgetOptions";
-import { ContactInfo } from "./ContactInfo";
-import { PaymentInfo } from "./PaymentInfo";
+import { ContactInfo } from "./fields/ContactInfo.tsx";
 import {
   IconArrowBigLeft,
   IconArrowBigRightLinesFilled,
 } from "@tabler/icons-react";
 import { useBorderButtonStyles, usePurchaseViewerStyles } from "./styles";
 import { SummaryViewer } from "./summary/SummaryViewer";
+import { Checkout } from "./stripe/Checkout.tsx";
 
 function PrevBorderButton({
   onClick,
@@ -77,17 +77,18 @@ export function PurchaseViewerLayout({
 
   const steps = [
     <LoginInfo />,
+    <Checkout />,
     <CampaignSummary />,
     <BudgetOptions />,
     <AdDesignQuestions />,
     <DemographicQuestions />,
     <ContactInfo />,
-    <PaymentInfo />,
   ];
   const isSubmit = steps.length === activeStep + 1;
   return (
     <Box className={classes.viewerContainer}>
       <Flex
+        justify={"center"}
         direction={{ base: "column", md: "row" }}
         gap={{ base: "none", md: "sm" }}
       >

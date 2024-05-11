@@ -87,8 +87,8 @@ export interface AdPurchase {
   contact_address_1: string;
   contact_address_2?: string;
   contact_city: string;
-  contact_state?: States;
-  contact_zip?: number;
+  contact_state: States | null;
+  contact_zip: number | null;
   billing_name: string;
   billing_phone: string;
   billing_address_1: string;

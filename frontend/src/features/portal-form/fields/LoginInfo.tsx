@@ -1,8 +1,8 @@
 import { Space, Text, TextInput, Title, rem } from "@mantine/core";
 import { IconAt, IconBuildingSkyscraper } from "@tabler/icons-react";
-import { useAdPurchaseFormContext } from "./form-context";
-import { FormSection } from "../../components/FormSection";
-import { useTextStyles } from "../../components/styles";
+import { useAdPurchaseFormContext } from "../form-context";
+import { FormSection } from "../../../components/FormSection";
+import { useTextStyles } from "../../../components/styles";
 
 function SectionTitle() {
   const { classes } = useTextStyles();

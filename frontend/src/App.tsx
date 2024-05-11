@@ -13,6 +13,8 @@ import { PurchasesDashboard } from "./features/publisher-dashboard/purchases/Pur
 import { UsersDashboard } from "./features/users/UsersDashboard";
 import { IntegrateTab } from "./features/publisher-dashboard/publications/IntegrateTab";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { FormStepperLayout } from "./features/portal-form/layout/Stepper";
+import { PurchaseConfirmation } from "./features/portal-form/stripe/Confirmation";
 
 const AuthAdminLayout = ProtectedRoute(AdminLayout);
 
@@ -21,7 +23,10 @@ export default function App() {
     <Routes>
       <Route path="*" element={<ErrorPage />} />
       <Route path="/" element={<AuthHomePage />} />;
-      <Route path="purchase/:publicationId" element={<AdPurchaseForm />} />
+      <Route path="/purchase" element={<FormStepperLayout />}>
+        <Route path=":publicationId" element={<AdPurchaseForm />} />
+        <Route path="complete" element={<PurchaseConfirmation />} />
+      </Route>
       <Route path="/publisher" element={<AuthAdminLayout />}>
         <Route path="publications">
           <Route index element={<PublicationsDashboard />} />

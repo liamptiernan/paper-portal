@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, UploadFile, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+import stripe
 
 from backend.common.db.init import get_session
 from backend.common.models.ad_offering import PublicAdOffering
@@ -66,3 +67,31 @@ async def upload_ad(ad: UploadFile) -> str:
     return relative_key
     # TODO:
     # maybe some cleanup if this is ultimately associated with an object?
+    # throw away uploads if they aren't needed
+
+
+stripe.api_key = "sk_test_51PF0P9K2QqtW2Jds8dO4Zg57etR2Xm2hg00mIUNUR5zt40PmzMPx3r11xYRvLWqiY9GU081ZnJgZAQUoTLna9bii00tHcZDoLH"  # noqa: E501
+
+
+@router.post("/create-checkout-session", response_model=str | None)
+async def create_checkout_session() -> str | None:
+    product = stripe.Product.create(name="T-shirt")
+    price = stripe.Price.create(
+        unit_amount=2000,
+        currency="usd",
+        product=product.id,
+    )
+    session = stripe.checkout.Session.create(
+        ui_mode="embedded",
+        line_items=[
+            {
+                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                "price": f"{price.id}",
+                "quantity": 1,
+            },
+        ],  # todo
+        mode="payment",
+        return_url="http://localhost:5173/purchase/complete?session={CHECKOUT_SESSION_ID}",
+    )
+
+    return session.client_secret

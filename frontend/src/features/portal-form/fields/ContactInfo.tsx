@@ -1,7 +1,7 @@
 import { Flex, Select, Space, TextInput, Text, Title } from "@mantine/core";
-import { useAdPurchaseFormContext } from "./form-context";
-import { FormSection } from "../../components/FormSection";
-import { States } from "./types";
+import { useAdPurchaseFormContext } from "../form-context";
+import { FormSection } from "../../../components/FormSection";
+import { States } from "../types";
 
 export function ContactInfo() {
   const { getInputProps } = useAdPurchaseFormContext();

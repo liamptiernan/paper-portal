@@ -1,27 +1,9 @@
-import {
-  Box,
-  Container,
-  Flex,
-  Space,
-  Stepper,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useCallback, useEffect, useState } from "react";
+import { Box } from "@mantine/core";
+import { useCallback, useEffect } from "react";
 import { AdPurchase, PersonalAdSelection } from "./types";
 import { AdPurchaseFormProvider, useAdPurchaseForm } from "./form-context";
-import {
-  IconAd2,
-  IconAddressBook,
-  IconAdjustmentsHorizontal,
-  IconBuildingStore,
-  IconCashBanknote,
-  IconReportAnalytics,
-  IconSparkles,
-  IconX,
-} from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { PurchaseViewerLayout } from "./PurchaseViewerLayout";
-import { useGeneralStyles } from "./styles";
 import { hasLength, isEmail, isNotEmpty } from "@mantine/form";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
@@ -30,33 +12,6 @@ import {
   incrementActiveStep,
 } from "./purchaseFormSlice";
 import { notifications } from "@mantine/notifications";
-
-function SubmitView() {
-  return (
-    <Container size={"sm"}>
-      <Title>
-        <Text span inherit color="brandBlue">
-          Thanks for your order!
-        </Text>
-        <Space h="md" />
-        <Text inherit fw={400} fz={"xl"}></Text>
-        <Space h="md" />
-        <Text inherit fw={400} fz={"xl"}>
-          We're preparing everything needed to reach your audience.
-        </Text>
-        <Space h="md" />
-        <Text inherit fw={400} fz={"xl"}>
-          We'll send you a confirmation email to let you know when and where to
-          expect your ad.
-        </Text>
-        <Space h="md" />
-        <Text inherit fw={400} fz={"xl"}>
-          Order Number: #203GA1
-        </Text>
-      </Title>
-    </Container>
-  );
-}
 
 function useValidateForm() {
   const activeStep = useAppSelector(getActiveStep);
@@ -129,13 +84,10 @@ export function AdPurchaseForm() {
   const validateForm = useValidateForm();
 
   const activeStep = useAppSelector(getActiveStep);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     document.title = "MarketAngler - Ad Designer";
   }, []);
-
-  const { classes: controllerClasses } = useGeneralStyles();
 
   const form = useAdPurchaseForm({
     initialValues: {
@@ -151,6 +103,8 @@ export function AdPurchaseForm() {
       contact_phone: "",
       contact_address_1: "",
       contact_city: "",
+      contact_state: null,
+      contact_zip: null,
       billing_name: "",
       billing_phone: "",
       billing_address_1: "",
@@ -174,47 +128,22 @@ export function AdPurchaseForm() {
     values: AdPurchase,
     _event: React.FormEvent<HTMLFormElement>
   ) => {
-    setHasSubmitted(true);
     console.log("submit");
     console.log(values);
     console.log(_event);
   };
 
-  // TODO: add form validation and routing
   return (
     <Box>
-      {!hasSubmitted && (
-        <AdPurchaseFormProvider form={form}>
-          <Flex direction={{ base: "row", md: "column" }}>
-            <Stepper
-              // add border right
-              // margin auto
-              classNames={{ stepLabel: controllerClasses.hideMobile }}
-              active={activeStep}
-              breakpoint={"md"}
-            >
-              <Stepper.Step label="Welcome" icon={<IconSparkles />} />
-              <Stepper.Step label="Business" icon={<IconBuildingStore />} />
-              <Stepper.Step label="Budget" icon={<IconReportAnalytics />} />
-              <Stepper.Step label="Design" icon={<IconAd2 />} />
-              <Stepper.Step
-                label="Demographics"
-                icon={<IconAdjustmentsHorizontal />}
-              />
-              <Stepper.Step label="Contact" icon={<IconAddressBook />} />
-              <Stepper.Step label="Payment" icon={<IconCashBanknote />} />
-            </Stepper>
-            <form onSubmit={form.onSubmit(handleSubmit)}>
-              <PurchaseViewerLayout
-                activeStep={activeStep}
-                onNext={onNext}
-                onBack={onBack}
-              />
-            </form>
-          </Flex>
-        </AdPurchaseFormProvider>
-      )}
-      {hasSubmitted && <SubmitView />}
+      <AdPurchaseFormProvider form={form}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <PurchaseViewerLayout
+            activeStep={activeStep}
+            onNext={onNext}
+            onBack={onBack}
+          />
+        </form>
+      </AdPurchaseFormProvider>
     </Box>
   );
 }

@@ -31,6 +31,12 @@ export const purchaseFormApi = createApi({
         body: formData,
       }),
     }),
+    createCheckoutSession: builder.mutation<string, void>({
+      query: () => ({
+        url: "/purchase-form/create-checkout-session",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -39,4 +45,5 @@ export const {
   useGetAdOfferingsQuery,
   useUploadLogoMutation,
   useUploadAdMutation,
+  useCreateCheckoutSessionMutation,
 } = purchaseFormApi;
