@@ -4,8 +4,10 @@ import stripe
 
 from backend.common.db.init import get_session
 from backend.common.models.ad_offering import PublicAdOffering
+from backend.common.models.ad_purchase import AdPurchase
 from backend.common.models.publication import PublicPublication
 from backend.common.repositories.ad_offerings_repo import ad_offerings_repo
+from backend.common.repositories.ad_purchases_repo import ad_purchase_repo
 from backend.common.repositories.publications_repo import publications_repo
 from backend.common.storage.client import AdClient, LogoClient
 from backend.common.storage.utils import get_key
@@ -68,6 +70,14 @@ async def upload_ad(ad: UploadFile) -> str:
     # TODO:
     # maybe some cleanup if this is ultimately associated with an object?
     # throw away uploads if they aren't needed
+
+
+@router.post("/submit", response_model=AdPurchase)
+async def submit_purchase(
+    new_ad_purchase: AdPurchase,
+    session: AsyncSession = Depends(get_session),
+) -> AdPurchase:
+    return await ad_purchase_repo.create(session, new_ad_purchase)
 
 
 stripe.api_key = "sk_test_51PF0P9K2QqtW2Jds8dO4Zg57etR2Xm2hg00mIUNUR5zt40PmzMPx3r11xYRvLWqiY9GU081ZnJgZAQUoTLna9bii00tHcZDoLH"  # noqa: E501

@@ -77,12 +77,12 @@ export function PurchaseViewerLayout({
 
   const steps = [
     <LoginInfo />,
-    <Checkout />,
     <CampaignSummary />,
     <BudgetOptions />,
     <AdDesignQuestions />,
     <DemographicQuestions />,
     <ContactInfo />,
+    <Checkout />,
   ];
   const isSubmit = steps.length === activeStep + 1;
   return (

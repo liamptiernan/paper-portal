@@ -117,6 +117,9 @@ export function AdPurchaseForm() {
     if (form.validate().hasErrors) {
       return;
     }
+    if (activeStep === 5) {
+      // submit the form
+    }
     dispatch(incrementActiveStep());
   };
 

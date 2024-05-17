@@ -4,6 +4,14 @@ import { useSearchParams } from "react-router-dom";
 import { setActiveStep } from "../purchaseFormSlice";
 import { useAppDispatch } from "../../../app/hooks";
 
+// TODO: continue here
+// On checkout, submit form and save ad purchase as pending
+// pass ID of ad offering when creating checkout session to drive price / product
+// also save the session_id with the purchase. this is the uuid of that purchase and source of truth for state
+// when complete, fetch ad form and session and display order details
+
+// add a back button to allow users to leave the checkout view
+
 export function PurchaseConfirmation() {
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();

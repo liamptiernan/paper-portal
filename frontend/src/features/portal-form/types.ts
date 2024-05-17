@@ -1,8 +1,8 @@
 import { PublicationRegion } from "../publisher-dashboard/types";
 
 export enum PersonalAdSelection {
-  Personal = "personal",
-  Designed = "designed",
+  Personal = "PERSONAL",
+  Designed = "DESIGNED",
 }
 
 export enum States {

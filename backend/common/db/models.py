@@ -1,7 +1,8 @@
+from typing import Literal
 from sqlalchemy import ARRAY, Column, ForeignKey, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.common.core.enums import UserRole
+from backend.common.core.enums import PersonalAdSelection, States, UserRole
 from backend.common.db.init import Base
 
 
@@ -91,3 +92,42 @@ class AdOffering(Base):
     )
     org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
     org: Mapped[Organization] = relationship(foreign_keys=[org_id])
+
+
+class AdPurchase(Base):
+    __tablename__ = "ad_purchase"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    campaign_goal: Mapped[list[str]] = Column(ARRAY(VARCHAR))  # type: ignore
+    selected_ad_offering_id: Mapped[int] = mapped_column(
+        ForeignKey("ad_offering.id"), nullable=False
+    )
+    selected_ad_offering: Mapped[AdOffering] = relationship(
+        foreign_keys=[selected_ad_offering_id]
+    )
+    personal_ad: Mapped[PersonalAdSelection]
+    personal_ad_checksum: Mapped[str]
+    brand_colors: Mapped[list[str]] = Column(ARRAY(VARCHAR))  # type: ignore
+    brand_logo_checksum: Mapped[str] = mapped_column(nullable=True)
+    ad_phone_number: Mapped[str] = mapped_column(nullable=True)
+    ad_email: Mapped[str] = mapped_column(nullable=True)
+    ad_website: Mapped[str] = mapped_column(nullable=True)
+    provided_copy: Mapped[str] = mapped_column(nullable=True)
+    target_section: Mapped[str] = mapped_column(nullable=True)
+    contact_name: Mapped[str]
+    contact_phone: Mapped[str]
+    contact_address_1: Mapped[str]
+    contact_address_2: Mapped[str] = mapped_column(nullable=True)
+    contact_city: Mapped[str]
+    contact_state: Mapped[States]
+    contact_zip: Mapped[int]
+    billing_name: Mapped[str]
+    billing_phone: Mapped[str]
+    billing_address_1: Mapped[str]
+    billing_address_2: Mapped[str] = mapped_column(nullable=True)
+    billing_city: Mapped[str]
+    billing_state: Mapped[States]
+    billing_zip: Mapped[int]
+    org_id: Mapped[int] = mapped_column(ForeignKey("organization.id"), nullable=False)
+    org: Mapped[Organization] = relationship(foreign_keys=[org_id])
+    status: Mapped[Literal["PENDING", "PURCHASED", "FULFILLED"]]

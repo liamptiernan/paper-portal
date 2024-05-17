@@ -182,7 +182,7 @@ class OwnerRepo(BaseRepo[TDBModel, TOwnerModel]):
         return query.filter_by(user_id=user.id)
 
     async def auth_create(
-        self, session: AsyncSession, user: AppUser, new_model: OwnedModel
+        self, session: AsyncSession, user: AppUser, new_model: BaseModel
     ) -> BaseModel:
         new_model.user_id = user.id
         new_model.org_id = user.org_id

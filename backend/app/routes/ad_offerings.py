@@ -55,11 +55,11 @@ async def update_ad_offering(
 
 @router.put("/", response_model=AdOffering, status_code=status.HTTP_201_CREATED)
 async def create_ad_offering(
-    new_publication: NewAdOffering,
+    new_ad_offering: NewAdOffering,
     session: AsyncSession = Depends(get_session),
     user: User = Depends(superuser),
 ):
-    return await ad_offerings_repo.create(session, user, new_publication)
+    return await ad_offerings_repo.create(session, user, new_ad_offering)
 
 
 @router.delete("/{id}", response_model=None)
