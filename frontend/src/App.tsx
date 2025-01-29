@@ -1,27 +1,46 @@
-import { Container } from "@mantine/core";
 import { AdPurchaseForm } from "./features/portal-form/AdPurchaseForm";
-import { Routes, Route } from "react-router-dom";
-import { MainNavBar } from "./components/NavBar";
-import { useNavBarStyles } from "./features/portal-form/styles";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-function AppLayout() {
-  const { classes } = useNavBarStyles();
-  return (
-    <>
-      <Container fluid className={classes.navContainer}>
-        <MainNavBar />
-      </Container>
-      <Container size="xl">
-        <AdPurchaseForm />
-      </Container>
-    </>
-  );
-}
+import { AuthHomePage } from "./features/home/HomePage";
+import { AdminLayout } from "./features/app-layout/AppLayout";
+import { PublicationEditPage } from "./features/publisher-dashboard/publications/PublicationEditPage";
+import { PublicationsDashboard } from "./features/publisher-dashboard/publications/PublicationsDashboard";
+import { PublicationFormHeader } from "./features/publisher-dashboard/PublicationHeader";
+import { AdTablePage } from "./features/publisher-dashboard/ads/PublicationAdTablePage";
+import { AdOfferingEditPage } from "./features/publisher-dashboard/ads/PublicationAdEditPage";
+import { ErrorPage } from "./components/ErrorPage";
+import { PurchasesDashboard } from "./features/publisher-dashboard/purchases/PurchasesDashboard";
+import { UsersDashboard } from "./features/users/UsersDashboard";
+import { IntegrateTab } from "./features/publisher-dashboard/publications/IntegrateTab";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+
+const AuthAdminLayout = ProtectedRoute(AdminLayout);
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<AppLayout />}></Route>
+      <Route path="*" element={<ErrorPage />} />
+      <Route path="/" element={<AuthHomePage />} />;
+      <Route path="purchase/:publicationId" element={<AdPurchaseForm />} />
+      <Route path="/publisher" element={<AuthAdminLayout />}>
+        <Route path="publications">
+          <Route index element={<PublicationsDashboard />} />
+          <Route path=":publicationId" element={<PublicationFormHeader />}>
+            <Route path="edit" element={<PublicationEditPage />} />
+            <Route path="ads">
+              <Route index element={<AdTablePage />} />
+              <Route path=":offeringId" element={<AdOfferingEditPage />} />
+            </Route>
+            <Route path="integrate" element={<IntegrateTab />} />
+          </Route>
+        </Route>
+        <Route path="purchases" element={<PurchasesDashboard />} />
+        <Route path="users" element={<UsersDashboard />} />
+        <Route
+          path=""
+          element={<Navigate replace to="/publisher/publications" />}
+        />
+      </Route>
     </Routes>
   );
 }

@@ -1,8 +1,9 @@
-import { MediaQuery, Slider, Title } from "@mantine/core";
-import { useAdPurchaseFormContext } from "../form-context";
-import { FormSection } from "../../../components/FormSection";
+import { Box, MediaQuery, Slider, Text, Title } from "@mantine/core";
+import { useAdPurchaseFormContext } from "../../form-context";
+import { FormSection } from "../../../../components/FormSection";
+import { AdChoices } from "./AdChoices";
 
-export function SpendSlider() {
+function SpendSlider() {
   const { getInputProps } = useAdPurchaseFormContext();
   const marks = [
     { value: 10, label: "$10" },
@@ -26,36 +27,48 @@ export function SpendSlider() {
   };
 
   return (
-    <FormSection title={<Title fw={400}>What's your monthly budget?</Title>}>
-      <></>
+    <Box mb="xl">
+      <Text>What's your monthly budget?</Text>
       <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
         <Slider
-          color="brandSaffron"
+          color="brandYellow"
           precision={2}
           step={10}
           min={10}
           max={2500}
           marks={marks}
           label={label}
-          labelAlwaysOn
           size={"xl"}
           {...getInputProps("target_monthly_spend")}
         />
       </MediaQuery>
       <MediaQuery largerThan={"md"} styles={{ display: "none" }}>
         <Slider
-          color="brandSaffron"
+          color="brandYellow"
           precision={2}
           step={10}
           min={10}
           max={2500}
           marks={smallMarks}
           label={label}
-          labelAlwaysOn
           size={"xl"}
           {...getInputProps("target_monthly_spend")}
         />
       </MediaQuery>
+    </Box>
+  );
+}
+
+export function BudgetOptions() {
+  const SectionTitle = (
+    <Title mb={"-1.25rem"} fw={400}>
+      Choose the type of ads you want.
+    </Title>
+  );
+  return (
+    <FormSection title={SectionTitle}>
+      <SpendSlider />
+      <AdChoices />
     </FormSection>
   );
 }
